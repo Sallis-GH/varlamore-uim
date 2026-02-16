@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-02-16)
 ## Current Position
 
 Phase: 2 of 6 (Spell Teleport Blocking)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: Executing
-Last activity: 2026-02-16 — Completed plan 02-01 (Spell Teleport Blocking)
+Last activity: 2026-02-16 — Completed plan 02-02 (Home Teleport Blocking)
 
-Progress: [███░░░░░░░] 30%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 13 min
-- Total execution time: 0.65 hours
+- Total plans completed: 4
+- Average duration: 10 min
+- Total execution time: 0.68 hours
 
 **By Phase:**
 
 | Phase | Plans | Total  | Avg/Plan |
 |-------|-------|--------|----------|
 | 01    | 2     | 36 min | 18 min   |
-| 02    | 1     | 3 min  | 3 min    |
+| 02    | 2     | 5 min  | 2.5 min  |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (4 min), 01-02 (32 min), 02-01 (3 min)
-- Trend: Phase 2 started with fast execution
+- Last 5 plans: 01-01 (4 min), 01-02 (32 min), 02-01 (3 min), 02-02 (2 min)
+- Trend: Phase 2 maintaining fast execution with tightly scoped plans
 
 *Updated after each plan completion*
 
@@ -58,6 +58,10 @@ Recent decisions affecting current work:
 - Use Set.of() immutable set for 31 blocked spell names (02-01)
 - Use Color constants instead of ChatColorType for chat messages (02-01)
 - Block ALL spellbook teleports via name-based set without destination lookup (02-01)
+- Use widget group ID to detect active spellbook for Home Teleport (02-02)
+- Map Home Teleport destinations by widget group ID for O(1) lookup (02-02)
+- Block by default for null widgets or unknown spellbooks (02-02)
+- All current Home Teleport destinations are outside Varlamore (02-02)
 
 ### Pending Todos
 
@@ -70,10 +74,10 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-16T22:03:34Z
-Stopped at: Completed 02-01-PLAN.md (Spell Teleport Blocking)
+Last session: 2026-02-16T22:37:30Z
+Stopped at: Completed 02-02-PLAN.md (Home Teleport Blocking)
 Resume file: None
 
 ---
 *State initialized: 2026-02-16*
-*Last updated: 2026-02-16T22:03:34Z*
+*Last updated: 2026-02-16T22:37:30Z*
