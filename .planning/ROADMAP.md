@@ -31,12 +31,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Internal Varlamore transport (Quetzal system) works normally without interference
   4. Plugin has a side panel with categorized sections that can be expanded in future phases
   5. Plugin can be enabled/disabled via config toggle
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md -- Project scaffold and BoundaryChecker service
+- [ ] 01-02-PLAN.md -- Config sections, side panel, and plugin wiring
 
 ### Phase 2: Spell Teleport Blocking
 **Goal**: Player cannot use any spellbook teleport that would move them outside Varlamore
@@ -125,11 +124,11 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Infrastructure | 0/3 | Not started | - |
+| 1. Foundation & Infrastructure | 0/2 | Planning complete | - |
 | 2. Spell Teleport Blocking | 0/3 | Not started | - |
 | 3. Item & Minigame Teleport Blocking | 0/3 | Not started | - |
 | 4. NPC Transport Blocking | 0/2 | Not started | - |
