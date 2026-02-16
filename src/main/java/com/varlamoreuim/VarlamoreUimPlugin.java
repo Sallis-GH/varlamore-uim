@@ -142,7 +142,7 @@ public class VarlamoreUimPlugin extends Plugin
 			return;
 		}
 
-		spellTeleportBlocker.handleMenuClick(event, chatMessageManager);
+		spellTeleportBlocker.handleMenuClick(event, chatMessageManager, boundaryChecker);
 	}
 
 	@Provides
