@@ -13,7 +13,7 @@ This roadmap delivers a RuneLite plugin that enforces Varlamore area-lock restri
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Infrastructure** - Plugin structure, boundary system, and extensible settings panel
-- [ ] **Phase 2: Spell Teleport Blocking** - Block all spellbook teleports that leave Varlamore
+- [x] **Phase 2: Spell Teleport Blocking** - Block all spellbook teleports that leave Varlamore
 - [ ] **Phase 3: Item & Minigame Teleport Blocking** - Block jewelry, tablets, and quest item teleports
 - [ ] **Phase 4: NPC Transport Blocking** - Block ships, gliders, spirit trees, and fairy rings
 - [ ] **Phase 5: NPC Replacement System** - Immersive NPC hiding and dialogue-based blocking
@@ -51,8 +51,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- SpellTeleportBlocker service with 31 blocked spells, plugin wiring, and config toggle
-- [ ] 02-02-PLAN.md -- Home Teleport blocking with spellbook-aware destination logic
+- [x] 02-01-PLAN.md -- SpellTeleportBlocker service with 31 blocked spells, plugin wiring, and config toggle
+- [x] 02-02-PLAN.md -- Home Teleport blocking with spellbook-aware destination logic
 
 ### Phase 3: Item & Minigame Teleport Blocking
 **Goal**: Player cannot use item-based teleports or minigame teleports that leave Varlamore
@@ -128,7 +128,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Infrastructure | 2/2 | Complete | 2026-02-16 |
-| 2. Spell Teleport Blocking | 0/2 | Planning complete | - |
+| 2. Spell Teleport Blocking | 2/2 | Complete | 2026-02-16 |
 | 3. Item & Minigame Teleport Blocking | 0/3 | Not started | - |
 | 4. NPC Transport Blocking | 0/2 | Not started | - |
 | 5. NPC Replacement System | 0/3 | Not started | - |
@@ -136,4 +136,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 ---
 *Roadmap created: 2026-02-16*
-*Last updated: 2026-02-16 -- Phase 2 planned*
+*Last updated: 2026-02-16 -- Phase 2 complete*
