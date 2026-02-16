@@ -12,7 +12,7 @@ This roadmap delivers a RuneLite plugin that enforces Varlamore area-lock restri
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Infrastructure** - Plugin structure, boundary system, and extensible settings panel
+- [x] **Phase 1: Foundation & Infrastructure** - Plugin structure, boundary system, and extensible settings panel
 - [ ] **Phase 2: Spell Teleport Blocking** - Block all spellbook teleports that leave Varlamore
 - [ ] **Phase 3: Item & Minigame Teleport Blocking** - Block jewelry, tablets, and quest item teleports
 - [ ] **Phase 4: NPC Transport Blocking** - Block ships, gliders, spirit trees, and fairy rings
@@ -34,8 +34,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Project scaffold and BoundaryChecker service
-- [ ] 01-02-PLAN.md -- Config sections, side panel, and plugin wiring
+- [x] 01-01-PLAN.md -- Project scaffold and BoundaryChecker service
+- [x] 01-02-PLAN.md -- Config sections, side panel, and plugin wiring
 
 ### Phase 2: Spell Teleport Blocking
 **Goal**: Player cannot use any spellbook teleport that would move them outside Varlamore
@@ -128,7 +128,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Infrastructure | 0/2 | Planning complete | - |
+| 1. Foundation & Infrastructure | 2/2 | Complete | 2026-02-16 |
 | 2. Spell Teleport Blocking | 0/3 | Not started | - |
 | 3. Item & Minigame Teleport Blocking | 0/3 | Not started | - |
 | 4. NPC Transport Blocking | 0/2 | Not started | - |
@@ -137,4 +137,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 ---
 *Roadmap created: 2026-02-16*
-*Last updated: 2026-02-16*
+*Last updated: 2026-02-16 — Phase 1 complete*
