@@ -39,6 +39,18 @@ public interface VarlamoreUimConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "blockSpellTeleports",
+		name = "Block Spell Teleports",
+		description = "Prevent casting teleport spells that leave Varlamore",
+		position = 3,
+		section = restrictionsSection
+	)
+	default boolean blockSpellTeleports()
+	{
+		return true;
+	}
+
 	// Quality of Adventure Section (placeholder)
 	@ConfigSection(
 		name = "Quality of Adventure",
