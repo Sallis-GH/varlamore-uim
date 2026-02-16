@@ -5,8 +5,9 @@ import net.runelite.client.ui.ColorScheme;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VarlamoreUimPanel extends PluginPanel
 {
@@ -32,122 +33,134 @@ public class VarlamoreUimPanel extends PluginPanel
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		contentPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		contentPanel.setBorder(new EmptyBorder(0, 5, 5, 5));
 
-		// Status section
-		JPanel statusSection = new JPanel();
-		statusSection.setLayout(new BoxLayout(statusSection, BoxLayout.Y_AXIS));
-		statusSection.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		statusSection.setBorder(new TitledBorder(
-			BorderFactory.createLineBorder(ColorScheme.LIGHT_GRAY_COLOR),
-			"Status",
-			TitledBorder.LEFT,
-			TitledBorder.TOP,
-			null,
-			Color.WHITE
-		));
-
+		// Status section (always open)
+		JPanel statusContent = new JPanel();
+		statusContent.setLayout(new BoxLayout(statusContent, BoxLayout.Y_AXIS));
+		statusContent.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		boundaryStatusLabel = new JLabel("Location: Unknown");
 		boundaryStatusLabel.setForeground(Color.LIGHT_GRAY);
-		boundaryStatusLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		statusSection.add(boundaryStatusLabel);
-
-		contentPanel.add(statusSection);
+		boundaryStatusLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
+		statusContent.add(boundaryStatusLabel);
+		contentPanel.add(createCollapsibleSection("Status", statusContent, true));
 		contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
 		// Restrictions section
-		JPanel restrictionsSection = new JPanel();
-		restrictionsSection.setLayout(new BoxLayout(restrictionsSection, BoxLayout.Y_AXIS));
-		restrictionsSection.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		restrictionsSection.setBorder(new TitledBorder(
-			BorderFactory.createLineBorder(ColorScheme.LIGHT_GRAY_COLOR),
-			"Restrictions",
-			TitledBorder.LEFT,
-			TitledBorder.TOP,
-			null,
-			Color.WHITE
-		));
-
+		JPanel restrictionsContent = new JPanel();
+		restrictionsContent.setLayout(new BoxLayout(restrictionsContent, BoxLayout.Y_AXIS));
+		restrictionsContent.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		JLabel restrictionsLabel = new JLabel("Boundary enforcement: Active");
 		restrictionsLabel.setForeground(Color.LIGHT_GRAY);
-		restrictionsLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		restrictionsSection.add(restrictionsLabel);
-
-		contentPanel.add(restrictionsSection);
+		restrictionsLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
+		restrictionsContent.add(restrictionsLabel);
+		contentPanel.add(createCollapsibleSection("Restrictions", restrictionsContent, true));
 		contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
-		// Quality of Adventure section (placeholder)
-		JPanel qoaSection = new JPanel();
-		qoaSection.setLayout(new BoxLayout(qoaSection, BoxLayout.Y_AXIS));
-		qoaSection.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		qoaSection.setBorder(new TitledBorder(
-			BorderFactory.createLineBorder(ColorScheme.LIGHT_GRAY_COLOR),
-			"Quality of Adventure",
-			TitledBorder.LEFT,
-			TitledBorder.TOP,
-			null,
-			Color.WHITE
-		));
-
+		// Quality of Adventure section (placeholder, collapsed)
+		JPanel qoaContent = new JPanel();
+		qoaContent.setLayout(new BoxLayout(qoaContent, BoxLayout.Y_AXIS));
+		qoaContent.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		JLabel qoaLabel = new JLabel("Coming soon");
-		qoaLabel.setForeground(Color.LIGHT_GRAY);
-		qoaLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		qoaSection.add(qoaLabel);
-
-		contentPanel.add(qoaSection);
+		qoaLabel.setForeground(Color.GRAY);
+		qoaLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
+		qoaContent.add(qoaLabel);
+		contentPanel.add(createCollapsibleSection("Quality of Adventure", qoaContent, false));
 		contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
-		// Progress Tracking section (placeholder)
-		JPanel trackingSection = new JPanel();
-		trackingSection.setLayout(new BoxLayout(trackingSection, BoxLayout.Y_AXIS));
-		trackingSection.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		trackingSection.setBorder(new TitledBorder(
-			BorderFactory.createLineBorder(ColorScheme.LIGHT_GRAY_COLOR),
-			"Progress Tracking",
-			TitledBorder.LEFT,
-			TitledBorder.TOP,
-			null,
-			Color.WHITE
-		));
-
+		// Progress Tracking section (placeholder, collapsed)
+		JPanel trackingContent = new JPanel();
+		trackingContent.setLayout(new BoxLayout(trackingContent, BoxLayout.Y_AXIS));
+		trackingContent.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		JLabel trackingLabel = new JLabel("Coming soon");
-		trackingLabel.setForeground(Color.LIGHT_GRAY);
-		trackingLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		trackingSection.add(trackingLabel);
-
-		contentPanel.add(trackingSection);
+		trackingLabel.setForeground(Color.GRAY);
+		trackingLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
+		trackingContent.add(trackingLabel);
+		contentPanel.add(createCollapsibleSection("Progress Tracking", trackingContent, false));
 		contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
-		// Unlocks section (placeholder)
-		JPanel unlocksSection = new JPanel();
-		unlocksSection.setLayout(new BoxLayout(unlocksSection, BoxLayout.Y_AXIS));
-		unlocksSection.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		unlocksSection.setBorder(new TitledBorder(
-			BorderFactory.createLineBorder(ColorScheme.LIGHT_GRAY_COLOR),
-			"Unlocks",
-			TitledBorder.LEFT,
-			TitledBorder.TOP,
-			null,
-			Color.WHITE
-		));
-
+		// Unlocks section (placeholder, collapsed)
+		JPanel unlocksContent = new JPanel();
+		unlocksContent.setLayout(new BoxLayout(unlocksContent, BoxLayout.Y_AXIS));
+		unlocksContent.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		JLabel unlocksLabel = new JLabel("Coming soon");
-		unlocksLabel.setForeground(Color.LIGHT_GRAY);
-		unlocksLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		unlocksSection.add(unlocksLabel);
+		unlocksLabel.setForeground(Color.GRAY);
+		unlocksLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
+		unlocksContent.add(unlocksLabel);
+		contentPanel.add(createCollapsibleSection("Unlocks", unlocksContent, false));
 
-		contentPanel.add(unlocksSection);
+		// Vertical glue to push sections to top
+		contentPanel.add(Box.createVerticalGlue());
 
 		// Wrap content in scroll pane
 		JScrollPane scrollPane = new JScrollPane(contentPanel);
 		scrollPane.setBackground(ColorScheme.DARK_GRAY_COLOR);
+		scrollPane.getViewport().setBackground(ColorScheme.DARK_GRAY_COLOR);
 		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		add(scrollPane, BorderLayout.CENTER);
 	}
 
-	/**
-	 * Update boundary status display
-	 * @param inVarlamore true if player is inside Varlamore, false otherwise
-	 */
+	private JPanel createCollapsibleSection(String title, JPanel content, boolean startExpanded)
+	{
+		JPanel section = new JPanel();
+		section.setLayout(new BorderLayout());
+		section.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		// Header bar
+		JPanel header = new JPanel(new BorderLayout());
+		header.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		header.setBorder(new EmptyBorder(6, 10, 6, 10));
+		header.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		JLabel arrow = new JLabel(startExpanded ? "\u25BC" : "\u25B6");
+		arrow.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		arrow.setBorder(new EmptyBorder(0, 0, 0, 6));
+
+		JLabel titleLabel = new JLabel(title);
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 12f));
+
+		header.add(arrow, BorderLayout.WEST);
+		header.add(titleLabel, BorderLayout.CENTER);
+
+		// Content starts expanded or collapsed
+		content.setVisible(startExpanded);
+
+		// Toggle on click
+		header.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				boolean visible = !content.isVisible();
+				content.setVisible(visible);
+				arrow.setText(visible ? "\u25BC" : "\u25B6");
+				section.revalidate();
+				section.repaint();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				header.setBackground(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				header.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+			}
+		});
+
+		section.add(header, BorderLayout.NORTH);
+		section.add(content, BorderLayout.CENTER);
+
+		// Prevent section from stretching vertically in BoxLayout
+		section.setMaximumSize(new Dimension(Integer.MAX_VALUE, section.getPreferredSize().height));
+
+		return section;
+	}
+
 	public void updateBoundaryStatus(boolean inVarlamore)
 	{
 		if (inVarlamore)
@@ -160,9 +173,6 @@ public class VarlamoreUimPanel extends PluginPanel
 		}
 	}
 
-	/**
-	 * Reset status display to unknown state
-	 */
 	public void resetStatus()
 	{
 		boundaryStatusLabel.setText("Location: Unknown");
