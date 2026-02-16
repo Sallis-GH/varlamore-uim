@@ -48,12 +48,11 @@ Plans:
   4. Player cannot cast Lunar spellbook teleports (all 8 locations)
   5. Player cannot cast Arceuus spellbook teleports (all 9 locations)
   6. Blocked spell attempts show clear chat message explaining the restriction
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md -- SpellTeleportBlocker service with 31 blocked spells, plugin wiring, and config toggle
+- [ ] 02-02-PLAN.md -- Home Teleport blocking with spellbook-aware destination logic
 
 ### Phase 3: Item & Minigame Teleport Blocking
 **Goal**: Player cannot use item-based teleports or minigame teleports that leave Varlamore
@@ -129,7 +128,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Infrastructure | 2/2 | Complete | 2026-02-16 |
-| 2. Spell Teleport Blocking | 0/3 | Not started | - |
+| 2. Spell Teleport Blocking | 0/2 | Planning complete | - |
 | 3. Item & Minigame Teleport Blocking | 0/3 | Not started | - |
 | 4. NPC Transport Blocking | 0/2 | Not started | - |
 | 5. NPC Replacement System | 0/3 | Not started | - |
@@ -137,4 +136,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 ---
 *Roadmap created: 2026-02-16*
-*Last updated: 2026-02-16 — Phase 1 complete*
+*Last updated: 2026-02-16 -- Phase 2 planned*
