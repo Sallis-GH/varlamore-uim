@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-16)
 ## Current Position
 
 Phase: 3 of 6 (Item & Minigame Teleport Blocking)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: Executing
-Last activity: 2026-02-17 — Completed 03-01 (ItemTeleportBlocker service)
+Last activity: 2026-02-17 — Completed 03-02 (per-destination blocking + minigame tab)
 
-Progress: [████░░░░░░] 43%
+Progress: [████░░░░░░] 47%
 
 ## Performance Metrics
 
@@ -29,11 +29,11 @@ Progress: [████░░░░░░] 43%
 |-------|-------|--------|----------|
 | 01    | 2     | 36 min | 18 min   |
 | 02    | 2     | 5 min  | 2.5 min  |
-| 03    | 1     | 35 min | 35 min   |
+| 03    | 2     | 55 min | 27.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (32 min), 02-01 (3 min), 02-02 (2 min), 03-01 (35 min)
-- Trend: Phase 3 takes longer due to item ID catalog completeness requirements
+- Last 5 plans: 02-01 (3 min), 02-02 (2 min), 03-01 (35 min), 03-02 (20 min)
+- Trend: Phase 3 plans average ~27.5 min; item ID catalog work adds complexity
 
 *Updated after each plan completion*
 
@@ -68,6 +68,11 @@ Recent decisions affecting current work:
 - Pharaoh's Sceptre charge variants use numeric IDs — no named RuneLite constants in API 1.12.17 (03-01)
 - ITEM_DESTINATION_DISPLAY getOrDefault fallback ensures no crash if ID missing from map (03-01)
 - Spell blocker short-circuits item blocker when spell event is handled (03-01)
+- RING_OF_DUELING_IDS checked before BLOCKED_ITEM_IDS to enable per-destination allow/block logic (03-02)
+- MAX_CAPE_IDS includes all 26 functional variants; broken/degraded variants excluded (03-02)
+- handleMinigameTeleport on ItemTeleportBlocker (not SpellTeleportBlocker) to share chat message utilities (03-02)
+- House tablet defaults to blocking when VarBit returns non-Aldarin value (safe fallback) (03-02)
+- VarBit 2187 value 8 = Aldarin (only Varlamore POH location) — requires in-game verification (03-02)
 
 ### Pending Todos
 
@@ -81,9 +86,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-17
-Stopped at: Completed 03-01-PLAN.md (ItemTeleportBlocker service + plugin wiring)
-Resume file: .planning/phases/03-item-minigame-teleport-blocking/03-02-PLAN.md
+Stopped at: Completed 03-02-PLAN.md (per-destination blocking + minigame tab blocking)
+Resume file: .planning/phases/03-item-minigame-teleport-blocking/03-03-PLAN.md
 
 ---
 *State initialized: 2026-02-16*
-*Last updated: 2026-02-17 (03-01 complete)*
+*Last updated: 2026-02-17 (03-02 complete)*
