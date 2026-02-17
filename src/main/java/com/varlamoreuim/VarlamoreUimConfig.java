@@ -63,6 +63,18 @@ public interface VarlamoreUimConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "blockMinigameTeleports",
+		name = "Block Minigame Teleports",
+		description = "Prevent using minigame grouping tab teleports that leave Varlamore",
+		position = 5,
+		section = restrictionsSection
+	)
+	default boolean blockMinigameTeleports()
+	{
+		return true;
+	}
+
 	// Quality of Adventure Section (placeholder)
 	@ConfigSection(
 		name = "Quality of Adventure",

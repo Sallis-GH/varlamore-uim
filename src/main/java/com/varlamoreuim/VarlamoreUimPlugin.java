@@ -161,7 +161,16 @@ public class VarlamoreUimPlugin extends Plugin
 		// Item teleport blocking — only reached if spell blocker did not handle the event
 		if (config.blockItemTeleports())
 		{
-			itemTeleportBlocker.handleMenuClick(event, chatMessageManager, client);
+			if (itemTeleportBlocker.handleMenuClick(event, chatMessageManager, client))
+			{
+				return; // Already handled — don't double-process
+			}
+		}
+
+		// Minigame grouping tab teleport blocking — separate config toggle from item blocking
+		if (config.blockMinigameTeleports())
+		{
+			itemTeleportBlocker.handleMinigameTeleport(event, chatMessageManager);
 		}
 	}
 
