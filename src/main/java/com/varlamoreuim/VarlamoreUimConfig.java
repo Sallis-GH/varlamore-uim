@@ -51,6 +51,18 @@ public interface VarlamoreUimConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "blockItemTeleports",
+		name = "Block Item Teleports",
+		description = "Prevent using item-based teleports that leave Varlamore",
+		position = 4,
+		section = restrictionsSection
+	)
+	default boolean blockItemTeleports()
+	{
+		return true;
+	}
+
 	// Quality of Adventure Section (placeholder)
 	@ConfigSection(
 		name = "Quality of Adventure",

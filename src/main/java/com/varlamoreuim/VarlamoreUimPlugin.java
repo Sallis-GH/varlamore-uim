@@ -2,6 +2,7 @@ package com.varlamoreuim;
 
 import com.google.inject.Injector;
 import com.google.inject.Provides;
+import com.varlamoreuim.teleport.ItemTeleportBlocker;
 import com.varlamoreuim.teleport.SpellTeleportBlocker;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,7 @@ public class VarlamoreUimPlugin extends Plugin
 	private NavigationButton navButton;
 	private BoundaryChecker boundaryChecker;
 	private SpellTeleportBlocker spellTeleportBlocker;
+	private ItemTeleportBlocker itemTeleportBlocker;
 	private boolean wasInVarlamore = true;
 
 	@Override
@@ -62,6 +64,9 @@ public class VarlamoreUimPlugin extends Plugin
 
 		// Initialize SpellTeleportBlocker
 		spellTeleportBlocker = new SpellTeleportBlocker();
+
+		// Initialize ItemTeleportBlocker
+		itemTeleportBlocker = new ItemTeleportBlocker();
 
 		// Create panel
 		panel = injector.getInstance(VarlamoreUimPanel.class);
@@ -96,6 +101,7 @@ public class VarlamoreUimPlugin extends Plugin
 		navButton = null;
 		boundaryChecker = null;
 		spellTeleportBlocker = null;
+		itemTeleportBlocker = null;
 
 		log.debug("Varlamore UIM plugin stopped");
 	}
@@ -114,8 +120,9 @@ public class VarlamoreUimPlugin extends Plugin
 			return;
 		}
 
+		int regionId = player.getWorldLocation().getRegionID();
 		boolean inVarlamore = boundaryChecker.isInVarlamore(player.getWorldLocation());
-		panel.updateBoundaryStatus(inVarlamore);
+		panel.updateBoundaryStatus(inVarlamore, regionId);
 
 		// Only log on boundary state changes
 		if (inVarlamore != wasInVarlamore)
@@ -137,12 +144,25 @@ public class VarlamoreUimPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!config.pluginEnabled() || !config.blockSpellTeleports())
+		if (!config.pluginEnabled())
 		{
 			return;
 		}
 
-		spellTeleportBlocker.handleMenuClick(event, chatMessageManager, boundaryChecker);
+		// Spell teleport blocking — check first (returns false fast for item ops)
+		if (config.blockSpellTeleports())
+		{
+			if (spellTeleportBlocker.handleMenuClick(event, chatMessageManager, boundaryChecker))
+			{
+				return; // Already handled — don't double-process
+			}
+		}
+
+		// Item teleport blocking — only reached if spell blocker did not handle the event
+		if (config.blockItemTeleports())
+		{
+			itemTeleportBlocker.handleMenuClick(event, chatMessageManager, client);
+		}
 	}
 
 	@Provides
