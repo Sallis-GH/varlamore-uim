@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-16)
 ## Current Position
 
 Phase: 3 of 6 (Item & Minigame Teleport Blocking)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-02-16 — Phase 2 complete, advancing to Phase 3
+Plan: 1 of 3 in current phase
+Status: Executing
+Last activity: 2026-02-17 — Completed 03-01 (ItemTeleportBlocker service)
 
-Progress: [████░░░░░░] 40%
+Progress: [████░░░░░░] 43%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 10 min
-- Total execution time: 0.68 hours
+- Total plans completed: 5
+- Average duration: 13 min
+- Total execution time: 1.27 hours
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [████░░░░░░] 40%
 |-------|-------|--------|----------|
 | 01    | 2     | 36 min | 18 min   |
 | 02    | 2     | 5 min  | 2.5 min  |
+| 03    | 1     | 35 min | 35 min   |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (4 min), 01-02 (32 min), 02-01 (3 min), 02-02 (2 min)
-- Trend: Phase 2 maintaining fast execution with tightly scoped plans
+- Last 5 plans: 01-02 (32 min), 02-01 (3 min), 02-02 (2 min), 03-01 (35 min)
+- Trend: Phase 3 takes longer due to item ID catalog completeness requirements
 
 *Updated after each plan completion*
 
@@ -62,6 +63,11 @@ Recent decisions affecting current work:
 - Map Home Teleport destinations by widget group ID for O(1) lookup (02-02)
 - Block by default for null widgets or unknown spellbooks (02-02)
 - All current Home Teleport destinations are outside Varlamore (02-02)
+- Use isItemOp() + getItemId() for item identification (not MenuAction type check) (03-01)
+- addVariants() helper with varargs int[] supports both named constants and numeric IDs in one call (03-01)
+- Pharaoh's Sceptre charge variants use numeric IDs — no named RuneLite constants in API 1.12.17 (03-01)
+- ITEM_DESTINATION_DISPLAY getOrDefault fallback ensures no crash if ID missing from map (03-01)
+- Spell blocker short-circuits item blocker when spell event is handled (03-01)
 
 ### Pending Todos
 
@@ -75,9 +81,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-17
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-item-minigame-teleport-blocking/03-CONTEXT.md
+Stopped at: Completed 03-01-PLAN.md (ItemTeleportBlocker service + plugin wiring)
+Resume file: .planning/phases/03-item-minigame-teleport-blocking/03-02-PLAN.md
 
 ---
 *State initialized: 2026-02-16*
-*Last updated: 2026-02-17*
+*Last updated: 2026-02-17 (03-01 complete)*
