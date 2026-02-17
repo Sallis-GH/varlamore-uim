@@ -27,8 +27,9 @@ import java.util.Set;
  * Wilderness Sword, Rada's Blessing).
  *
  * Whitelists Pendant of Ates (all destinations inside Varlamore).
- * Items with mixed destinations (Ring of Dueling, Hunter cape, Max cape) and special logic
- * (House teleport tablet) are handled in plan 03-02.
+ * Per-destination items: Ring of Dueling (allow Fortis Colosseum), Hunter/Max cape
+ * (allow Hunter Guild), House teleport tablet (conditional on POH location).
+ * Minigame grouping tab blocking handled via handleMinigameTeleport().
  */
 @Slf4j
 public class ItemTeleportBlocker
@@ -39,6 +40,107 @@ public class ItemTeleportBlocker
 	 * Source: OSRS Wiki — Pendant of Ates
 	 */
 	private static final Set<Integer> PENDANT_OF_ATES_IDS;
+
+	/**
+	 * Ring of Dueling — Fortis Colosseum (Varlamore) is allowed; other destinations blocked.
+	 * IDs: RING_OF_DUELING8 (2552) through RING_OF_DUELING1 (2566)
+	 * Source: OSRS Wiki — Ring of dueling
+	 */
+	private static final Set<Integer> RING_OF_DUELING_IDS = Set.of(
+		ItemID.RING_OF_DUELING8,  // 2552
+		ItemID.RING_OF_DUELING7,  // 2554
+		ItemID.RING_OF_DUELING6,  // 2556
+		ItemID.RING_OF_DUELING5,  // 2558
+		ItemID.RING_OF_DUELING4,  // 2560
+		ItemID.RING_OF_DUELING3,  // 2562
+		ItemID.RING_OF_DUELING2,  // 2564
+		ItemID.RING_OF_DUELING1   // 2566
+	);
+
+	/**
+	 * The only Ring of Dueling destination that is within Varlamore.
+	 * Other destinations (Emir's Arena, Castle Wars, Ferox Enclave) are outside.
+	 */
+	private static final String ALLOWED_DUELING_DESTINATION = "Fortis Colosseum";
+
+	/**
+	 * Hunter Cape — Hunter Guild (Varlamore) is allowed; other destinations blocked.
+	 * IDs: HUNTER_CAPE (9948), HUNTER_CAPET (9949, trimmed)
+	 * Source: OSRS Wiki — Hunter cape
+	 */
+	private static final Set<Integer> HUNTER_CAPE_IDS = Set.of(
+		ItemID.HUNTER_CAPE,   // 9948
+		ItemID.HUNTER_CAPET   // 9949 (trimmed)
+	);
+
+	/**
+	 * Known teleport option strings for the Hunter cape.
+	 * Used to distinguish teleport menu entries from wear/equip/drop options.
+	 * Destinations: Hunter Guild (Varlamore, allowed), Feldip Hunter area, Carnivorous chinchompas (blocked).
+	 * Source: OSRS Wiki — Hunter cape
+	 */
+	private static final Set<String> HUNTER_TELEPORT_OPTIONS = Set.of(
+		"Hunter Guild",
+		"Feldip Hunter area",
+		"Carnivorous chinchompas"
+	);
+
+	/**
+	 * The only Hunter cape destination that is within Varlamore.
+	 */
+	private static final Set<String> ALLOWED_HUNTER_DESTINATIONS = Set.of("Hunter Guild");
+
+	/**
+	 * Max Cape — includes Hunter cape teleport destinations. Hunter Guild is allowed;
+	 * all other teleport options (from other skill capes) are blocked.
+	 * Includes all Max cape variants that have teleport functionality.
+	 * Source: OSRS Wiki — Max cape
+	 */
+	private static final Set<Integer> MAX_CAPE_IDS = Set.of(
+		ItemID.MAX_CAPE,                     // 13280 (base)
+		ItemID.FIRE_MAX_CAPE,                // 13329
+		ItemID.SARADOMIN_MAX_CAPE,           // 13331
+		ItemID.ZAMORAK_MAX_CAPE,             // 13333
+		ItemID.GUTHIX_MAX_CAPE,              // 13335
+		ItemID.ACCUMULATOR_MAX_CAPE,         // 13337
+		ItemID.MAX_CAPE_13342,               // 13342
+		ItemID.ARDOUGNE_MAX_CAPE,            // 20760
+		ItemID.FIRE_MAX_CAPE_21186,          // 21186
+		ItemID.INFERNAL_MAX_CAPE,            // 21284
+		ItemID.INFERNAL_MAX_CAPE_21285,      // 21285
+		ItemID.IMBUED_SARADOMIN_MAX_CAPE,    // 21776
+		ItemID.IMBUED_ZAMORAK_MAX_CAPE,      // 21780
+		ItemID.IMBUED_GUTHIX_MAX_CAPE,       // 21784
+		ItemID.ASSEMBLER_MAX_CAPE,           // 21898
+		ItemID.INFERNAL_MAX_CAPE_L,          // 24133
+		ItemID.FIRE_MAX_CAPE_L,              // 24134
+		ItemID.ASSEMBLER_MAX_CAPE_L,         // 24135
+		ItemID.IMBUED_SARADOMIN_MAX_CAPE_L,  // 24232
+		ItemID.IMBUED_ZAMORAK_MAX_CAPE_L,    // 24233
+		ItemID.IMBUED_GUTHIX_MAX_CAPE_L,     // 24234
+		ItemID.MYTHICAL_MAX_CAPE,            // 24855
+		ItemID.MASORI_ASSEMBLER_MAX_CAPE,    // 27363
+		ItemID.MASORI_ASSEMBLER_MAX_CAPE_L,  // 27365
+		ItemID.DIZANAS_MAX_CAPE,             // 28902
+		ItemID.DIZANAS_MAX_CAPE_L            // 28906
+	);
+
+	/**
+	 * House teleport tablet — allowed only when player's POH is in Aldarin (Varlamore).
+	 * VarBit 2187 controls POH location; value 8 = Aldarin.
+	 * Source: OSRS Wiki — Teleport to house, Player-owned house
+	 */
+	private static final Set<Integer> HOUSE_TABLET_IDS = Set.of(
+		ItemID.TELEPORT_TO_HOUSE  // 8013
+	);
+
+	/**
+	 * VarBit ID for Player-Owned House location.
+	 * Value 8 corresponds to Aldarin (the only Varlamore POH location).
+	 * If VarBit value differs, POH is outside Varlamore — block the teleport.
+	 */
+	private static final int HOUSE_LOCATION_VARBIT = 2187;
+	private static final int ALDARIN_HOUSE_VALUE = 8;
 
 	/**
 	 * All item IDs where every teleport destination is outside Varlamore.
@@ -52,6 +154,31 @@ public class ItemTeleportBlocker
 	 * Every item in BLOCKED_ITEM_IDS must have a corresponding entry here.
 	 */
 	private static final Map<Integer, String> ITEM_DESTINATION_DISPLAY;
+
+	/**
+	 * All 17 minigame grouping tab teleport destinations.
+	 * None are in Varlamore — all are blocked when blockMinigameTeleports is enabled.
+	 * Source: OSRS Wiki — Minigame Group Finder
+	 */
+	private static final Set<String> BLOCKED_MINIGAME_DESTINATIONS = Set.of(
+		"Barbarian Assault",
+		"Burthorpe Games Room",
+		"Castle Wars",
+		"Clan Wars",
+		"Fishing Trawler",
+		"Giants' Foundry",
+		"Guardians of the Rift",
+		"Last Man Standing",
+		"Mage Training Arena",
+		"Nightmare Zone",
+		"Pest Control",
+		"Rat Pits",
+		"Shades of Mort'ton",
+		"Soul Wars",
+		"Tithe Farm",
+		"Trouble Brewing",
+		"TzHaar Fight Pit"
+	);
 
 	/**
 	 * Menu option strings that indicate a teleport action.
@@ -465,10 +592,17 @@ public class ItemTeleportBlocker
 
 	/**
 	 * Handle a menu click event and block if it's an item teleport that leaves Varlamore.
+	 * Dispatch order:
+	 * 1. Whitelist: Pendant of Ates (always allowed)
+	 * 2. Per-destination: Ring of Dueling (allow Fortis Colosseum, block others)
+	 * 3. Per-destination: Hunter cape (allow Hunter Guild, block Feldip/Chinchompas)
+	 * 4. Per-destination: Max cape (Hunter Guild allowed; all other teleports blocked)
+	 * 5. Conditional: House teleport tablet (check POH VarBit)
+	 * 6. All-destination-blocked items from BLOCKED_ITEM_IDS
 	 *
 	 * @param event the menu click event
 	 * @param chatMessageManager the chat message manager for feedback
-	 * @param client the RuneLite client (reserved for plan 03-02 POH/VarBit checks)
+	 * @param client the RuneLite client (used for POH VarBit checks)
 	 * @return true if the teleport was blocked, false otherwise
 	 */
 	public boolean handleMenuClick(MenuOptionClicked event, ChatMessageManager chatMessageManager, Client client)
@@ -488,12 +622,144 @@ public class ItemTeleportBlocker
 			return false;
 		}
 
-		// Block all-destination-blocked items when a teleport option is used
+		// Per-destination: Ring of Dueling (allow Fortis Colosseum, block others)
+		if (RING_OF_DUELING_IDS.contains(itemId))
+		{
+			return handleRingOfDueling(event, option, itemName, chatMessageManager);
+		}
+
+		// Per-destination: Hunter cape (allow Hunter Guild, block Feldip/Chinchompas)
+		if (HUNTER_CAPE_IDS.contains(itemId))
+		{
+			return handleHunterCape(event, option, itemName, chatMessageManager);
+		}
+
+		// Per-destination: Max cape (Hunter Guild allowed via Hunter logic; all other teleports blocked)
+		if (MAX_CAPE_IDS.contains(itemId))
+		{
+			if (HUNTER_TELEPORT_OPTIONS.contains(option))
+			{
+				return handleHunterCape(event, option, itemName, chatMessageManager);
+			}
+			if (isTeleportOption(option))
+			{
+				event.consume();
+				sendBlockedDestinationMessage(itemName, option, chatMessageManager);
+				log.debug("Blocked Max cape teleport to '{}'", option);
+				return true;
+			}
+			return false;
+		}
+
+		// Conditional: House teleport tablet (check POH location VarBit)
+		if (HOUSE_TABLET_IDS.contains(itemId))
+		{
+			return handleHouseTablet(event, client, itemName, chatMessageManager);
+		}
+
+		// All-destination-blocked items (from 03-01)
 		if (BLOCKED_ITEM_IDS.contains(itemId) && isTeleportOption(option))
 		{
 			event.consume();
 			sendBlockedMessage(itemName, itemId, chatMessageManager);
 			log.debug("Blocked item teleport: '{}' (id: {}, option: '{}')", itemName, itemId, option);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Handle Ring of Dueling teleport — allow Fortis Colosseum, block all other destinations.
+	 * Ring of Dueling right-click options directly show destination names.
+	 *
+	 * @return true if the teleport was blocked
+	 */
+	private boolean handleRingOfDueling(MenuOptionClicked event, String option, String itemName,
+		ChatMessageManager chatMessageManager)
+	{
+		if (ALLOWED_DUELING_DESTINATION.equals(option))
+		{
+			return false; // Fortis Colosseum is in Varlamore — allow
+		}
+		// Block Emir's Arena, Castle Wars, Ferox Enclave (and any future destination)
+		event.consume();
+		sendBlockedDestinationMessage(itemName, option, chatMessageManager);
+		log.debug("Blocked Ring of Dueling teleport to '{}' (allowed: {})", option, ALLOWED_DUELING_DESTINATION);
+		return true;
+	}
+
+	/**
+	 * Handle Hunter cape (and Max cape Hunter destinations) — allow Hunter Guild, block others.
+	 * Checks HUNTER_TELEPORT_OPTIONS to distinguish teleport entries from other item options.
+	 *
+	 * @return true if the teleport was blocked
+	 */
+	private boolean handleHunterCape(MenuOptionClicked event, String option, String itemName,
+		ChatMessageManager chatMessageManager)
+	{
+		// Only process known teleport options (not Wear, Remove, Drop, Examine, etc.)
+		if (!HUNTER_TELEPORT_OPTIONS.contains(option))
+		{
+			return false;
+		}
+
+		// Allow Hunter Guild (Varlamore destination)
+		if (ALLOWED_HUNTER_DESTINATIONS.contains(option))
+		{
+			return false;
+		}
+
+		// Block non-Varlamore destinations (Feldip Hunter area, Carnivorous chinchompas)
+		event.consume();
+		sendBlockedDestinationMessage(itemName, option, chatMessageManager);
+		log.debug("Blocked {} teleport to '{}' (allowed: Hunter Guild)", itemName, option);
+		return true;
+	}
+
+	/**
+	 * Handle House teleport tablet — allowed only when POH is in Aldarin (Varlamore).
+	 * Uses VarBit 2187 to check POH location. Value 8 = Aldarin.
+	 * Defaults to blocking if VarBit check is inconclusive (safe fallback).
+	 *
+	 * @return true if the teleport was blocked
+	 */
+	private boolean handleHouseTablet(MenuOptionClicked event, Client client, String itemName,
+		ChatMessageManager chatMessageManager)
+	{
+		int houseLocation = client.getVarbitValue(HOUSE_LOCATION_VARBIT);
+		if (houseLocation == ALDARIN_HOUSE_VALUE)
+		{
+			return false; // POH is in Aldarin (Varlamore) — allow
+		}
+		event.consume();
+		sendBlockedDestinationMessage(itemName, "your house (outside Varlamore)", chatMessageManager);
+		log.debug("Blocked house teleport tablet — POH location {} is not Aldarin ({})",
+			houseLocation, ALDARIN_HOUSE_VALUE);
+		return true;
+	}
+
+	/**
+	 * Handle minigame grouping tab teleport attempts.
+	 * Called for non-item-op events that may be minigame tab clicks.
+	 * Minigame tab teleports use "Teleport" as the menu option with the minigame name as target.
+	 *
+	 * @return true if a minigame teleport was blocked
+	 */
+	public boolean handleMinigameTeleport(MenuOptionClicked event, ChatMessageManager chatMessageManager)
+	{
+		// Minigame tab teleports have "Teleport" as the option
+		if (!"Teleport".equals(event.getMenuOption()))
+		{
+			return false;
+		}
+
+		String target = event.getMenuTarget().replaceAll("<[^>]*>", "").trim();
+		if (BLOCKED_MINIGAME_DESTINATIONS.contains(target))
+		{
+			event.consume();
+			sendBlockedMinigameMessage(target, chatMessageManager);
+			log.debug("Blocked minigame teleport to '{}'", target);
 			return true;
 		}
 
@@ -527,6 +793,50 @@ public class ItemTeleportBlocker
 		String message = new ChatMessageBuilder()
 			.append(Color.RED, "Varlamore UIM:")
 			.append(Color.WHITE, " " + itemName + " teleport to " + destDisplay
+				+ " is blocked \u2014 you are locked to Varlamore!")
+			.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.GAMEMESSAGE)
+			.runeLiteFormattedMessage(message)
+			.build());
+	}
+
+	/**
+	 * Send a chat message for per-destination blocked teleports.
+	 * Used when the option text IS the destination name (Ring of Dueling, Hunter/Max cape).
+	 * Also used for house tablet with a descriptive destination string.
+	 *
+	 * @param itemName the name of the item
+	 * @param destination the destination name (from menu option or custom string)
+	 * @param chatMessageManager the chat message manager
+	 */
+	private void sendBlockedDestinationMessage(String itemName, String destination,
+		ChatMessageManager chatMessageManager)
+	{
+		String message = new ChatMessageBuilder()
+			.append(Color.RED, "Varlamore UIM:")
+			.append(Color.WHITE, " " + itemName + " teleport to " + destination
+				+ " is blocked \u2014 you are locked to Varlamore!")
+			.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.GAMEMESSAGE)
+			.runeLiteFormattedMessage(message)
+			.build());
+	}
+
+	/**
+	 * Send a chat message informing the player that a minigame grouping tab teleport was blocked.
+	 *
+	 * @param destination the minigame destination name
+	 * @param chatMessageManager the chat message manager
+	 */
+	private void sendBlockedMinigameMessage(String destination, ChatMessageManager chatMessageManager)
+	{
+		String message = new ChatMessageBuilder()
+			.append(Color.RED, "Varlamore UIM:")
+			.append(Color.WHITE, " Minigame teleport to " + destination
 				+ " is blocked \u2014 you are locked to Varlamore!")
 			.build();
 
