@@ -64,12 +64,11 @@ Plans:
   3. Player cannot use quest item teleports (Ectophial, Xeric's Talisman, Kharedst's Memoirs, Pharaoh's Sceptre, Skull Sceptre, Enchanted Lyre, Drakan's Medallion) that lead outside Varlamore
   4. Player cannot use achievement diary gear teleports (Karamja Gloves, Explorer's Ring, Ardougne Cloak, Morytania Legs, Desert Amulet, Wilderness Sword, Rada's Blessing) to locations outside Varlamore
   5. Blocked item teleport attempts are silently prevented (action does not execute)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
-- [ ] 03-03: TBD
+- [ ] 03-01-PLAN.md -- ItemTeleportBlocker service with all-destination-blocked items, plugin wiring, config toggle
+- [ ] 03-02-PLAN.md -- Per-destination blocking (Ring of Dueling, Hunter/Max cape), house tablet POH detection, minigame grouping tab blocking
 
 ### Phase 4: NPC Transport Blocking
 **Goal**: Player cannot use NPC-based transport methods to leave Varlamore
@@ -129,11 +128,11 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 |-------|----------------|--------|-----------|
 | 1. Foundation & Infrastructure | 2/2 | Complete | 2026-02-16 |
 | 2. Spell Teleport Blocking | 2/2 | Complete | 2026-02-16 |
-| 3. Item & Minigame Teleport Blocking | 0/3 | Not started | - |
+| 3. Item & Minigame Teleport Blocking | 0/2 | Not started | - |
 | 4. NPC Transport Blocking | 0/2 | Not started | - |
 | 5. NPC Replacement System | 0/3 | Not started | - |
 | 6. Testing & Plugin Hub Submission | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-16*
-*Last updated: 2026-02-16 -- Phase 2 complete*
+*Last updated: 2026-02-17 -- Phase 3 planned (2 plans)*
