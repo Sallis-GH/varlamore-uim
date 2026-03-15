@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Animation;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Model;
 import net.runelite.api.ModelData;
@@ -67,6 +68,18 @@ public class NpcTransportBlocker
 		// Fortis Cothon
 		15526, 15527, 15528, 15529, 15530, 15531, 15532, 15533
 	);
+
+	/**
+	 * Dizana's Quiver item IDs — all four variants (uncharged, locked, charged, charged+locked).
+	 * When any of these is in the player's inventory or equipment, charter ship access is unlocked.
+	 * Source: OSRS Wiki — Dizana's quiver
+	 *
+	 * 28947: Uncharged
+	 * 28949: Uncharged + Locked
+	 * 28951: Charged
+	 * 28953: Charged + Locked
+	 */
+	public static final Set<Integer> DIZANAS_QUIVER_IDS = Set.of(28947, 28949, 28951, 28953);
 
 	/**
 	 * Primio quetzal NPC ID on the Civitas illa Fortis side.
@@ -165,17 +178,64 @@ public class NpcTransportBlocker
 		this.enabled = enabled;
 	}
 
-	/** Set charter ship unlock state. Called by plugin when Dizana's Quiver is detected. */
+	/**
+	 * Set charter ship unlock state.
+	 * Called by VarlamoreUimPlugin when Dizana's Quiver ownership changes.
+	 *
+	 * Transitioning from locked to unlocked: destroys Mysterious Old Man stand-ins so
+	 * the real Trader Crewmember NPCs become visible (the RenderCallback allows rendering
+	 * when {@code unlocked == true}).
+	 *
+	 * Transitioning from unlocked to locked: recreates Mysterious Old Man stand-ins and
+	 * the RenderCallback suppresses charter ship rendering again.
+	 *
+	 * No-ops when the state does not actually change.
+	 */
 	public void setUnlocked(boolean unlocked)
 	{
+		boolean wasUnlocked = this.unlocked;
 		this.unlocked = unlocked;
-		log.debug("Charter ship unlock state: {}", unlocked);
+		if (unlocked && !wasUnlocked)
+		{
+			// Just unlocked — remove stand-ins, charter ships will show via RenderCallback
+			destroyStandInNpcs();
+			log.debug("Charter ships unlocked — Mysterious Old Man stand-ins removed");
+		}
+		else if (!unlocked && wasUnlocked)
+		{
+			// Just locked — recreate stand-ins, charter ships hidden via RenderCallback
+			createStandInNpcs();
+			log.debug("Charter ships locked — Mysterious Old Man stand-ins spawned");
+		}
 	}
 
 	/** Returns whether charter ships are currently unlocked. */
 	public boolean isUnlocked()
 	{
 		return unlocked;
+	}
+
+	/**
+	 * Check whether an ItemContainer holds any variant of Dizana's Quiver.
+	 * Used by VarlamoreUimPlugin to check both inventory and equipment containers.
+	 *
+	 * @param container the ItemContainer to inspect (may be null)
+	 * @return true if any Dizana's Quiver variant is present, false otherwise
+	 */
+	public static boolean containsDizanasQuiver(ItemContainer container)
+	{
+		if (container == null)
+		{
+			return false;
+		}
+		for (int id : DIZANAS_QUIVER_IDS)
+		{
+			if (container.contains(id))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
