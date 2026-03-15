@@ -13,9 +13,11 @@ import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.PostMenuSort;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.RenderCallbackManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -55,6 +57,9 @@ public class VarlamoreUimPlugin extends Plugin
 	@Inject
 	private RenderCallbackManager renderCallbackManager;
 
+	@Inject
+	private ClientThread clientThread;
+
 	private VarlamoreUimPanel panel;
 	private NavigationButton navButton;
 	private BoundaryChecker boundaryChecker;
@@ -79,7 +84,14 @@ public class VarlamoreUimPlugin extends Plugin
 
 		// Initialize NpcTransportBlocker and register render callback
 		npcTransportBlocker = new NpcTransportBlocker();
+		npcTransportBlocker.initClient(client, clientThread, chatMessageManager);
 		renderCallbackManager.register(npcTransportBlocker.getRenderCallback());
+
+		// If the plugin was enabled while already logged in, create stand-ins immediately
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			npcTransportBlocker.createStandInNpcs();
+		}
 
 		// Create panel
 		panel = injector.getInstance(VarlamoreUimPanel.class);
@@ -115,8 +127,12 @@ public class VarlamoreUimPlugin extends Plugin
 		boundaryChecker = null;
 		spellTeleportBlocker = null;
 		itemTeleportBlocker = null;
-		renderCallbackManager.unregister(npcTransportBlocker.getRenderCallback());
-		npcTransportBlocker = null;
+		if (npcTransportBlocker != null)
+		{
+			npcTransportBlocker.destroyStandInNpcs();
+			renderCallbackManager.unregister(npcTransportBlocker.getRenderCallback());
+			npcTransportBlocker = null;
+		}
 
 		log.debug("Varlamore UIM plugin stopped");
 	}
@@ -157,8 +173,29 @@ public class VarlamoreUimPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
 		{
+			// Destroy stand-ins before resetting panel — RuneLiteObjects must be cleaned up
+			// before the scene changes, otherwise they may persist in an invalid state
+			if (npcTransportBlocker != null)
+			{
+				npcTransportBlocker.destroyStandInNpcs();
+			}
 			panel.resetStatus();
 		}
+
+		if (event.getGameState() == GameState.LOGGED_IN && npcTransportBlocker != null && config.blockNpcTransport())
+		{
+			npcTransportBlocker.createStandInNpcs();
+		}
+	}
+
+	@Subscribe
+	public void onPostMenuSort(PostMenuSort event)
+	{
+		if (!config.pluginEnabled() || !config.blockNpcTransport() || npcTransportBlocker == null)
+		{
+			return;
+		}
+		npcTransportBlocker.handlePostMenuSort(event, client);
 	}
 
 	@Subscribe
