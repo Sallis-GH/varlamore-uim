@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation & Infrastructure** - Plugin structure, boundary system, and extensible settings panel
 - [x] **Phase 2: Spell Teleport Blocking** - Block all spellbook teleports that leave Varlamore
 - [x] **Phase 3: Item & Minigame Teleport Blocking** - Block jewelry, tablets, and quest item teleports
-- [ ] **Phase 4: NPC Transport Blocking** - Hide charter ship NPCs, spawn Mysterious Old Man stand-ins via RuneLiteObject, block Primio quetzal, Dizana's Quiver unlock gate (merged with Phase 5)
+- [x] **Phase 4: NPC Transport Blocking** - Hide charter ship NPCs, spawn Mysterious Old Man stand-ins via RuneLiteObject, block Primio quetzal, Dizana's Quiver unlock gate (merged with Phase 5) (completed 2026-03-15)
 - [x] ~~**Phase 5: NPC Replacement System**~~ - Merged into Phase 4 (Mysterious Old Man stand-in NPCs spawned via RuneLiteObject at charter ship docks)
 - [ ] **Phase 6: Testing & Plugin Hub Submission** - Comprehensive testing and submission
 
@@ -117,7 +117,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 6 (Phase 5 merged into 4)
 | 1. Foundation & Infrastructure | 2/2 | Complete | 2026-02-16 |
 | 2. Spell Teleport Blocking | 2/2 | Complete | 2026-02-16 |
 | 3. Item & Minigame Teleport Blocking | 2/2 | Complete | 2026-03-15 |
-| 4. NPC Transport Blocking | 0/3 | Planning complete | - |
+| 4. NPC Transport Blocking | 0/3 | Complete    | 2026-03-15 |
 | 5. NPC Replacement System | - | Merged into Phase 4 | - |
 | 6. Testing & Plugin Hub Submission | 0/2 | Not started | - |
 
