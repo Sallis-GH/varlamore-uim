@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-16)
 
 **Core value:** Prevent the player from accidentally breaking their Varlamore lock by blocking all travel methods that leave the region
-**Current focus:** Phase 4: NPC Transport Blocking
+**Current focus:** Phase 5: NPC Replacement System
 
 ## Current Position
 
-Phase: 4 of 6 (NPC Transport Blocking)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-03-15 — Completed 04-02 (RuneLiteObject Mysterious Old Man stand-ins at charter ship docks)
+Phase: 5 of 6 (NPC Replacement System)
+Plan: 1 of ? in current phase
+Status: Phase 4 complete — ready for Phase 5
+Last activity: 2026-03-15 — Completed 04-03 (Dizana's Quiver unlock gate for charter ship NPCs)
 
-Progress: [██████░░░░] 58%
+Progress: [███████░░░] 67%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: 13 min
-- Total execution time: 1.27 hours
+- Total plans completed: 6
+- Average duration: 12 min
+- Total execution time: 1.35 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [██████░░░░] 58%
 | 01    | 2     | 36 min | 18 min   |
 | 02    | 2     | 5 min  | 2.5 min  |
 | 03    | 2     | 55 min | 27.5 min |
-| 04    | 2     | 8 min  | 4 min    |
+| 04    | 3     | 13 min | 4.3 min  |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (3 min), 02-02 (2 min), 03-01 (35 min), 03-02 (20 min)
-- Trend: Phase 3 plans average ~27.5 min; item ID catalog work adds complexity
+- Last 5 plans: 02-02 (2 min), 03-01 (35 min), 03-02 (20 min), 04-02 (4 min), 04-03 (5 min)
+- Trend: Phase 4 plans average ~4.3 min; NPC blocking implementation was well-scoped
 
 *Updated after each plan completion*
 
@@ -86,6 +86,11 @@ Recent decisions affecting current work:
 - initClient(Client, ClientThread, ChatMessageManager) pattern used for non-@Inject dependency provision in manually instantiated service classes (04-02)
 - PostMenuSort used for RuneLiteObject menu injection — fires after default menu built, before display (04-02)
 - LocalPoint.equals() comparison safe for stand-in tile matching — Lombok @Value class with structural equals (04-02)
+- Dizana's Quiver IDs 28947/28949/28951/28953 cover all 4 variants (uncharged, locked, charged, charged+locked) per OSRS Wiki (04-03)
+- containsDizanasQuiver() static on NpcTransportBlocker to co-locate quiver logic with NPC transport domain (04-03)
+- setUnlocked() manages RuneLiteObject stand-in lifecycle internally — callers only set state, lifecycle follows automatically (04-03)
+- ItemContainerChanged fires on login container load — no explicit login check needed for initial unlock detection (04-03)
+- Primio permanently blocked — handlePrimioClick() checks only enabled flag, not unlocked (04-03)
 
 ### Pending Todos
 
@@ -99,9 +104,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-15
-Stopped at: Completed 04-02-PLAN.md (RuneLiteObject Mysterious Old Man stand-ins)
-Next: Phase 4 Plan 03 (Dizana's Quiver unlock gate)
+Stopped at: Completed 04-03-PLAN.md (Dizana's Quiver unlock gate — Phase 4 complete)
+Next: Phase 5 (NPC Replacement System)
 
 ---
 *State initialized: 2026-02-16*
-*Last updated: 2026-03-15 (04-02 complete: RuneLiteObject Mysterious Old Man stand-ins)*
+*Last updated: 2026-03-15 (04-03 complete: Dizana's Quiver unlock gate — Phase 4 all plans done)*
