@@ -168,6 +168,14 @@ public class VarlamoreUimPlugin extends Plugin
 		if (npcTransportBlocker != null)
 		{
 			npcTransportBlocker.setEnabled(config.blockNpcTransport());
+
+			// Ensure stand-ins exist — some transports (e.g., Antonia's boat) don't
+			// trigger LOADING/LOGGED_IN, so stand-ins may be missing after travel
+			if (config.blockNpcTransport() && !npcTransportBlocker.isUnlocked()
+				&& npcTransportBlocker.getStandInCount() == 0)
+			{
+				npcTransportBlocker.createStandInNpcs();
+			}
 		}
 	}
 
@@ -176,13 +184,21 @@ public class VarlamoreUimPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
 		{
-			// Destroy stand-ins before resetting panel — RuneLiteObjects must be cleaned up
-			// before the scene changes, otherwise they may persist in an invalid state
 			if (npcTransportBlocker != null)
 			{
 				npcTransportBlocker.destroyStandInNpcs();
 			}
 			panel.resetStatus();
+		}
+
+		// Scene reload (e.g., crossing chunk boundaries) — destroy stale RuneLiteObjects
+		// so LOGGED_IN (which always follows LOADING) recreates them for the new scene
+		if (event.getGameState() == GameState.LOADING)
+		{
+			if (npcTransportBlocker != null)
+			{
+				npcTransportBlocker.destroyStandInNpcs();
+			}
 		}
 
 		if (event.getGameState() == GameState.LOGGED_IN && npcTransportBlocker != null && config.blockNpcTransport())

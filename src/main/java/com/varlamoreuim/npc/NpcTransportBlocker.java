@@ -51,22 +51,13 @@ public class NpcTransportBlocker
 {
 	/**
 	 * Trader Crewmember NPC IDs at all 3 Varlamore charter ship ports.
-	 * Source: OSRS Wiki — Trader Crewmember
-	 *
-	 * Sunset Coast:      15510–15517 (8 IDs)
-	 * Aldarin:           15518–15525 (8 IDs)
-	 * Fortis Cothon:     15526–15533 (8 IDs)
-	 *
-	 * Total: 24 IDs. Full ranges are blocked pending in-game verification
-	 * of which specific IDs are actively spawned at each dock.
+	 * Verified in-game:
+	 *   Fortis Cothon: 9326, 9362
+	 *   Sunset Coast:  9314, 9350
+	 *   Aldarin Dock:  9314, 9350
 	 */
 	private static final Set<Integer> CHARTER_NPC_IDS = Set.of(
-		// Sunset Coast
-		15510, 15511, 15512, 15513, 15514, 15515, 15516, 15517,
-		// Aldarin
-		15518, 15519, 15520, 15521, 15522, 15523, 15524, 15525,
-		// Fortis Cothon
-		15526, 15527, 15528, 15529, 15530, 15531, 15532, 15533
+		9314, 9326, 9350, 9362
 	);
 
 	/**
@@ -106,17 +97,23 @@ public class NpcTransportBlocker
 
 	/**
 	 * WorldPoint coordinates for each of the 3 charter ship dock locations.
-	 * Stand-in Mysterious Old Man NPCs are placed at these approximate positions.
-	 * Exact coordinates should be verified in-game with {@code ./gradlew run}.
-	 *
-	 * Sunset Coast: south-east dock area near the beach
-	 * Aldarin: port area on the east side of Aldarin
-	 * Fortis Cothon: the harbour area adjacent to the Colosseum
+	 * Stand-in Mysterious Old Man NPCs are placed at these verified positions.
+	 * Coordinates collected in-game 2026-03-15.
 	 */
 	private static final WorldPoint[] DOCK_LOCATIONS = {
-		new WorldPoint(1504, 2956, 0), // Sunset Coast dock
-		new WorldPoint(1588, 3075, 0), // Aldarin dock
-		new WorldPoint(1732, 3107, 0), // Fortis Cothon dock
+		new WorldPoint(1514, 2971, 0), // Sunset Coast dock
+		new WorldPoint(1455, 2968, 0), // Aldarin dock
+		new WorldPoint(1743, 3136, 0), // Fortis Cothon dock
+	};
+
+	/**
+	 * Facing orientations for each dock stand-in, parallel to DOCK_LOCATIONS.
+	 * OSRS orientations: 0=South, 512=West, 1024=North, 1536=East (2048 JAU per rotation).
+	 */
+	private static final int[] DOCK_ORIENTATIONS = {
+		1024, // Sunset Coast: facing North
+		512,  // Aldarin: facing West
+		512,  // Fortis Cothon: facing West
 	};
 
 	/** Tracks active RuneLiteObject stand-in instances for cleanup. */
@@ -215,6 +212,12 @@ public class NpcTransportBlocker
 		return unlocked;
 	}
 
+	/** Returns the number of active stand-in NPCs. */
+	public int getStandInCount()
+	{
+		return standInNpcs.size();
+	}
+
 	/**
 	 * Check whether an ItemContainer holds any variant of Dizana's Quiver.
 	 * Used by VarlamoreUimPlugin to check both inventory and equipment containers.
@@ -264,9 +267,10 @@ public class NpcTransportBlocker
 			return;
 		}
 
-		for (WorldPoint dockLocation : DOCK_LOCATIONS)
+		for (int idx = 0; idx < DOCK_LOCATIONS.length; idx++)
 		{
-			final WorldPoint finalLocation = dockLocation;
+			final WorldPoint finalLocation = DOCK_LOCATIONS[idx];
+			final int orientation = DOCK_ORIENTATIONS[idx];
 			clientThread.invoke(() -> {
 				RuneLiteObject npcObject = client.createRuneLiteObject();
 
@@ -327,6 +331,7 @@ public class NpcTransportBlocker
 				}
 
 				npcObject.setRadius(60);
+				npcObject.setOrientation(orientation);
 
 				LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), finalLocation);
 				if (lp != null)
@@ -389,7 +394,7 @@ public class NpcTransportBlocker
 			if (npcObject.isActive() && npcObject.getLocation() != null
 				&& npcObject.getLocation().equals(tileLocation))
 			{
-				client.getMenu().createMenuEntry(1)
+				client.getMenu().createMenuEntry(-1)
 					.setOption("Talk-to")
 					.setTarget("<col=ffff00>Mysterious Old Man</col>")
 					.setType(MenuAction.RUNELITE)
