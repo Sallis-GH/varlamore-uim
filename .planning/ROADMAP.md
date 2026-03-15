@@ -14,9 +14,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Infrastructure** - Plugin structure, boundary system, and extensible settings panel
 - [x] **Phase 2: Spell Teleport Blocking** - Block all spellbook teleports that leave Varlamore
-- [ ] **Phase 3: Item & Minigame Teleport Blocking** - Block jewelry, tablets, and quest item teleports
-- [ ] **Phase 4: NPC Transport Blocking** - Block ships, gliders, spirit trees, and fairy rings
-- [ ] **Phase 5: NPC Replacement System** - Immersive NPC hiding and dialogue-based blocking
+- [x] **Phase 3: Item & Minigame Teleport Blocking** - Block jewelry, tablets, and quest item teleports
+- [ ] **Phase 4: NPC Transport Blocking** - Hide charter ship NPCs, block Primio quetzal, Dizana's Quiver unlock gate (merged with Phase 5)
+- [x] ~~**Phase 5: NPC Replacement System**~~ - Merged into Phase 4 (NPC hiding + blocking is the replacement mechanism; stand-in NPC spawning not possible via RuneLite API)
 - [ ] **Phase 6: Testing & Plugin Hub Submission** - Comprehensive testing and submission
 
 ## Phase Details
@@ -67,11 +67,11 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md -- ItemTeleportBlocker service with all-destination-blocked items, plugin wiring, config toggle
-- [ ] 03-02-PLAN.md -- Per-destination blocking (Ring of Dueling, Hunter/Max cape), house tablet POH detection, minigame grouping tab blocking
+- [x] 03-01-PLAN.md -- ItemTeleportBlocker service with all-destination-blocked items, plugin wiring, config toggle
+- [x] 03-02-PLAN.md -- Per-destination blocking (Ring of Dueling, Hunter/Max cape), house tablet POH detection, minigame grouping tab blocking
 
 ### Phase 4: NPC Transport Blocking
-**Goal**: Player cannot use NPC-based transport methods to leave Varlamore
+**Goal**: Charter ship NPCs at Varlamore ports are hidden via RenderCallback, Primio quetzal interaction is blocked, and Dizana's Quiver unlocks charter ship access
 **Depends on**: Phase 3
 **Requirements**: NPC-01, NPC-02, NPC-03, NPC-04, NPC-05
 **Success Criteria** (what must be TRUE):
@@ -80,32 +80,18 @@ Plans:
   3. Player cannot use gnome gliders to travel to locations outside Varlamore (if present in region)
   4. Player cannot use spirit trees to travel to locations outside Varlamore (if present in region)
   5. Player cannot use fairy rings to travel to ring codes outside Varlamore (if present in region)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md -- NpcTransportBlocker service with charter ship NPC hiding, Primio quetzal blocking, config toggle
+- [ ] 04-02-PLAN.md -- Dizana's Quiver unlock gate for charter ship access via ItemContainerChanged
 
-### Phase 5: NPC Replacement System
-**Goal**: Travel NPCs at Varlamore exits are replaced with immersive dialogue-based blocking
-**Depends on**: Phase 4
-**Requirements**: REPL-01, REPL-02, REPL-03, REPL-04
-**Success Criteria** (what must be TRUE):
-  1. Travel NPCs at Varlamore exits are visually hidden from the player's view
-  2. Replacement NPCs appear at the same locations as the hidden travel NPCs
-  3. Clicking a replacement NPC triggers in-world dialogue explaining travel is restricted or not yet unlocked
-  4. New NPC replacements can be added via JSON data file without code changes
-  5. NPC replacement system gracefully handles game updates (fallback to chat messages if widget manipulation fails)
-**Plans**: TBD
-
-Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
-- [ ] 05-03: TBD
+### Phase 5: NPC Replacement System (MERGED INTO PHASE 4)
+*This phase was merged into Phase 4 during planning. The NPC hiding mechanism via RenderCallback IS the replacement — RuneLite plugins cannot spawn new NPC instances, so stand-in NPCs are not possible. Charter ship NPCs are hidden and interaction is blocked with chat messages. See Phase 4 plans for full implementation.*
 
 ### Phase 6: Testing & Plugin Hub Submission
 **Goal**: Plugin is comprehensively tested and submitted to RuneLite Plugin Hub
-**Depends on**: Phase 5
+**Depends on**: Phase 4
 **Requirements**: (All requirements validated)
 **Success Criteria** (what must be TRUE):
   1. All 60+ travel methods (spells, items, NPCs) are tested and confirmed blocked
@@ -122,17 +108,17 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 6 (Phase 5 merged into 4)
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Infrastructure | 2/2 | Complete | 2026-02-16 |
 | 2. Spell Teleport Blocking | 2/2 | Complete | 2026-02-16 |
-| 3. Item & Minigame Teleport Blocking | 0/2 | Not started | - |
-| 4. NPC Transport Blocking | 0/2 | Not started | - |
-| 5. NPC Replacement System | 0/3 | Not started | - |
+| 3. Item & Minigame Teleport Blocking | 2/2 | Complete | 2026-03-15 |
+| 4. NPC Transport Blocking | 0/2 | Planning complete | - |
+| 5. NPC Replacement System | - | Merged into Phase 4 | - |
 | 6. Testing & Plugin Hub Submission | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-16*
-*Last updated: 2026-02-17 -- Phase 3 planned (2 plans)*
+*Last updated: 2026-03-15 -- Phase 4 planned, Phase 5 merged into Phase 4*
