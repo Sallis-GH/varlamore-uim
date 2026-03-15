@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-16)
 ## Current Position
 
 Phase: 4 of 6 (NPC Transport Blocking)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-03-15 — Completed 04-01 (NpcTransportBlocker: charter ship hiding + Primio blocking)
+Last activity: 2026-03-15 — Completed 04-02 (RuneLiteObject Mysterious Old Man stand-ins at charter ship docks)
 
-Progress: [█████░░░░░] 50%
+Progress: [██████░░░░] 58%
 
 ## Performance Metrics
 
@@ -30,7 +30,7 @@ Progress: [█████░░░░░] 50%
 | 01    | 2     | 36 min | 18 min   |
 | 02    | 2     | 5 min  | 2.5 min  |
 | 03    | 2     | 55 min | 27.5 min |
-| 04    | 1     | 3 min  | 3 min    |
+| 04    | 2     | 8 min  | 4 min    |
 
 **Recent Trend:**
 - Last 5 plans: 02-01 (3 min), 02-02 (2 min), 03-01 (35 min), 03-02 (20 min)
@@ -82,6 +82,10 @@ Recent decisions affecting current work:
 - Primio quetzal permanently blocked (no unlock gate) — direct Varrock route, no Varlamore-internal value (04-01)
 - Charter ship full ID ranges 15510-15533 blocked pending in-game verification of which IDs are actively spawned (04-01)
 - RenderCallback enabled state synced from config on each game tick to respect toggle changes without restart (04-01)
+- NPCComposition has no getStandingAnimationID() in RuneLite API — used hardcoded animation ID 808 (standard human idle) for Mysterious Old Man stand-in (04-02)
+- initClient(Client, ClientThread, ChatMessageManager) pattern used for non-@Inject dependency provision in manually instantiated service classes (04-02)
+- PostMenuSort used for RuneLiteObject menu injection — fires after default menu built, before display (04-02)
+- LocalPoint.equals() comparison safe for stand-in tile matching — Lombok @Value class with structural equals (04-02)
 
 ### Pending Todos
 
@@ -95,9 +99,9 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-15
-Stopped at: Completed 04-01-PLAN.md (NpcTransportBlocker service + plugin wiring)
-Next: Phase 4 Plan 02 (RuneLiteObject stand-ins) or Plan 03 (Dizana's Quiver unlock gate)
+Stopped at: Completed 04-02-PLAN.md (RuneLiteObject Mysterious Old Man stand-ins)
+Next: Phase 4 Plan 03 (Dizana's Quiver unlock gate)
 
 ---
 *State initialized: 2026-02-16*
-*Last updated: 2026-03-15 (04-01 complete: NpcTransportBlocker)*
+*Last updated: 2026-03-15 (04-02 complete: RuneLiteObject Mysterious Old Man stand-ins)*
