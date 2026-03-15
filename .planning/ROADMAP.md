@@ -15,8 +15,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation & Infrastructure** - Plugin structure, boundary system, and extensible settings panel
 - [x] **Phase 2: Spell Teleport Blocking** - Block all spellbook teleports that leave Varlamore
 - [x] **Phase 3: Item & Minigame Teleport Blocking** - Block jewelry, tablets, and quest item teleports
-- [ ] **Phase 4: NPC Transport Blocking** - Hide charter ship NPCs, block Primio quetzal, Dizana's Quiver unlock gate (merged with Phase 5)
-- [x] ~~**Phase 5: NPC Replacement System**~~ - Merged into Phase 4 (NPC hiding + blocking is the replacement mechanism; stand-in NPC spawning not possible via RuneLite API)
+- [ ] **Phase 4: NPC Transport Blocking** - Hide charter ship NPCs, spawn Mysterious Old Man stand-ins via RuneLiteObject, block Primio quetzal, Dizana's Quiver unlock gate (merged with Phase 5)
+- [x] ~~**Phase 5: NPC Replacement System**~~ - Merged into Phase 4 (Mysterious Old Man stand-in NPCs spawned via RuneLiteObject at charter ship docks)
 - [ ] **Phase 6: Testing & Plugin Hub Submission** - Comprehensive testing and submission
 
 ## Phase Details
@@ -71,23 +71,25 @@ Plans:
 - [x] 03-02-PLAN.md -- Per-destination blocking (Ring of Dueling, Hunter/Max cape), house tablet POH detection, minigame grouping tab blocking
 
 ### Phase 4: NPC Transport Blocking
-**Goal**: Charter ship NPCs at Varlamore ports are hidden via RenderCallback, Primio quetzal interaction is blocked, and Dizana's Quiver unlocks charter ship access
+**Goal**: Charter ship NPCs at Varlamore ports are hidden via RenderCallback, Mysterious Old Man stand-ins spawned via RuneLiteObject at each dock, Primio quetzal interaction is blocked, and Dizana's Quiver unlocks charter ship access
 **Depends on**: Phase 3
 **Requirements**: NPC-01, NPC-02, NPC-03, NPC-04, NPC-05
 **Success Criteria** (what must be TRUE):
   1. Player cannot use ships/boats at Varlamore ports to travel outside the region
   2. Player cannot use charter ship crews to leave Varlamore
-  3. Player cannot use gnome gliders to travel to locations outside Varlamore (if present in region)
-  4. Player cannot use spirit trees to travel to locations outside Varlamore (if present in region)
-  5. Player cannot use fairy rings to travel to ring codes outside Varlamore (if present in region)
-**Plans**: 2 plans
+  3. Mysterious Old Man stand-in NPCs visually replace charter ship crews at all 3 docks
+  4. Right-clicking Mysterious Old Man shows "Talk-to" menu with lore-friendly chat response
+  5. Dizana's Quiver ownership restores real charter ship NPCs and removes stand-ins
+  6. Player cannot use gnome gliders, spirit trees, or fairy rings to leave Varlamore (trivially satisfied — none accessible to Varlamore-locked UIMs)
+**Plans**: 3 plans
 
 Plans:
 - [ ] 04-01-PLAN.md -- NpcTransportBlocker service with charter ship NPC hiding, Primio quetzal blocking, config toggle
-- [ ] 04-02-PLAN.md -- Dizana's Quiver unlock gate for charter ship access via ItemContainerChanged
+- [ ] 04-02-PLAN.md -- RuneLiteObject Mysterious Old Man stand-in spawning at charter ship docks with PostMenuSort menu injection
+- [ ] 04-03-PLAN.md -- Dizana's Quiver unlock gate for charter ship access and stand-in lifecycle via ItemContainerChanged
 
 ### Phase 5: NPC Replacement System (MERGED INTO PHASE 4)
-*This phase was merged into Phase 4 during planning. The NPC hiding mechanism via RenderCallback IS the replacement — RuneLite plugins cannot spawn new NPC instances, so stand-in NPCs are not possible. Charter ship NPCs are hidden and interaction is blocked with chat messages. See Phase 4 plans for full implementation.*
+*This phase was merged into Phase 4 during planning. Mysterious Old Man stand-in NPCs are spawned via RuneLiteObject (Creator's Kit pattern) at each charter ship dock. Right-click "Talk-to" menu entry injected via PostMenuSort delivers lore-friendly GAMEMESSAGE feedback. See Phase 4 plans for full implementation.*
 
 ### Phase 6: Testing & Plugin Hub Submission
 **Goal**: Plugin is comprehensively tested and submitted to RuneLite Plugin Hub
@@ -115,10 +117,10 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 6 (Phase 5 merged into 4)
 | 1. Foundation & Infrastructure | 2/2 | Complete | 2026-02-16 |
 | 2. Spell Teleport Blocking | 2/2 | Complete | 2026-02-16 |
 | 3. Item & Minigame Teleport Blocking | 2/2 | Complete | 2026-03-15 |
-| 4. NPC Transport Blocking | 0/2 | Planning complete | - |
+| 4. NPC Transport Blocking | 0/3 | Planning complete | - |
 | 5. NPC Replacement System | - | Merged into Phase 4 | - |
 | 6. Testing & Plugin Hub Submission | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-16*
-*Last updated: 2026-03-15 -- Phase 4 planned, Phase 5 merged into Phase 4*
+*Last updated: 2026-03-15 -- Phase 4 revised: 3 plans (added RuneLiteObject Mysterious Old Man spawning)*
