@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-16)
 
 **Core value:** Prevent the player from accidentally breaking their Varlamore lock by blocking all travel methods that leave the region
-**Current focus:** Phase 3: Item & Minigame Teleport Blocking
+**Current focus:** Phase 4: NPC Transport Blocking
 
 ## Current Position
 
-Phase: 3 of 6 (Item & Minigame Teleport Blocking)
-Plan: 2 of 3 in current phase
-Status: Executing
-Last activity: 2026-02-17 — Completed 03-02 (per-destination blocking + minigame tab)
+Phase: 4 of 6 (NPC Transport Blocking)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-03-15 — Completed 04-01 (NpcTransportBlocker: charter ship hiding + Primio blocking)
 
-Progress: [████░░░░░░] 47%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
@@ -30,6 +30,7 @@ Progress: [████░░░░░░] 47%
 | 01    | 2     | 36 min | 18 min   |
 | 02    | 2     | 5 min  | 2.5 min  |
 | 03    | 2     | 55 min | 27.5 min |
+| 04    | 1     | 3 min  | 3 min    |
 
 **Recent Trend:**
 - Last 5 plans: 02-01 (3 min), 02-02 (2 min), 03-01 (35 min), 03-02 (20 min)
@@ -73,6 +74,14 @@ Recent decisions affecting current work:
 - handleMinigameTeleport on ItemTeleportBlocker (not SpellTeleportBlocker) to share chat message utilities (03-02)
 - House tablet defaults to blocking when VarBit returns non-Aldarin value (safe fallback) (03-02)
 - VarBit 2187 value 8 = Aldarin (only Varlamore POH location) — requires in-game verification (03-02)
+- Equipment panel teleports require widget-based item ID resolution via getChild(1).getItemId() — getItemId() returns -1 for CC_OP events (03-bugfix)
+- NON_TELEPORT_OPTIONS exclusion pattern replaces positive TELEPORT_OPTIONS matching — catches equipped destination names automatically (03-bugfix)
+- Use net.runelite.api.gameval.InterfaceID.WORNITEMS (not deprecated widgets.InterfaceID.EQUIPMENT) for equipment panel detection (03-bugfix)
+- SpellTeleportBlocker filters on SPELLBOOK_WIDGET_GROUPS (218, 219, 430) to avoid processing equipment CC_OP events (03-bugfix)
+- Use WorldView.npcs().byIndex() for NPC index lookup — client.getCachedNPCs() does not exist in this RuneLite API version (04-01)
+- Primio quetzal permanently blocked (no unlock gate) — direct Varrock route, no Varlamore-internal value (04-01)
+- Charter ship full ID ranges 15510-15533 blocked pending in-game verification of which IDs are actively spawned (04-01)
+- RenderCallback enabled state synced from config on each game tick to respect toggle changes without restart (04-01)
 
 ### Pending Todos
 
@@ -85,10 +94,10 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-17
-Stopped at: Completed 03-02-PLAN.md (per-destination blocking + minigame tab blocking)
-Resume file: .planning/phases/03-item-minigame-teleport-blocking/03-03-PLAN.md
+Last session: 2026-03-15
+Stopped at: Completed 04-01-PLAN.md (NpcTransportBlocker service + plugin wiring)
+Next: Phase 4 Plan 02 (RuneLiteObject stand-ins) or Plan 03 (Dizana's Quiver unlock gate)
 
 ---
 *State initialized: 2026-02-16*
-*Last updated: 2026-02-17 (03-02 complete)*
+*Last updated: 2026-03-15 (04-01 complete: NpcTransportBlocker)*
