@@ -119,6 +119,9 @@ public class NpcTransportBlocker
 	/** Tracks active RuneLiteObject stand-in instances for cleanup. */
 	private final List<RuneLiteObject> standInNpcs = new ArrayList<>();
 
+	/** Whether stand-in creation has been attempted for the current scene. */
+	private boolean standInCreationAttempted = false;
+
 	/** Client reference for RuneLiteObject creation and model loading. Provided via initClient(). */
 	private Client client;
 
@@ -218,6 +221,12 @@ public class NpcTransportBlocker
 		return standInNpcs.size();
 	}
 
+	/** Returns whether stand-in creation has been attempted for the current scene. */
+	public boolean isStandInCreationAttempted()
+	{
+		return standInCreationAttempted;
+	}
+
 	/**
 	 * Check whether an ItemContainer holds any variant of Dizana's Quiver.
 	 * Used by VarlamoreUimPlugin to check both inventory and equipment containers.
@@ -267,6 +276,8 @@ public class NpcTransportBlocker
 			return;
 		}
 
+		standInCreationAttempted = true;
+
 		for (int idx = 0; idx < DOCK_LOCATIONS.length; idx++)
 		{
 			final WorldPoint finalLocation = DOCK_LOCATIONS[idx];
@@ -278,6 +289,7 @@ public class NpcTransportBlocker
 				if (comp == null)
 				{
 					log.warn("Failed to get NPCComposition for Mysterious Old Man (ID {})", MYSTERIOUS_OLD_MAN_NPC_ID);
+					npcObject.setActive(false);
 					return;
 				}
 
@@ -285,6 +297,7 @@ public class NpcTransportBlocker
 				if (modelIds == null || modelIds.length == 0)
 				{
 					log.warn("Mysterious Old Man NPCComposition has no model IDs");
+					npcObject.setActive(false);
 					return;
 				}
 
@@ -317,6 +330,7 @@ public class NpcTransportBlocker
 				if (filtered.length == 0)
 				{
 					log.warn("Failed to load Mysterious Old Man model data for dock at {}", finalLocation);
+					npcObject.setActive(false);
 					return;
 				}
 
@@ -361,6 +375,7 @@ public class NpcTransportBlocker
 			npcObject.setActive(false);
 		}
 		standInNpcs.clear();
+		standInCreationAttempted = false;
 		log.debug("Destroyed {} Mysterious Old Man stand-ins", count);
 	}
 
@@ -373,9 +388,8 @@ public class NpcTransportBlocker
 	 * giving us the correct hook point to add RuneLiteObject interactions.
 	 *
 	 * @param event  the PostMenuSort event (unused — we use tile position instead)
-	 * @param client the RuneLite client, for tile and menu access
 	 */
-	public void handlePostMenuSort(PostMenuSort event, Client client)
+	public void handlePostMenuSort(PostMenuSort event)
 	{
 		if (!enabled || unlocked || standInNpcs.isEmpty())
 		{
@@ -422,11 +436,9 @@ public class NpcTransportBlocker
 	 * exposing plugin mechanics.
 	 *
 	 * @param event the menu click event
-	 * @param client the RuneLite client (for NPC array lookup)
-	 * @param chatMessageManager the chat message manager for feedback
 	 * @return true if the event was consumed (Primio blocked), false otherwise
 	 */
-	public boolean handlePrimioClick(MenuOptionClicked event, Client client, ChatMessageManager chatMessageManager)
+	public boolean handlePrimioClick(MenuOptionClicked event)
 	{
 		if (!enabled)
 		{
@@ -438,11 +450,11 @@ public class NpcTransportBlocker
 			return false;
 		}
 
-		NPC npc = getNpcFromEvent(event, client);
+		NPC npc = getNpcFromEvent(event);
 		if (npc != null && npc.getId() == PRIMIO_NPC_ID)
 		{
 			event.consume();
-			sendBirdMessage(chatMessageManager);
+			sendBirdMessage();
 			log.debug("Blocked Primio quetzal interaction (NPC index {})", event.getId());
 			return true;
 		}
@@ -461,11 +473,9 @@ public class NpcTransportBlocker
 	 * and allows the interaction.
 	 *
 	 * @param event the menu click event
-	 * @param client the RuneLite client (for NPC array lookup)
-	 * @param chatMessageManager the chat message manager for feedback
 	 * @return true if the event was consumed (charter ship blocked), false otherwise
 	 */
-	public boolean handleCharterClick(MenuOptionClicked event, Client client, ChatMessageManager chatMessageManager)
+	public boolean handleCharterClick(MenuOptionClicked event)
 	{
 		if (!enabled || unlocked)
 		{
@@ -477,11 +487,11 @@ public class NpcTransportBlocker
 			return false;
 		}
 
-		NPC npc = getNpcFromEvent(event, client);
+		NPC npc = getNpcFromEvent(event);
 		if (npc != null && CHARTER_NPC_IDS.contains(npc.getId()))
 		{
 			event.consume();
-			sendCharterMessage(chatMessageManager);
+			sendCharterMessage();
 			log.debug("Blocked charter ship interaction on NPC {} (index {})", npc.getId(), event.getId());
 			return true;
 		}
@@ -515,10 +525,9 @@ public class NpcTransportBlocker
 	 * {@code WorldView.npcs().byIndex()} and then call {@code npc.getId()} for the definition ID.
 	 *
 	 * @param event the menu click event
-	 * @param client the RuneLite client
 	 * @return the NPC at the event's index, or null if not found
 	 */
-	private NPC getNpcFromEvent(MenuOptionClicked event, Client client)
+	private NPC getNpcFromEvent(MenuOptionClicked event)
 	{
 		int npcIndex = event.getId();
 		if (npcIndex < 0)
@@ -537,7 +546,7 @@ public class NpcTransportBlocker
 	 * Send a lore-friendly in-world message when Primio quetzal interaction is blocked.
 	 * No "Varlamore UIM:" prefix — intentionally presented as the bird's response.
 	 */
-	private void sendBirdMessage(ChatMessageManager chatMessageManager)
+	private void sendBirdMessage()
 	{
 		String message = new ChatMessageBuilder()
 			.append(Color.WHITE, "The bird doesn't seem interested in interacting with you.")
@@ -553,7 +562,7 @@ public class NpcTransportBlocker
 	 * Send a chat message when a charter ship NPC interaction is caught by the safety net.
 	 * Uses the standard "Varlamore UIM:" red prefix to match other plugin messages.
 	 */
-	private void sendCharterMessage(ChatMessageManager chatMessageManager)
+	private void sendCharterMessage()
 	{
 		String message = new ChatMessageBuilder()
 			.append(Color.RED, "Varlamore UIM:")

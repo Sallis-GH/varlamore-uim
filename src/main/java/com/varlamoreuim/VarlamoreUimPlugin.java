@@ -170,9 +170,11 @@ public class VarlamoreUimPlugin extends Plugin
 			npcTransportBlocker.setEnabled(config.blockNpcTransport());
 
 			// Ensure stand-ins exist — some transports (e.g., Antonia's boat) don't
-			// trigger LOADING/LOGGED_IN, so stand-ins may be missing after travel
+			// trigger LOADING/LOGGED_IN, so stand-ins may be missing after travel.
+			// The flag prevents retrying every tick when no docks are in the scene.
 			if (config.blockNpcTransport() && !npcTransportBlocker.isUnlocked()
-				&& npcTransportBlocker.getStandInCount() == 0)
+				&& npcTransportBlocker.getStandInCount() == 0
+				&& !npcTransportBlocker.isStandInCreationAttempted())
 			{
 				npcTransportBlocker.createStandInNpcs();
 			}
@@ -214,7 +216,7 @@ public class VarlamoreUimPlugin extends Plugin
 		{
 			return;
 		}
-		npcTransportBlocker.handlePostMenuSort(event, client);
+		npcTransportBlocker.handlePostMenuSort(event);
 	}
 
 	@Subscribe
@@ -290,11 +292,11 @@ public class VarlamoreUimPlugin extends Plugin
 		// NPC transport blocking — charter ship hiding + Primio quetzal blocking
 		if (config.blockNpcTransport())
 		{
-			if (npcTransportBlocker.handlePrimioClick(event, client, chatMessageManager))
+			if (npcTransportBlocker.handlePrimioClick(event))
 			{
 				return;
 			}
-			if (npcTransportBlocker.handleCharterClick(event, client, chatMessageManager))
+			if (npcTransportBlocker.handleCharterClick(event))
 			{
 				return;
 			}
