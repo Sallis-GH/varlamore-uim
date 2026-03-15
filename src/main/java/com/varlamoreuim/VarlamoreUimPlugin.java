@@ -1,10 +1,11 @@
 package com.varlamoreuim;
 
+import javax.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
+import com.varlamoreuim.npc.NpcTransportBlocker;
 import com.varlamoreuim.teleport.ItemTeleportBlocker;
 import com.varlamoreuim.teleport.SpellTeleportBlocker;
-import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -12,6 +13,10 @@ import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetUtil;
+import net.runelite.client.callback.RenderCallbackManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -47,11 +52,15 @@ public class VarlamoreUimPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private RenderCallbackManager renderCallbackManager;
+
 	private VarlamoreUimPanel panel;
 	private NavigationButton navButton;
 	private BoundaryChecker boundaryChecker;
 	private SpellTeleportBlocker spellTeleportBlocker;
 	private ItemTeleportBlocker itemTeleportBlocker;
+	private NpcTransportBlocker npcTransportBlocker;
 	private boolean wasInVarlamore = true;
 
 	@Override
@@ -67,6 +76,10 @@ public class VarlamoreUimPlugin extends Plugin
 
 		// Initialize ItemTeleportBlocker
 		itemTeleportBlocker = new ItemTeleportBlocker();
+
+		// Initialize NpcTransportBlocker and register render callback
+		npcTransportBlocker = new NpcTransportBlocker();
+		renderCallbackManager.register(npcTransportBlocker.getRenderCallback());
 
 		// Create panel
 		panel = injector.getInstance(VarlamoreUimPanel.class);
@@ -102,6 +115,8 @@ public class VarlamoreUimPlugin extends Plugin
 		boundaryChecker = null;
 		spellTeleportBlocker = null;
 		itemTeleportBlocker = null;
+		renderCallbackManager.unregister(npcTransportBlocker.getRenderCallback());
+		npcTransportBlocker = null;
 
 		log.debug("Varlamore UIM plugin stopped");
 	}
@@ -120,15 +135,20 @@ public class VarlamoreUimPlugin extends Plugin
 			return;
 		}
 
-		int regionId = player.getWorldLocation().getRegionID();
 		boolean inVarlamore = boundaryChecker.isInVarlamore(player.getWorldLocation());
-		panel.updateBoundaryStatus(inVarlamore, regionId);
+		panel.updateBoundaryStatus(inVarlamore);
 
 		// Only log on boundary state changes
 		if (inVarlamore != wasInVarlamore)
 		{
 			log.debug("Player boundary: {}", inVarlamore ? "inside" : "outside");
 			wasInVarlamore = inVarlamore;
+		}
+
+		// Sync NPC transport blocker config state so RenderCallback respects toggle changes
+		if (npcTransportBlocker != null)
+		{
+			npcTransportBlocker.setEnabled(config.blockNpcTransport());
 		}
 	}
 
@@ -161,7 +181,8 @@ public class VarlamoreUimPlugin extends Plugin
 		// Item teleport blocking — only reached if spell blocker did not handle the event
 		if (config.blockItemTeleports())
 		{
-			if (itemTeleportBlocker.handleMenuClick(event, chatMessageManager, client))
+			int resolvedItemId = resolveItemId(event);
+			if (itemTeleportBlocker.handleMenuClick(event, chatMessageManager, config.blockHouseTablet(), resolvedItemId))
 			{
 				return; // Already handled — don't double-process
 			}
@@ -170,8 +191,51 @@ public class VarlamoreUimPlugin extends Plugin
 		// Minigame grouping tab teleport blocking — separate config toggle from item blocking
 		if (config.blockMinigameTeleports())
 		{
-			itemTeleportBlocker.handleMinigameTeleport(event, chatMessageManager);
+			if (itemTeleportBlocker.handleMinigameTeleport(event, chatMessageManager))
+			{
+				return;
+			}
 		}
+
+		// NPC transport blocking — charter ship hiding + Primio quetzal blocking
+		if (config.blockNpcTransport())
+		{
+			if (npcTransportBlocker.handlePrimioClick(event, client, chatMessageManager))
+			{
+				return;
+			}
+			if (npcTransportBlocker.handleCharterClick(event, client, chatMessageManager))
+			{
+				return;
+			}
+		}
+	}
+
+	/**
+	 * Resolve the item ID from a menu click event.
+	 * For inventory items, getItemId() works directly.
+	 * For equipped items (CC_OP on equipment panel), getItemId() returns -1,
+	 * so we get the item from the equipment widget's child.
+	 */
+	private int resolveItemId(MenuOptionClicked event)
+	{
+		int itemId = event.getItemId();
+		if (itemId != -1)
+		{
+			return itemId;
+		}
+
+		Widget widget = event.getWidget();
+		if (widget != null && WidgetUtil.componentToInterface(widget.getId()) == InterfaceID.WORNITEMS)
+		{
+			Widget child = widget.getChild(1);
+			if (child != null && child.getItemId() > -1)
+			{
+				return child.getItemId();
+			}
+		}
+
+		return -1;
 	}
 
 	@Provides

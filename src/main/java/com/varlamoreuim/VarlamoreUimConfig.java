@@ -64,13 +64,37 @@ public interface VarlamoreUimConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "blockMinigameTeleports",
-		name = "Block Minigame Teleports",
-		description = "Prevent using minigame grouping tab teleports that leave Varlamore",
+		keyName = "blockHouseTablet",
+		name = "Block House Teleport",
+		description = "Block Teleport to House tablet. Disable if your POH is in Aldarin (Varlamore).",
 		position = 5,
 		section = restrictionsSection
 	)
+	default boolean blockHouseTablet()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "blockMinigameTeleports",
+		name = "Block Minigame Teleports",
+		description = "Prevent using minigame grouping tab teleports that leave Varlamore",
+		position = 6,
+		section = restrictionsSection
+	)
 	default boolean blockMinigameTeleports()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "blockNpcTransport",
+		name = "Block NPC Transport",
+		description = "Hide charter ship NPCs and block transport NPCs that leave Varlamore",
+		position = 7,
+		section = restrictionsSection
+	)
+	default boolean blockNpcTransport()
 	{
 		return true;
 	}
