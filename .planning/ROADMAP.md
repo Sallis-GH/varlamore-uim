@@ -101,11 +101,12 @@ Plans:
   3. Plugin passes all Plugin Hub compliance checks (BSD-2-Clause license, naming conventions, no unapproved dependencies, code quality)
   4. Plugin repository has comprehensive README with installation instructions, feature list, and known limitations
   5. Plugin is submitted to Plugin Hub with all required metadata
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
+- [ ] 06-01-PLAN.md -- Test dependencies + BoundaryCheckerTest + SpellTeleportBlockerTest
+- [ ] 06-02-PLAN.md -- ItemTeleportBlockerTest + NpcTransportBlockerTest
+- [ ] 06-03-PLAN.md -- README rewrite + Plugin Hub artifact verification
 
 ## Progress
 
