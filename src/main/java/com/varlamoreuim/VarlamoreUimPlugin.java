@@ -9,9 +9,12 @@ import com.varlamoreuim.teleport.SpellTeleportBlocker;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostMenuSort;
 import net.runelite.api.gameval.InterfaceID;
@@ -196,6 +199,40 @@ public class VarlamoreUimPlugin extends Plugin
 			return;
 		}
 		npcTransportBlocker.handlePostMenuSort(event, client);
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (npcTransportBlocker == null || !config.blockNpcTransport())
+		{
+			return;
+		}
+
+		int containerId = event.getContainerId();
+		if (containerId == InventoryID.INVENTORY.getId() || containerId == InventoryID.EQUIPMENT.getId())
+		{
+			boolean nowUnlocked = checkDizanasQuiverOwned();
+			if (nowUnlocked != npcTransportBlocker.isUnlocked())
+			{
+				npcTransportBlocker.setUnlocked(nowUnlocked);
+				log.debug("Charter ship unlock state changed: {}", nowUnlocked);
+			}
+		}
+	}
+
+	/**
+	 * Check whether the player currently possesses Dizana's Quiver in inventory or equipment.
+	 * Delegates to {@link NpcTransportBlocker#containsDizanasQuiver(ItemContainer)} for each container.
+	 *
+	 * @return true if any Dizana's Quiver variant is found in inventory or equipment
+	 */
+	private boolean checkDizanasQuiverOwned()
+	{
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		return NpcTransportBlocker.containsDizanasQuiver(inventory)
+			|| NpcTransportBlocker.containsDizanasQuiver(equipment);
 	}
 
 	@Subscribe
