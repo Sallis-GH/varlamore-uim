@@ -11,6 +11,8 @@ import com.varlamoreuim.dialogue.DialogueEffect;
 import com.varlamoreuim.dialogue.Option;
 import com.varlamoreuim.dialogue.Speaker;
 import com.varlamoreuim.npc.NpcTransportBlocker;
+import com.varlamoreuim.standin.StandInMenuInjector;
+import com.varlamoreuim.standin.StandInRegistry;
 import com.varlamoreuim.teleport.ItemTeleportBlocker;
 import com.varlamoreuim.teleport.SpellTeleportBlocker;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +21,13 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PostMenuSort;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
@@ -86,6 +91,8 @@ public class VarlamoreUimPlugin extends Plugin
 	private ItemTeleportBlocker itemTeleportBlocker;
 	private NpcTransportBlocker npcTransportBlocker;
 	private DialogueManager dialogueManager;
+	private StandInRegistry standInRegistry;
+	private StandInMenuInjector standInMenuInjector;
 	private boolean wasInVarlamore = true;
 
 	@Override
@@ -104,14 +111,8 @@ public class VarlamoreUimPlugin extends Plugin
 
 		// Initialize NpcTransportBlocker and register render callback
 		npcTransportBlocker = new NpcTransportBlocker();
-		npcTransportBlocker.initClient(client, clientThread, chatMessageManager);
+		npcTransportBlocker.initClient(client, chatMessageManager);
 		renderCallbackManager.register(npcTransportBlocker.getRenderCallback());
-
-		// If the plugin was enabled while already logged in, create stand-ins immediately
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			npcTransportBlocker.createStandInNpcs();
-		}
 
 		// Create panel
 		panel = injector.getInstance(VarlamoreUimPanel.class);
@@ -161,7 +162,48 @@ public class VarlamoreUimPlugin extends Plugin
 			}, effect -> log.debug("effect {}", effect));
 		});
 
+		standInRegistry = new StandInRegistry(client, clientThread);
+		DialogueContext dialogueContext = new DialogueContext()
+		{
+			@Override
+			public boolean hasDizanasQuiver()
+			{
+				return checkDizanasQuiverOwned();
+			}
+
+			@Override
+			public String playerName()
+			{
+				Player p = client.getLocalPlayer();
+				return p != null && p.getName() != null ? p.getName() : "You";
+			}
+		};
+		standInMenuInjector = new StandInMenuInjector(client, chatMessageManager, dialogueManager,
+			standInRegistry, dialogueContext, () -> setUnlocked(true));
+		syncStandInState();
+
 		log.debug("Varlamore UIM plugin started");
+	}
+
+	private void syncStandInState()
+	{
+		boolean blocking = config.pluginEnabled() && config.blockNpcTransport();
+		npcTransportBlocker.setEnabled(blocking);
+		standInRegistry.setActive(blocking && !npcTransportBlocker.isUnlocked()
+			&& client.getGameState() == GameState.LOGGED_IN);
+		standInMenuInjector.setWalkToEnabled(config.walkToStandIns());
+		standInMenuInjector.setNativeDialogueEnabled(config.nativeDialogue());
+	}
+
+	private void setUnlocked(boolean unlocked)
+	{
+		if (unlocked == npcTransportBlocker.isUnlocked())
+		{
+			return;
+		}
+		npcTransportBlocker.setUnlocked(unlocked);
+		syncStandInState();
+		log.debug("Charter ship unlock state changed: {}", unlocked);
 	}
 
 	@Override
@@ -177,9 +219,12 @@ public class VarlamoreUimPlugin extends Plugin
 		itemTeleportBlocker = null;
 		if (npcTransportBlocker != null)
 		{
-			npcTransportBlocker.destroyStandInNpcs();
+			standInRegistry.clear();
+			dialogueManager.close();
 			renderCallbackManager.unregister(npcTransportBlocker.getRenderCallback());
 			npcTransportBlocker = null;
+			standInRegistry = null;
+			standInMenuInjector = null;
 		}
 
 		// TEMP: removed in Task 9
@@ -192,11 +237,6 @@ public class VarlamoreUimPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (dialogueManager != null)
-		{
-			dialogueManager.onGameTick();
-		}
-
 		if (!config.pluginEnabled())
 		{
 			return;
@@ -218,48 +258,60 @@ public class VarlamoreUimPlugin extends Plugin
 			wasInVarlamore = inVarlamore;
 		}
 
-		// Sync NPC transport blocker config state so RenderCallback respects toggle changes
 		if (npcTransportBlocker != null)
 		{
-			npcTransportBlocker.setEnabled(config.blockNpcTransport());
-
-			// Ensure stand-ins exist — some transports (e.g., Antonia's boat) don't
-			// trigger LOADING/LOGGED_IN, so stand-ins may be missing after travel.
-			// The flag prevents retrying every tick when no docks are in the scene.
-			if (config.blockNpcTransport() && !npcTransportBlocker.isUnlocked()
-				&& npcTransportBlocker.getStandInCount() == 0
-				&& !npcTransportBlocker.isStandInCreationAttempted())
-			{
-				npcTransportBlocker.createStandInNpcs();
-			}
+			syncStandInState();
+			dialogueManager.onGameTick();
+			standInMenuInjector.onGameTick(client.getTickCount());
 		}
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
+		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING
+			|| event.getGameState() == GameState.LOADING)
 		{
-			if (npcTransportBlocker != null)
+			if (standInRegistry != null)
 			{
-				npcTransportBlocker.destroyStandInNpcs();
+				standInRegistry.clear();
 			}
-			panel.resetStatus();
-		}
-
-		// Scene reload (e.g., crossing chunk boundaries) — destroy stale RuneLiteObjects
-		// so LOGGED_IN (which always follows LOADING) recreates them for the new scene
-		if (event.getGameState() == GameState.LOADING)
-		{
-			if (npcTransportBlocker != null)
+			if (event.getGameState() != GameState.LOADING)
 			{
-				npcTransportBlocker.destroyStandInNpcs();
+				panel.resetStatus();
 			}
 		}
-
-		if (event.getGameState() == GameState.LOGGED_IN && npcTransportBlocker != null && config.blockNpcTransport())
+		if (event.getGameState() == GameState.LOGGED_IN && standInRegistry != null)
 		{
-			npcTransportBlocker.createStandInNpcs();
+			syncStandInState();
+			standInRegistry.rescan();
+		}
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		if (standInRegistry != null)
+		{
+			standInRegistry.bind(event.getNpc());
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		if (standInRegistry != null)
+		{
+			standInRegistry.unbind(event.getNpc());
+		}
+	}
+
+	@Subscribe
+	public void onClientTick(ClientTick event)
+	{
+		if (standInRegistry != null)
+		{
+			standInRegistry.sync();
 		}
 	}
 
@@ -312,7 +364,7 @@ public class VarlamoreUimPlugin extends Plugin
 		{
 			return;
 		}
-		npcTransportBlocker.handlePostMenuSort(event);
+		standInMenuInjector.onPostMenuSort();
 	}
 
 	@Subscribe
@@ -326,12 +378,7 @@ public class VarlamoreUimPlugin extends Plugin
 		int containerId = event.getContainerId();
 		if (containerId == InventoryID.INVENTORY.getId() || containerId == InventoryID.EQUIPMENT.getId())
 		{
-			boolean nowUnlocked = checkDizanasQuiverOwned();
-			if (nowUnlocked != npcTransportBlocker.isUnlocked())
-			{
-				npcTransportBlocker.setUnlocked(nowUnlocked);
-				log.debug("Charter ship unlock state changed: {}", nowUnlocked);
-			}
+			setUnlocked(checkDizanasQuiverOwned());
 		}
 	}
 
@@ -388,6 +435,10 @@ public class VarlamoreUimPlugin extends Plugin
 		// NPC transport blocking — charter ship hiding + Primio quetzal blocking
 		if (config.blockNpcTransport())
 		{
+			if (standInMenuInjector.onMenuOptionClicked(event))
+			{
+				return;
+			}
 			if (npcTransportBlocker.handlePrimioClick(event))
 			{
 				return;

@@ -1,33 +1,19 @@
 package com.varlamoreuim.npc;
 
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Animation;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
-import net.runelite.api.Model;
-import net.runelite.api.ModelData;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
 import net.runelite.api.Renderable;
-import net.runelite.api.RuneLiteObject;
-import net.runelite.api.Tile;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.PostMenuSort;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.RenderCallback;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -37,14 +23,16 @@ import java.util.Set;
  * 1. Charter ship Trader Crewmember NPCs at the 3 Varlamore ports (Sunset Coast,
  *    Aldarin, Fortis Cothon) — hidden via RenderCallback so they are visually absent
  *    and non-interactable. A safety-net menu-click block catches any residual interactions.
+ *    While hidden, lore-friendly stand-ins are placed in their stead by
+ *    {@link com.varlamoreuim.standin}.
  *
  * 2. Primio quetzal (NPC ID 12889, Civitas illa Fortis side) — blocks interaction via
  *    menu-click consumption with a lore-friendly in-world chat message. Not replaced
  *    visually; the quetzal remains visible but will not fly the player to Varrock.
  *
  * Charter ship blocking respects the {@code unlocked} flag — when the player acquires
- * Dizana's Quiver, charter ships are revealed (the unlock gate is wired in Plan 03).
- * Primio is permanently blocked regardless of unlock state.
+ * Dizana's Quiver, charter ships are revealed. Primio is permanently blocked regardless
+ * of unlock state.
  */
 @Slf4j
 public class NpcTransportBlocker
@@ -80,56 +68,11 @@ public class NpcTransportBlocker
 	 */
 	private static final int PRIMIO_NPC_ID = 12889;
 
-	/**
-	 * Mysterious Old Man NPC definition ID — used to load model and colour data
-	 * for the RuneLiteObject stand-ins placed at charter ship docks.
-	 * Source: OSRS Wiki — Mysterious Old Man (random event NPC, primary form)
-	 */
-	private static final int MYSTERIOUS_OLD_MAN_NPC_ID = 2830;
-
-	/**
-	 * Generic human NPC standing idle animation ID.
-	 * NPCComposition does not expose getStandingAnimationID() in the RuneLite API,
-	 * so we use animation 808 (standard human idle) as a safe default for the
-	 * Mysterious Old Man stand-in. In-game verification may reveal a more accurate ID.
-	 */
-	private static final int STAND_IN_IDLE_ANIMATION_ID = 808;
-
-	/**
-	 * WorldPoint coordinates for each of the 3 charter ship dock locations.
-	 * Stand-in Mysterious Old Man NPCs are placed at these verified positions.
-	 * Coordinates collected in-game 2026-03-15.
-	 */
-	private static final WorldPoint[] DOCK_LOCATIONS = {
-		new WorldPoint(1514, 2971, 0), // Sunset Coast dock
-		new WorldPoint(1455, 2968, 0), // Aldarin dock
-		new WorldPoint(1743, 3136, 0), // Fortis Cothon dock
-	};
-
-	/**
-	 * Facing orientations for each dock stand-in, parallel to DOCK_LOCATIONS.
-	 * OSRS orientations: 0=South, 512=West, 1024=North, 1536=East (2048 JAU per rotation).
-	 */
-	private static final int[] DOCK_ORIENTATIONS = {
-		1024, // Sunset Coast: facing North
-		512,  // Aldarin: facing West
-		512,  // Fortis Cothon: facing West
-	};
-
-	/** Tracks active RuneLiteObject stand-in instances for cleanup. */
-	private final List<RuneLiteObject> standInNpcs = new ArrayList<>();
-
-	/** Whether stand-in creation has been attempted for the current scene. */
-	private boolean standInCreationAttempted = false;
-
-	/** Client reference for RuneLiteObject creation and model loading. Provided via initClient(). */
-	private Client client;
-
-	/** ClientThread for invoking model loading on the client thread. Provided via initClient(). */
-	private ClientThread clientThread;
-
-	/** ChatMessageManager for stand-in dialogue delivery. Provided via initClient(). */
+	/** ChatMessageManager for message delivery. Provided via initClient(). */
 	private ChatMessageManager chatMessageManager;
+
+	/** Client reference for menu click NPC lookups. Provided via initClient(). */
+	private Client client;
 
 	/** Whether NPC blocking is active (driven by blockNpcTransport config toggle). */
 	private boolean enabled = true;
@@ -138,7 +81,7 @@ public class NpcTransportBlocker
 	 * Whether charter ship access has been unlocked by obtaining Dizana's Quiver.
 	 * When true, charter ship NPCs are shown and charter interactions are allowed.
 	 * Primio is never unlocked — it is permanently blocked.
-	 * Wired by VarlamoreUimPlugin in Plan 03.
+	 * Wired by VarlamoreUimPlugin.
 	 */
 	private boolean unlocked = false;
 
@@ -181,50 +124,17 @@ public class NpcTransportBlocker
 	/**
 	 * Set charter ship unlock state.
 	 * Called by VarlamoreUimPlugin when Dizana's Quiver ownership changes.
-	 *
-	 * Transitioning from locked to unlocked: destroys Mysterious Old Man stand-ins so
-	 * the real Trader Crewmember NPCs become visible (the RenderCallback allows rendering
-	 * when {@code unlocked == true}).
-	 *
-	 * Transitioning from unlocked to locked: recreates Mysterious Old Man stand-ins and
-	 * the RenderCallback suppresses charter ship rendering again.
-	 *
 	 * No-ops when the state does not actually change.
 	 */
 	public void setUnlocked(boolean unlocked)
 	{
-		boolean wasUnlocked = this.unlocked;
 		this.unlocked = unlocked;
-		if (unlocked && !wasUnlocked)
-		{
-			// Just unlocked — remove stand-ins, charter ships will show via RenderCallback
-			destroyStandInNpcs();
-			log.debug("Charter ships unlocked — Mysterious Old Man stand-ins removed");
-		}
-		else if (!unlocked && wasUnlocked)
-		{
-			// Just locked — recreate stand-ins, charter ships hidden via RenderCallback
-			createStandInNpcs();
-			log.debug("Charter ships locked — Mysterious Old Man stand-ins spawned");
-		}
 	}
 
 	/** Returns whether charter ships are currently unlocked. */
 	public boolean isUnlocked()
 	{
 		return unlocked;
-	}
-
-	/** Returns the number of active stand-in NPCs. */
-	public int getStandInCount()
-	{
-		return standInNpcs.size();
-	}
-
-	/** Returns whether stand-in creation has been attempted for the current scene. */
-	public boolean isStandInCreationAttempted()
-	{
-		return standInCreationAttempted;
 	}
 
 	/**
@@ -251,171 +161,14 @@ public class NpcTransportBlocker
 	}
 
 	/**
-	 * Store client, clientThread, and chatMessageManager references.
+	 * Store client and chatMessageManager references.
 	 * Called by VarlamoreUimPlugin in startUp() immediately after creating this service.
 	 * Avoids @Inject since NpcTransportBlocker is manually instantiated.
 	 */
-	public void initClient(Client client, ClientThread clientThread, ChatMessageManager chatMessageManager)
+	public void initClient(Client client, ChatMessageManager chatMessageManager)
 	{
 		this.client = client;
-		this.clientThread = clientThread;
 		this.chatMessageManager = chatMessageManager;
-	}
-
-	/**
-	 * Spawn a Mysterious Old Man RuneLiteObject stand-in at each charter ship dock.
-	 * Called on plugin startUp() (if already logged in) and when LOGGED_IN game state fires.
-	 *
-	 * Does nothing if charter ships are unlocked ({@code unlocked == true}) since the real
-	 * Trader Crewmembers become visible again via the RenderCallback no-op path.
-	 */
-	public void createStandInNpcs()
-	{
-		if (unlocked || client == null || clientThread == null)
-		{
-			return;
-		}
-
-		standInCreationAttempted = true;
-
-		for (int idx = 0; idx < DOCK_LOCATIONS.length; idx++)
-		{
-			final WorldPoint finalLocation = DOCK_LOCATIONS[idx];
-			final int orientation = DOCK_ORIENTATIONS[idx];
-			clientThread.invoke(() -> {
-				RuneLiteObject npcObject = client.createRuneLiteObject();
-
-				NPCComposition comp = client.getNpcDefinition(MYSTERIOUS_OLD_MAN_NPC_ID);
-				if (comp == null)
-				{
-					log.warn("Failed to get NPCComposition for Mysterious Old Man (ID {})", MYSTERIOUS_OLD_MAN_NPC_ID);
-					npcObject.setActive(false);
-					return;
-				}
-
-				int[] modelIds = comp.getModels();
-				if (modelIds == null || modelIds.length == 0)
-				{
-					log.warn("Mysterious Old Man NPCComposition has no model IDs");
-					npcObject.setActive(false);
-					return;
-				}
-
-				short[] recolFrom = comp.getColorToReplace();
-				short[] recolTo = comp.getColorToReplaceWith();
-
-				ModelData[] mds = new ModelData[modelIds.length];
-				for (int i = 0; i < modelIds.length; i++)
-				{
-					ModelData md = client.loadModelData(modelIds[i]);
-					if (md == null)
-					{
-						continue;
-					}
-					md.cloneColors().cloneVertices();
-					if (recolFrom != null && recolTo != null)
-					{
-						for (int j = 0; j < recolFrom.length; j++)
-						{
-							md.recolor(recolFrom[j], recolTo[j]);
-						}
-					}
-					mds[i] = md;
-				}
-
-				ModelData[] filtered = Arrays.stream(mds)
-					.filter(Objects::nonNull)
-					.toArray(ModelData[]::new);
-
-				if (filtered.length == 0)
-				{
-					log.warn("Failed to load Mysterious Old Man model data for dock at {}", finalLocation);
-					npcObject.setActive(false);
-					return;
-				}
-
-				Model model = client.mergeModels(filtered).light();
-				npcObject.setModel(model);
-
-				Animation idle = client.loadAnimation(STAND_IN_IDLE_ANIMATION_ID);
-				if (idle != null)
-				{
-					npcObject.setAnimation(idle);
-					npcObject.setShouldLoop(true);
-				}
-
-				npcObject.setRadius(60);
-				npcObject.setOrientation(orientation);
-
-				LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), finalLocation);
-				if (lp != null)
-				{
-					npcObject.setLocation(lp, 0);
-					npcObject.setActive(true);
-					standInNpcs.add(npcObject);
-					log.debug("Spawned Mysterious Old Man stand-in at {}", finalLocation);
-				}
-				else
-				{
-					log.debug("Dock location {} not in current scene, skipping stand-in", finalLocation);
-				}
-			});
-		}
-	}
-
-	/**
-	 * Deactivate and discard all active RuneLiteObject stand-in NPCs.
-	 * Called on logout, plugin shutdown, and when unlocked state transitions to true.
-	 */
-	public void destroyStandInNpcs()
-	{
-		int count = standInNpcs.size();
-		for (RuneLiteObject npcObject : standInNpcs)
-		{
-			npcObject.setActive(false);
-		}
-		standInNpcs.clear();
-		standInCreationAttempted = false;
-		log.debug("Destroyed {} Mysterious Old Man stand-ins", count);
-	}
-
-	/**
-	 * Inject a "Talk-to Mysterious Old Man" menu entry when the player hovers over a
-	 * tile that contains an active stand-in NPC. Called from the PostMenuSort event
-	 * subscription in VarlamoreUimPlugin.
-	 *
-	 * PostMenuSort fires after the default menu is built but before it is displayed,
-	 * giving us the correct hook point to add RuneLiteObject interactions.
-	 *
-	 * @param event  the PostMenuSort event (unused — we use tile position instead)
-	 */
-	public void handlePostMenuSort(PostMenuSort event)
-	{
-		if (!enabled || unlocked || standInNpcs.isEmpty())
-		{
-			return;
-		}
-
-		Tile tile = client.getTopLevelWorldView().getSelectedSceneTile();
-		if (tile == null)
-		{
-			return;
-		}
-
-		LocalPoint tileLocation = tile.getLocalLocation();
-		for (RuneLiteObject npcObject : standInNpcs)
-		{
-			if (npcObject.isActive() && npcObject.getLocation() != null
-				&& npcObject.getLocation().equals(tileLocation))
-			{
-				client.getMenu().createMenuEntry(-1)
-					.setOption("Talk-to")
-					.setTarget("<col=ffff00>Mysterious Old Man</col>")
-					.setType(MenuAction.RUNELITE)
-					.onClick(ev -> sendStandInMessage());
-				break; // only one stand-in per tile
-			}
-		}
 	}
 
 	/** Returns the RenderCallback for registration with RenderCallbackManager. */
@@ -567,27 +320,6 @@ public class NpcTransportBlocker
 		String message = new ChatMessageBuilder()
 			.append(Color.RED, "Varlamore UIM:")
 			.append(Color.WHITE, " The charter ship crew doesn't appear to be taking passengers right now.")
-			.build();
-
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.GAMEMESSAGE)
-			.runeLiteFormattedMessage(message)
-			.build());
-	}
-
-	/**
-	 * Send a lore-friendly GAMEMESSAGE when the player clicks "Talk-to" on a
-	 * Mysterious Old Man stand-in NPC at a charter ship dock.
-	 * Uses the stored chatMessageManager reference (set via initClient()).
-	 */
-	private void sendStandInMessage()
-	{
-		if (chatMessageManager == null)
-		{
-			return;
-		}
-		String message = new ChatMessageBuilder()
-			.append(Color.WHITE, "The old man scratches his chin. \"Hmm, the ships aren't running today. Something about the tides, I think. Best stay on dry land for now.\"")
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
