@@ -4,9 +4,11 @@ import com.varlamoreuim.dialogue.DialogueContext;
 import com.varlamoreuim.dialogue.DialogueEffect;
 import com.varlamoreuim.dialogue.DialoguePage;
 import com.varlamoreuim.dialogue.DialogueScript;
+import com.varlamoreuim.dialogue.DialogueText;
 import com.varlamoreuim.dialogue.NpcLine;
 import com.varlamoreuim.dialogue.Option;
 import com.varlamoreuim.dialogue.Options;
+import com.varlamoreuim.dialogue.PlayerLine;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -88,6 +90,24 @@ public class PersonaRosterTest
 			}
 			assertTrue(p.getId() + " lacks unlock page", foundUnlock);
 			assertTrue(p.getId() + " lacks quiver option", foundConditional);
+		}
+	}
+
+	@Test
+	public void everyPageFitsTheChatbox()
+	{
+		for (Persona p : PersonaRoster.all())
+		{
+			for (DialoguePage page : p.getScript().getPages().values())
+			{
+				String text = page instanceof NpcLine ? ((NpcLine) page).getText()
+					: page instanceof PlayerLine ? ((PlayerLine) page).getText() : null;
+				if (text != null)
+				{
+					int lines = DialogueText.wrap(text, DialogueText.MAX_CHARS_PER_LINE).size();
+					assertTrue(p.getId() + " page too long: " + text, lines <= DialogueText.MAX_LINES_PER_PAGE);
+				}
+			}
 		}
 	}
 }

@@ -43,7 +43,7 @@ public class DialogueManager
 		}
 		Player player = client.getLocalPlayer();
 		openedAt = player != null ? player.getWorldLocation() : null;
-		DialogueInput input = new DialogueInput(client, clientThread, chatboxPanelManager,
+		DialogueInput input = new DialogueInput(clientThread, chatboxPanelManager,
 			script, speaker, context, effects, this::onClosed);
 		current = input;
 		chatboxPanelManager.openInput(input);
@@ -72,8 +72,13 @@ public class DialogueManager
 		}
 	}
 
-	private void onClosed()
+	private void onClosed(DialogueInput closed)
 	{
+		// A stale input closing after a newer one opened must not clear the new state.
+		if (closed != current)
+		{
+			return;
+		}
 		current = null;
 		openedAt = null;
 	}

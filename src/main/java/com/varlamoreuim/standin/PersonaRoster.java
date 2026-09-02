@@ -80,11 +80,8 @@ public final class PersonaRoster
 				Option.of("What's Dizana's quiver?", "quiver"),
 				Option.conditional("I have one right here!", DialogueContext::hasDizanasQuiver, "haveYes", "haveNo"),
 				Option.of("Never mind.", "bye"))
-			.npc("why1", why1, why2 == null ? "menu" : "why2");
-		if (why2 != null)
-		{
-			b.npc("why2", why2, "menu");
-		}
+			.npc("why1", why1, "why2")
+			.npc("why2", why2, "menu");
 		return b
 			.npc("quiver", quiver, "menu")
 			.npc("haveNo", haveNo, Expression.LAUGH, DialogueEffect.NONE, "menu")

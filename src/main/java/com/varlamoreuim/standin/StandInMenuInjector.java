@@ -77,6 +77,10 @@ public class StandInMenuInjector
 		{
 			return;
 		}
+		if (!inViewport(mouse))
+		{
+			return;
+		}
 		for (StandIn s : registry.active())
 		{
 			try
@@ -102,6 +106,33 @@ public class StandInMenuInjector
 			{
 				log.debug("menu injection failed for stand-in", e);
 			}
+		}
+	}
+
+	/**
+	 * Cheap prefilter: true when the mouse is inside the 3D viewport rectangle.
+	 * Skips clickbox projection entirely while the cursor is over the fixed-mode
+	 * chrome, the inventory or the chatbox. Fails open if the client refuses.
+	 */
+	private boolean inViewport(Point mouse)
+	{
+		try
+		{
+			int x = client.getViewportXOffset();
+			int y = client.getViewportYOffset();
+			int w = client.getViewportWidth();
+			int h = client.getViewportHeight();
+			if (w <= 0 || h <= 0)
+			{
+				return true;
+			}
+			return mouse.getX() >= x && mouse.getX() < x + w
+				&& mouse.getY() >= y && mouse.getY() < y + h;
+		}
+		catch (Exception e)
+		{
+			log.debug("viewport prefilter failed", e);
+			return true;
 		}
 	}
 

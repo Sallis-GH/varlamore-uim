@@ -13,10 +13,12 @@ import net.runelite.client.callback.ClientThread;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Owns every active {@link StandIn}. Binds a puppet when a charter crewmember
@@ -29,6 +31,7 @@ public class StandInRegistry
 	private final Client client;
 	private final ClientThread clientThread;
 	private final Map<Integer, StandIn> byIndex = new LinkedHashMap<>();
+	private final Set<String> warnedPersonas = new HashSet<>();
 	private boolean active = false;
 
 	public StandInRegistry(Client client, ClientThread clientThread)
@@ -52,11 +55,6 @@ public class StandInRegistry
 		{
 			clear();
 		}
-	}
-
-	public boolean isActive()
-	{
-		return active;
 	}
 
 	public Collection<StandIn> active()
@@ -110,23 +108,24 @@ public class StandInRegistry
 			{
 				return;
 			}
-			Model model = buildModel(persona.get().getNpcId());
+			Persona resolved = withUsableChathead(persona.get());
+			Model model = buildModel(resolved.getNpcId());
 			if (model == null)
 			{
 				model = buildModel(PersonaRoster.FALLBACK_NPC_ID);
 			}
 			if (model == null)
 			{
-				log.warn("Could not build model for persona {}", persona.get().getId());
+				log.warn("Could not build model for persona {}", resolved.getId());
 				return;
 			}
 			RuneLiteObject object = client.createRuneLiteObject();
 			object.setModel(model);
 			object.setRadius(60);
-			StandIn standIn = new StandIn(client, npc, persona.get(), object);
+			StandIn standIn = new StandIn(client, npc, resolved, object);
 			standIn.sync();
 			byIndex.put(npc.getIndex(), standIn);
-			log.debug("Bound {} to crewmember index {} at {}", persona.get().getId(), npc.getIndex(), dock.get());
+			log.debug("Bound {} to crewmember index {} at {}", resolved.getId(), npc.getIndex(), dock.get());
 		});
 	}
 
@@ -143,7 +142,14 @@ public class StandInRegistry
 	{
 		for (StandIn s : byIndex.values())
 		{
-			s.sync();
+			try
+			{
+				s.sync();
+			}
+			catch (Exception e)
+			{
+				log.debug("stand-in sync failed", e);
+			}
 		}
 	}
 
@@ -171,6 +177,26 @@ public class StandInRegistry
 			s.destroy();
 		}
 		byIndex.clear();
+	}
+
+	/**
+	 * Returns the persona unchanged when its NPC definition supplies chathead models,
+	 * otherwise a copy pointing at {@link PersonaRoster#FALLBACK_NPC_ID} so the dialogue
+	 * chathead has something to draw. Warns once per persona. Client thread only.
+	 */
+	private Persona withUsableChathead(Persona p)
+	{
+		NPCComposition comp = client.getNpcDefinition(p.getNpcId());
+		if (comp != null && comp.getChatheadModels() != null && comp.getChatheadModels().length > 0)
+		{
+			return p;
+		}
+		if (warnedPersonas.add(p.getId()))
+		{
+			log.warn("Persona {} npc {} has no chathead models, falling back to {}",
+				p.getId(), p.getNpcId(), PersonaRoster.FALLBACK_NPC_ID);
+		}
+		return new Persona(p.getId(), p.getDisplayName(), PersonaRoster.FALLBACK_NPC_ID, p.getExamine(), p.getScript());
 	}
 
 	private Model buildModel(int npcId)

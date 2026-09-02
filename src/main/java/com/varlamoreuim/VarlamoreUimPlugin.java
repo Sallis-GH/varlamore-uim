@@ -34,6 +34,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.callback.RenderCallback;
 import net.runelite.client.callback.RenderCallbackManager;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageManager;
@@ -193,12 +194,22 @@ public class VarlamoreUimPlugin extends Plugin
 
 	private void syncStandInState()
 	{
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			// Re-derive the unlock flag from the live containers. Uses the raw setter:
+			// the setUnlocked(boolean) helper calls back into this method.
+			npcTransportBlocker.setUnlocked(checkDizanasQuiverOwned());
+		}
 		boolean blocking = config.pluginEnabled() && config.blockNpcTransport();
 		npcTransportBlocker.setEnabled(blocking);
 		standInRegistry.setActive(blocking && !npcTransportBlocker.isUnlocked()
 			&& client.getGameState() == GameState.LOGGED_IN);
 		standInMenuInjector.setWalkToEnabled(config.walkToStandIns());
 		standInMenuInjector.setNativeDialogueEnabled(config.nativeDialogue());
+		if (!blocking || !config.nativeDialogue())
+		{
+			dialogueManager.close();
+		}
 	}
 
 	private void setUnlocked(boolean unlocked)
@@ -227,12 +238,13 @@ public class VarlamoreUimPlugin extends Plugin
 		{
 			final StandInRegistry registry = standInRegistry;
 			final DialogueManager dialogue = dialogueManager;
+			final RenderCallback renderCallback = npcTransportBlocker.getRenderCallback();
 			clientThread.invoke(() ->
 			{
 				registry.clear();
 				dialogue.close();
+				renderCallbackManager.unregister(renderCallback);
 			});
-			renderCallbackManager.unregister(npcTransportBlocker.getRenderCallback());
 			npcTransportBlocker = null;
 			standInRegistry = null;
 			standInMenuInjector = null;

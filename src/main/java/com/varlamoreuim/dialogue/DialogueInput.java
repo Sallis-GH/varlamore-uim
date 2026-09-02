@@ -1,7 +1,6 @@
 package com.varlamoreuim.dialogue;
 
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
 import net.runelite.api.FontID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -27,24 +26,21 @@ import java.util.function.Consumer;
 @Slf4j
 public class DialogueInput extends ChatboxInput implements KeyListener
 {
-	private final Client client;
 	private final ClientThread clientThread;
 	private final ChatboxPanelManager chatboxPanelManager;
 	private final DialogueScript script;
 	private final Speaker speaker;
 	private final DialogueContext context;
 	private final Consumer<DialogueEffect> effects;
-	private final Runnable onClosed;
+	private final Consumer<DialogueInput> onClosed;
 
-	private String currentId;
 	private DialoguePage currentPage;
-	private Widget headWidget;
+	private DialogueEffect pendingEffect;
 
-	public DialogueInput(Client client, ClientThread clientThread, ChatboxPanelManager chatboxPanelManager,
+	public DialogueInput(ClientThread clientThread, ChatboxPanelManager chatboxPanelManager,
 		DialogueScript script, Speaker speaker, DialogueContext context,
-		Consumer<DialogueEffect> effects, Runnable onClosed)
+		Consumer<DialogueEffect> effects, Consumer<DialogueInput> onClosed)
 	{
-		this.client = client;
 		this.clientThread = clientThread;
 		this.chatboxPanelManager = chatboxPanelManager;
 		this.script = script;
@@ -63,13 +59,19 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 	@Override
 	protected void close()
 	{
-		onClosed.run();
+		onClosed.accept(this);
 	}
 
 	private void show(String id)
 	{
 		if (DialogueScript.END.equals(id))
 		{
+			if (pendingEffect != null && pendingEffect != DialogueEffect.NONE)
+			{
+				DialogueEffect effect = pendingEffect;
+				pendingEffect = null;
+				effects.accept(effect);
+			}
 			chatboxPanelManager.close();
 			return;
 		}
@@ -80,16 +82,13 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 			chatboxPanelManager.close();
 			return;
 		}
-		currentId = id;
 		currentPage = page;
 		render(page);
 		if (page instanceof NpcLine)
 		{
-			DialogueEffect effect = ((NpcLine) page).getEffect();
-			if (effect != DialogueEffect.NONE)
-			{
-				effects.accept(effect);
-			}
+			// Fired when the page is left via the END branch, not when it is shown:
+			// closing with escape must not apply the effect.
+			pendingEffect = ((NpcLine) page).getEffect();
 		}
 	}
 
@@ -103,7 +102,6 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 			return;
 		}
 		container.deleteAllChildren();
-		headWidget = null;
 
 		if (page instanceof Options)
 		{
@@ -142,11 +140,10 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 		head.setOriginalWidth(DialogueLayout.HEAD_SIZE);
 		head.setOriginalHeight(DialogueLayout.HEAD_SIZE);
 		head.revalidate();
-		headWidget = head;
 
 		// Text column is the space not taken by the head.
-		int textX = player ? 0 : DialogueLayout.HEAD_MARGIN_X + DialogueLayout.HEAD_SIZE;
-		int textWidth = width - DialogueLayout.HEAD_MARGIN_X - DialogueLayout.HEAD_SIZE;
+		int textX = player ? DialogueLayout.HEAD_MARGIN_X : DialogueLayout.HEAD_MARGIN_X + DialogueLayout.HEAD_SIZE;
+		int textWidth = width - 2 * DialogueLayout.HEAD_MARGIN_X - DialogueLayout.HEAD_SIZE;
 
 		Widget nameWidget = container.createChild(-1, WidgetType.TEXT);
 		nameWidget.setText(name);
@@ -300,7 +297,13 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 		{
 			return;
 		}
-		if (e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode() == KeyEvent.VK_SPACE)
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+		{
+			e.consume();
+			return;
+		}
+		// Options pages take number keys, not space — leave space to the client.
+		if (e.getKeyCode() == KeyEvent.VK_SPACE && !(currentPage instanceof Options))
 		{
 			e.consume();
 		}

@@ -1,5 +1,6 @@
 package com.varlamoreuim.npc;
 
+import com.varlamoreuim.standin.PersonaRoster;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -37,16 +38,9 @@ import java.util.Set;
 @Slf4j
 public class NpcTransportBlocker
 {
-	/**
-	 * Trader Crewmember NPC IDs at all 3 Varlamore charter ship ports.
-	 * Verified in-game:
-	 *   Fortis Cothon: 9326, 9362
-	 *   Sunset Coast:  9314, 9350
-	 *   Aldarin Dock:  9314, 9350
-	 */
-	private static final Set<Integer> CHARTER_NPC_IDS = Set.of(
-		9314, 9326, 9350, 9362
-	);
+	// Trader Crewmember NPC IDs at all 3 Varlamore charter ship ports live in
+	// PersonaRoster.CHARTER_NPC_IDS — the stand-in roster is keyed by the same ids,
+	// so they are declared once there and referenced from here.
 
 	/**
 	 * Dizana's Quiver item IDs — all four variants (uncharged, locked, charged, charged+locked).
@@ -87,7 +81,7 @@ public class NpcTransportBlocker
 
 	/**
 	 * RenderCallback that suppresses rendering of charter ship Trader Crewmember NPCs.
-	 * Returns false for any NPC whose ID is in CHARTER_NPC_IDS (causing it to be hidden).
+	 * Returns false for any NPC whose ID is in PersonaRoster.CHARTER_NPC_IDS (causing it to be hidden).
 	 * No-ops when disabled or when charter ships are unlocked via Dizana's Quiver.
 	 */
 	private final RenderCallback renderCallback = new RenderCallback()
@@ -102,7 +96,7 @@ public class NpcTransportBlocker
 			if (renderable instanceof NPC)
 			{
 				NPC npc = (NPC) renderable;
-				if (CHARTER_NPC_IDS.contains(npc.getId()))
+				if (PersonaRoster.CHARTER_NPC_IDS.contains(npc.getId()))
 				{
 					return false; // suppress rendering — NPC becomes invisible and non-interactable
 				}
@@ -241,7 +235,7 @@ public class NpcTransportBlocker
 		}
 
 		NPC npc = getNpcFromEvent(event);
-		if (npc != null && CHARTER_NPC_IDS.contains(npc.getId()))
+		if (npc != null && PersonaRoster.CHARTER_NPC_IDS.contains(npc.getId()))
 		{
 			event.consume();
 			sendCharterMessage();
