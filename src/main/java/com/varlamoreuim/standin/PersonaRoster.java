@@ -163,16 +163,16 @@ public final class PersonaRoster
 	private static Persona guard()
 	{
 		return new Persona("guard", "Fortis Guard", 13100,
-			"Following orders. Enthusiastically.",
+			"Stands guard. Mostly stands.",
 			script(
-				"Halt. Harbour's closed to civilians by royal decree.",
-				"Sea lanes are champions only. Bring me proof you're strong enough, Dizana's quiver from the Colosseum, and I'll salute you onto the ship myself. It's a whole thing.",
-				"The Colosseum's in the city. Try not to wander off and die. That's in the decree too, underlined.",
-				"I'm a guard, citizen. Exceptions are above my pay grade. So is most of the decree.",
-				"Have you actually read the decree?",
-				"Twice. Once out loud. The captain made me.",
-				"A champion! Apologies. The crew awaits. Try not to wander off.",
-				"I've been trained to spot a quiver, citizen. That's a back. Move along."));
+				"Not for you. The harbour's closed to civilians by royal decree.",
+				"Kingdom's orders. The sea lanes are for champions only. Prove you're strong enough, bring me Dizana's quiver from the Colosseum, and I'll walk you aboard myself.",
+				"Good. The Colosseum's in the city, past the bazaar. Come back in one piece. I'd rather salute you than sweep you up.",
+				"I'm a guard. I don't make exceptions, I stand in front of them.",
+				"Do you ever let anyone through?",
+				"Champions. And the fish, technically. They don't need a permit.",
+				"That's Dizana's quiver, that is. Apologies, champion. The crew's waiting for you.",
+				"I know what a quiver looks like. That's a back. Nice try, citizen."));
 	}
 
 	private static Persona harbourmaster()
