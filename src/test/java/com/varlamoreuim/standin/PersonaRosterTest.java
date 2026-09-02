@@ -62,8 +62,9 @@ public class PersonaRosterTest
 	}
 
 	@Test
-	public void everyScriptHasQuiverBranchThatUnlocks()
+	public void quiverBranchesUnlockAndAtLeastOnePersonaHasOne()
 	{
+		int personasWithCheck = 0;
 		for (Persona p : PersonaRoster.all())
 		{
 			DialogueScript s = p.getScript();
@@ -115,9 +116,14 @@ public class PersonaRosterTest
 					}
 				}
 			}
-			assertTrue(p.getId() + " lacks unlock page", foundUnlock);
-			assertTrue(p.getId() + " lacks quiver option", foundConditional);
+			// A persona may skip the quiver check entirely, but one that has it must unlock.
+			assertEquals(p.getId() + " unlock page without quiver option, or vice versa", foundConditional, foundUnlock);
+			if (foundConditional)
+			{
+				personasWithCheck++;
+			}
 		}
+		assertTrue("no persona checks for the quiver", personasWithCheck >= 1);
 	}
 
 	@Test
