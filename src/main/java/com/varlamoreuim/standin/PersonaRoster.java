@@ -66,19 +66,20 @@ public final class PersonaRoster
 	}
 
 	/**
-	 * Adds the shared "prove it" ending. The conditional option routes to
-	 * {@code prove} when the player has the quiver and to {@code proveNo} when
+	 * Adds the shared "prove it" ending, the gatekeeper grammar the game uses:
+	 * the NPC doubts the claim, never the player. The conditional option routes
+	 * to {@code prove} when the player has the quiver and to {@code proveNo} when
 	 * they do not; both open with the same challenge line.
 	 */
 	private static DialogueScript.Builder proof(DialogueScript.Builder b, String challenge,
-		String shown, String yes, String cant, String no)
+		String shown, String yes, String no)
 	{
 		return b
 			.npc("prove", challenge, "shown")
 			.narration("shown", shown, "haveYes")
 			.npc("haveYes", yes, Expression.HAPPY, DialogueEffect.UNLOCK_CHARTER, DialogueScript.END)
 			.npc("proveNo", challenge, "cant")
-			.player("cant", cant, "no")
+			.player("cant", "Well... I can't.", "no")
 			.npc("no", no, DialogueScript.END);
 	}
 
@@ -91,96 +92,92 @@ public final class PersonaRoster
 	{
 		DialogueScript.Builder b = DialogueScript.builder("open")
 			.player("open", OPENER, "reply")
-			.npc("reply", "Not today. Nor tomorrow, I shouldn't think.", "why")
+			.npc("reply", "Not for you, no. Not for me either, though I have my own ways of travelling.", "why")
 			.player("why", "Why not?", "whyNot")
-			.npc("whyNot", "The Kingdom closed the sea lanes. Champions only, they say.", "menu")
+			.npc("whyNot", "The Kingdom closed the lanes to civilians. Only champions of the Colosseum sail.", "menu")
 			.options("menu", MENU_TITLE,
-				Option.of("How do I become a champion?", "how"),
-				Option.of("Can't you do anything?", "anything"),
-				Option.of("Do I know you from somewhere?", "know"),
-				champion("I'm a champion."))
-			.npc("how", "The Colosseum. Win, and they hand you a quiver. Simple.", DialogueScript.END)
-			.npc("anything", "I could make you disappear. You wouldn't like where you turned up.", DialogueScript.END)
-			.npc("know", "I get that a lot.", DialogueScript.END);
+				Option.of("How does one become a champion?", "how"),
+				Option.of("What ways of travelling?", "ways"),
+				Option.of("Who are you?", "who"),
+				champion("I am a champion of the Colosseum."))
+			.npc("how", "Win the Colosseum. They give you Dizana's quiver, and every guard on this coast knows it.", DialogueScript.END)
+			.npc("ways", "Mine tend to find me rather than the other way round. Yours need a ship.", DialogueScript.END)
+			.npc("who", "An old man on a dock. Ask me again in a year and you'll get a different answer.", DialogueScript.END);
 		return new Persona("old_man", "Mysterious Old Man", 2830,
-			"Definitely not the random event one. Definitely.",
-			proof(b, "Oh? Let's see it.",
+			"An old man in a dark hood. He does not appear to be waiting for a ship.",
+			proof(b, "Then show me. Champions carry a quiver I would know at a glance.",
 				"You show the old man Dizana's quiver.",
-				"So you are. Off you go, the crew's just there.",
-				"I... don't have it on me.",
-				"Then you're not.").build());
+				"So they do. Sail well, and tell no one I was here.",
+				"I thought as much. Come and find me when you have it.").build());
 	}
 
 	private static Persona fisher()
 	{
 		DialogueScript.Builder b = DialogueScript.builder("open")
 			.player("open", OPENER, "reply")
-			.npc("reply", "No. Nothing's sailed from here in weeks.", "why")
+			.npc("reply", "Nilsal! Fishing boats, aye. Anything bigger stays tied to the post.", "why")
 			.player("why", "Why not?", "whyNot")
-			.npc("whyNot", "Kingdom's orders. Sea lanes are for champions only now.", "menu")
+			.npc("whyNot", "The Kingdom shut the lanes to civilians. Only Colosseum champions get past the bay now.", "menu")
 			.options("menu", MENU_TITLE,
-				Option.of("How do I become a champion?", "how"),
-				Option.of("Caught anything?", "caught"),
-				Option.of("Can't you take me out in your boat?", "boat"),
-				champion("I'm a champion."))
-			.npc("how", "Fight in the Colosseum. Win and they give you a quiver. Not my idea of a good time.", DialogueScript.END)
-			.npc("caught", "A boot. Two, actually.", DialogueScript.END)
-			.npc("boat", "It's a rowing boat. You'd be bailing before we cleared the harbour.", DialogueScript.END);
+				Option.of("How does someone become a champion?", "how"),
+				Option.of("How's the catch been?", "catch"),
+				Option.of("Could you row me out yourself?", "row"),
+				champion("I'm a champion of the Colosseum."))
+			.npc("how", "You fight the Fortis Colosseum and win. They give you Dizana's quiver to prove it.", DialogueScript.END)
+			.npc("catch", "Better than the trade. All these fish and no ship to carry them anywhere.", DialogueScript.END)
+			.npc("row", "And lose my licence over it? Sorry, friend, I'd rather keep the boat.", DialogueScript.END);
 		return new Persona("fisher", "Fisher", 13252,
-			"Smells of fish. Mostly fish.",
-			proof(b, "Are you? Show us, then.",
+			"A Sunset Coast fisher, mending her nets.",
+			proof(b, "Are you now? Champions carry Dizana's quiver. Let's see it.",
 				"You show the fisher Dizana's quiver.",
-				"Well I never. Crew's over there, champion.",
-				"I don't have one.",
-				"Thought not.").build());
+				"Well, look at that. I'll point you to a captain who'll take you.",
+				"Then you're stuck on the sand with me. Come back when you've got it.").build());
 	}
 
 	private static Persona vintner()
 	{
 		DialogueScript.Builder b = DialogueScript.builder("open")
 			.player("open", OPENER, "reply")
-			.npc("reply", "Not for passengers. I've been waiting on a shipment for three weeks.", "why")
+			.npc("reply", "Nilsal, friend. Not one, and my wine is turning while we talk.", "why")
 			.player("why", "Why not?", "whyNot")
-			.npc("whyNot", "The Kingdom closed the sea lanes. Champions only. Barrels don't count.", "menu")
+			.npc("whyNot", "The Kingdom closed the lanes to civilians. Only Colosseum champions sail these days.", "menu")
 			.options("menu", MENU_TITLE,
-				Option.of("How do I become a champion?", "how"),
-				Option.of("Can't you make an exception?", "exception"),
-				Option.of("Need a hand with the grapes?", "grapes"),
-				champion("I'm a champion."))
-			.npc("how", "Win at the Colosseum. They give you a quiver. Show it to a captain.", DialogueScript.END)
-			.npc("exception", "I make wine, not the rules.", DialogueScript.END)
-			.npc("grapes", "Always. Pay's in grapes.", DialogueScript.END);
+				Option.of("How does one become a champion?", "how"),
+				Option.of("What happens to your wine now?", "wine"),
+				Option.of("Could I carry a crate for you?", "crate"),
+				champion("I'm a champion of the Colosseum."))
+			.npc("how", "You win the Fortis Colosseum. They hand you Dizana's quiver, and doors open for it.", DialogueScript.END)
+			.npc("wine", "It sits. Aldarin red keeps a year, but the buyers up north won't wait one.", DialogueScript.END)
+			.npc("crate", "Kind of you, but they'd stop you at the gangplank the same as me.", DialogueScript.END);
 		return new Persona("vintner", "Vintner", 13908,
-			"Has opinions about vintages. Strong ones.",
-			proof(b, "Oh? Prove it.",
+			"An Aldarin vintner, counting crates that aren't going anywhere.",
+			proof(b, "Then prove it. Show me the quiver and I'll believe you gladly.",
 				"You show the vintner Dizana's quiver.",
-				"Well then. The crew's right there. Take a bottle for the road.",
-				"I can't.",
-				"Then stomp some grapes. It's very calming.").build());
+				"So it's true. Take a bottle with you, champion, and my thanks.",
+				"Then we're both stuck ashore. Come back with it and I'll pour.").build());
 	}
 
 	private static Persona pilgrim()
 	{
 		DialogueScript.Builder b = DialogueScript.builder("open")
 			.player("open", OPENER, "reply")
-			.npc("reply", "Not for you, friend. Ralos has not willed it.", "why")
+			.npc("reply", "Greetings, traveller. None that will carry the likes of us, sadly.", "why")
 			.player("why", "Why not?", "whyNot")
-			.npc("whyNot", "The Kingdom closed the sea lanes. Champions only. Ralos agrees, I'm told.", "menu")
+			.npc("whyNot", "The Kingdom has closed the lanes to civilians. Only champions of the Colosseum may sail.", "menu")
 			.options("menu", MENU_TITLE,
-				Option.of("How do I become a champion?", "how"),
-				Option.of("Can't Ralos make an exception?", "exception"),
-				Option.of("Do you ever stop smiling?", "smile"),
-				champion("I'm a champion."))
-			.npc("how", "The Colosseum. Win, and they give you a quiver. Ralos rather likes a champion.", DialogueScript.END)
-			.npc("exception", "He could. He hasn't.", DialogueScript.END)
-			.npc("smile", "Only at night.", DialogueScript.END);
+				Option.of("How does one become a champion?", "how"),
+				Option.of("Where were you hoping to sail?", "where"),
+				Option.of("Will Ralos not open the way?", "ralos"),
+				champion("I am a champion of the Colosseum."))
+			.npc("how", "By winning the Colosseum. Dizana's quiver is their token, and the guards know it well.", DialogueScript.END)
+			.npc("where", "To the shrines across the water, while the light lasts. Ralos is patient, and I am learning to be.", DialogueScript.END)
+			.npc("ralos", "Ralos lights the road. He does not argue with harbourmasters.", DialogueScript.END);
 		return new Persona("pilgrim", "Pilgrim", 13883,
-			"Radiantly unbothered.",
-			proof(b, "Then show me.",
+			"A pilgrim of Ralos, waiting on the tide and on the sun.",
+			proof(b, "Then prove it, friend. Show me the quiver and I will believe you gladly.",
 				"You show the pilgrim Dizana's quiver.",
-				"Ralos smiles on you. So does the crew, over there.",
-				"I can't.",
-				"Ralos sees all things. He does not see a quiver.").build());
+				"Then Ralos has sent me a companion. Go safely, champion.",
+				"Then we wait together. Ralos keep you until the lanes open.").build());
 	}
 
 	/**
@@ -215,23 +212,22 @@ public final class PersonaRoster
 	{
 		DialogueScript.Builder b = DialogueScript.builder("open")
 			.player("open", OPENER, "reply")
-			.npc("reply", "Plenty. None of them with you on board.", "why")
+			.npc("reply", "Ships, yes. Passengers, no, I'm afraid.", "why")
 			.player("why", "Why not?", "whyNot")
-			.npc("whyNot", "Sea lanes are closed to civilians by order of the Kingdom. Champions only.", "menu")
+			.npc("whyNot", "The Kingdom has closed the lanes to civilians. Only Colosseum champions sail now.", "menu")
 			.options("menu", MENU_TITLE,
-				Option.of("How do I become a champion?", "how"),
-				Option.of("Can't you make an exception?", "exception"),
-				Option.of("What if I just swim?", "swim"),
-				champion("I am a champion."))
-			.npc("how", "Win at the Colosseum. They'll give you Dizana's quiver. Bring it here.", DialogueScript.END)
-			.npc("exception", "Rules are rules, I'm afraid.", DialogueScript.END)
-			.npc("swim", "Then I'll wave.", DialogueScript.END);
+				Option.of("How does one become a champion?", "how"),
+				Option.of("When will the lanes open again?", "when"),
+				Option.of("Could I pay my way aboard?", "pay"),
+				champion("I am a champion of the Colosseum."))
+			.npc("how", "Win through the Fortis Colosseum. Dizana's quiver is what they hand you, and what I check.", DialogueScript.END)
+			.npc("when", "Nobody has told me. I'd hear it from the capital before I heard it from the tide.", DialogueScript.END)
+			.npc("pay", "Save your coin, traveller. The order came from the Kingdom, and it isn't mine to sell.", DialogueScript.END);
 		return new Persona("harbourmaster", "Harbourmaster", 13248,
-			"Runs a tight harbour.",
-			proof(b, "Then prove it.",
+			"The keeper of the harbour's comings and goings.",
+			proof(b, "Then prove it. Champions carry Dizana's quiver.",
 				"You show the harbourmaster Dizana's quiver.",
-				"Well why didn't you say so? The crew's over there.",
-				"Well... I can't.",
-				"Then come back when you can.").build());
+				"So you are. Board when you're ready, champion.",
+				"Then we're done here. Come back with the quiver and we'll talk.").build());
 	}
 }
