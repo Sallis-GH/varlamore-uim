@@ -99,6 +99,30 @@ public interface VarlamoreUimConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "walkToStandIns",
+		name = "Walk to dock NPCs",
+		description = "Talk-to on a dock NPC walks you over before the conversation starts",
+		position = 8,
+		section = restrictionsSection
+	)
+	default boolean walkToStandIns()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "nativeDialogue",
+		name = "Native dialogue",
+		description = "Show dock NPC conversations in the chatbox dialogue window. Off falls back to a chat message.",
+		position = 9,
+		section = restrictionsSection
+	)
+	default boolean nativeDialogue()
+	{
+		return true;
+	}
+
 	// Quality of Adventure Section (placeholder)
 	@ConfigSection(
 		name = "Quality of Adventure",
