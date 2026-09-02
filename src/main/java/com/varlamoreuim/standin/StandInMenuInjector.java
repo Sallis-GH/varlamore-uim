@@ -94,11 +94,26 @@ public class StandInMenuInjector
 						.setTarget(target)
 						.setType(MenuAction.RUNELITE)
 						.setIdentifier(index);
-					client.getMenu().createMenuEntry(-1)
+					// Talk-to is a real WALK entry when the player needs to move first, so the
+					// client performs the walk natively; otherwise a RuneLite entry that opens
+					// the dialogue at once. Retyping a RuneLite entry on click is ignored by
+					// the client, so the decision has to be made here at menu-build time.
+					LocalPoint walk = walkTarget(wv, s);
+					MenuEntry talk = client.getMenu().createMenuEntry(-1)
 						.setOption(TALK)
-						.setTarget(target)
-						.setType(MenuAction.RUNELITE)
-						.setIdentifier(index);
+						.setTarget(target);
+					if (walk != null)
+					{
+						talk.setType(MenuAction.WALK)
+							.setIdentifier(0)
+							.setParam0(walk.getSceneX())
+							.setParam1(walk.getSceneY());
+					}
+					else
+					{
+						talk.setType(MenuAction.RUNELITE)
+							.setIdentifier(index);
+					}
 					return;
 				}
 			}
@@ -162,11 +177,23 @@ public class StandInMenuInjector
 	{
 		pending = null;
 		MenuEntry entry = event.getMenuEntry();
+		String option = entry.getOption();
+		if (entry.getType() == MenuAction.WALK && TALK.equals(option))
+		{
+			// Our walk-first Talk-to entry. Let the client walk; open on arrival.
+			StandIn s = byTargetName(entry.getTarget());
+			if (s == null)
+			{
+				return false;
+			}
+			pending = new PendingTalk(s.getNpc().getIndex(), client.getTickCount() + PendingTalk.TIMEOUT_TICKS);
+			log.debug("Walking before talking to {}", s.getPersona().getId());
+			return true; // not consumed: the client performs the walk
+		}
 		if (entry.getType() != MenuAction.RUNELITE)
 		{
 			return false;
 		}
-		String option = entry.getOption();
 		if (!TALK.equals(option) && !EXAMINE.equals(option))
 		{
 			return false;
@@ -176,32 +203,59 @@ public class StandInMenuInjector
 		{
 			return false;
 		}
+		event.consume();
 		if (EXAMINE.equals(option))
 		{
-			event.consume();
 			examine(s);
-			return true;
+		}
+		else
+		{
+			talk(s);
+		}
+		return true;
+	}
+
+	/**
+	 * Scene-local point of the tile the player should walk to before talking to
+	 * this stand-in, or null when no walk is needed (walk-to disabled, already
+	 * adjacent, or the tile is outside the scene).
+	 */
+	private LocalPoint walkTarget(WorldView wv, StandIn s)
+	{
+		if (!walkToEnabled)
+		{
+			return null;
 		}
 		Player player = client.getLocalPlayer();
-		WorldView wv = client.getTopLevelWorldView();
-		if (walkToEnabled && player != null && wv != null && player.getWorldLocation().distanceTo(s.getNpc().getWorldLocation()) > 1)
+		if (player == null || wv == null)
 		{
-			WorldPoint target = WalkTarget.adjacentTile(s.getNpc().getWorldLocation(), player.getWorldLocation());
-			LocalPoint lp = LocalPoint.fromWorld(wv, target);
-			if (lp != null)
+			return null;
+		}
+		WorldPoint npcLocation = s.getNpc().getWorldLocation();
+		if (player.getWorldLocation().distanceTo(npcLocation) <= 1)
+		{
+			return null;
+		}
+		WorldPoint target = WalkTarget.adjacentTile(npcLocation, player.getWorldLocation());
+		return LocalPoint.fromWorld(wv, target);
+	}
+
+	/** Finds the active stand-in whose persona name matches a menu target, ignoring colour tags. */
+	private StandIn byTargetName(String target)
+	{
+		if (target == null)
+		{
+			return null;
+		}
+		String name = target.replaceAll("<[^>]*>", "").trim();
+		for (StandIn s : registry.active())
+		{
+			if (s.getPersona().getDisplayName().equals(name))
 			{
-				entry.setType(MenuAction.WALK);
-				entry.setIdentifier(0);
-				entry.setParam0(lp.getSceneX());
-				entry.setParam1(lp.getSceneY());
-				pending = new PendingTalk(s.getNpc().getIndex(), client.getTickCount() + PendingTalk.TIMEOUT_TICKS);
-				log.debug("Walking to {} before talking to {}", target, s.getPersona().getId());
-				return true; // not consumed: the client performs the walk
+				return s;
 			}
 		}
-		event.consume();
-		talk(s);
-		return true;
+		return null;
 	}
 
 	public void onGameTick(int tick)

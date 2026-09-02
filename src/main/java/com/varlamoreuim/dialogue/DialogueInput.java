@@ -122,7 +122,9 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 	private void renderSpeech(Widget container, String name, String text, boolean player, Expression expression, int npcId)
 	{
 		int width = container.getWidth();
-		int headX = player ? width - DialogueLayout.HEAD_MARGIN_X - DialogueLayout.HEAD_SIZE : DialogueLayout.HEAD_MARGIN_X;
+		// The game centres a 97px block (name, text, continue) in the message layer.
+		int blockY = Math.max(0, (container.getHeight() - DialogueLayout.BLOCK_HEIGHT) / 2);
+		int headX = player ? width - DialogueLayout.HEAD_RIGHT_OFFSET_PLAYER : DialogueLayout.HEAD_X_NPC;
 
 		Widget head = container.createChild(-1, WidgetType.MODEL);
 		head.setModelType(player ? WidgetModelType.LOCAL_PLAYER_CHATHEAD : WidgetModelType.NPC_CHATHEAD);
@@ -134,25 +136,24 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 		head.setModelZoom(DialogueLayout.HEAD_ZOOM);
 		head.setRotationX(DialogueLayout.HEAD_ROTATION_X);
 		head.setRotationY(DialogueLayout.HEAD_ROTATION_Y);
-		head.setRotationZ(DialogueLayout.HEAD_ROTATION_Z);
+		head.setRotationZ(player ? DialogueLayout.HEAD_ROTATION_Z_PLAYER : DialogueLayout.HEAD_ROTATION_Z_NPC);
 		head.setOriginalX(headX);
-		head.setOriginalY(DialogueLayout.HEAD_Y);
+		head.setOriginalY(blockY + DialogueLayout.HEAD_Y);
 		head.setOriginalWidth(DialogueLayout.HEAD_SIZE);
 		head.setOriginalHeight(DialogueLayout.HEAD_SIZE);
 		head.revalidate();
 
-		// Text column is the space not taken by the head.
-		int textX = player ? DialogueLayout.HEAD_MARGIN_X : DialogueLayout.HEAD_MARGIN_X + DialogueLayout.HEAD_SIZE;
-		int textWidth = width - 2 * DialogueLayout.HEAD_MARGIN_X - DialogueLayout.HEAD_SIZE;
+		int textX = player ? DialogueLayout.TEXT_X_PLAYER : DialogueLayout.TEXT_X_NPC;
+		int textWidth = width - textX - (player ? DialogueLayout.TEXT_RIGHT_MARGIN_PLAYER : DialogueLayout.TEXT_RIGHT_MARGIN_NPC);
 
 		Widget nameWidget = container.createChild(-1, WidgetType.TEXT);
 		nameWidget.setText(name);
 		nameWidget.setTextColor(DialogueLayout.COLOR_NAME);
 		nameWidget.setFontId(FontID.QUILL_8);
 		nameWidget.setOriginalX(textX);
-		nameWidget.setOriginalY(DialogueLayout.NAME_Y);
+		nameWidget.setOriginalY(blockY + DialogueLayout.NAME_Y);
 		nameWidget.setOriginalWidth(textWidth);
-		nameWidget.setOriginalHeight(DialogueLayout.LINE_HEIGHT);
+		nameWidget.setOriginalHeight(DialogueLayout.NAME_HEIGHT);
 		nameWidget.setXTextAlignment(WidgetTextAlignment.CENTER);
 		nameWidget.setYTextAlignment(WidgetTextAlignment.CENTER);
 		nameWidget.revalidate();
@@ -163,9 +164,9 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 		body.setTextColor(DialogueLayout.COLOR_TEXT);
 		body.setFontId(FontID.QUILL_8);
 		body.setOriginalX(textX);
-		body.setOriginalY(DialogueLayout.TEXT_Y);
+		body.setOriginalY(blockY + DialogueLayout.TEXT_Y);
 		body.setOriginalWidth(textWidth);
-		body.setOriginalHeight(DialogueLayout.LINE_HEIGHT * DialogueText.MAX_LINES_PER_PAGE);
+		body.setOriginalHeight(DialogueLayout.TEXT_HEIGHT);
 		body.setXTextAlignment(WidgetTextAlignment.CENTER);
 		body.setYTextAlignment(WidgetTextAlignment.CENTER);
 		body.setAction(0, "Continue");
@@ -178,9 +179,9 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 		cont.setTextColor(DialogueLayout.COLOR_CONTINUE);
 		cont.setFontId(FontID.QUILL_8);
 		cont.setOriginalX(textX);
-		cont.setOriginalY(container.getHeight() - DialogueLayout.CONTINUE_BOTTOM_MARGIN - DialogueLayout.LINE_HEIGHT);
+		cont.setOriginalY(blockY + DialogueLayout.CONTINUE_Y);
 		cont.setOriginalWidth(textWidth);
-		cont.setOriginalHeight(DialogueLayout.LINE_HEIGHT);
+		cont.setOriginalHeight(DialogueLayout.CONTINUE_HEIGHT);
 		cont.setXTextAlignment(WidgetTextAlignment.CENTER);
 		cont.setYTextAlignment(WidgetTextAlignment.CENTER);
 		cont.setAction(0, "Continue");
