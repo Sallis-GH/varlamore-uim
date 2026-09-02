@@ -2,7 +2,6 @@ package com.varlamoreuim.teleport;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -28,7 +27,7 @@ import java.util.Set;
  *
  * Whitelists Pendant of Ates (all destinations inside Varlamore).
  * Per-destination items: Ring of Dueling (allow Fortis Colosseum), Hunter/Max cape
- * (allow Hunter Guild), House teleport tablet (conditional on POH location).
+ * (allow Hunter Guild), House teleport tablet (conditional on config toggle).
  * Minigame grouping tab blocking handled via handleMinigameTeleport().
  */
 @Slf4j
@@ -62,6 +61,19 @@ public class ItemTeleportBlocker
 	 * Other destinations (Emir's Arena, Castle Wars, Ferox Enclave) are outside.
 	 */
 	private static final String ALLOWED_DUELING_DESTINATION = "Fortis Colosseum";
+
+	/**
+	 * All Ring of Dueling menu options that are teleport-related.
+	 * Includes "Rub" (inventory) and all destination names (equipped right-click).
+	 * Non-teleport options like "Wear", "Remove", "Drop", "Examine" should pass through.
+	 */
+	private static final Set<String> DUELING_TELEPORT_OPTIONS = Set.of(
+		"Rub",
+		"Fortis Colosseum",
+		"Emir's Arena",
+		"Castle Wars",
+		"Ferox Enclave"
+	);
 
 	/**
 	 * Hunter Cape — Hunter Guild (Varlamore) is allowed; other destinations blocked.
@@ -126,21 +138,13 @@ public class ItemTeleportBlocker
 	);
 
 	/**
-	 * House teleport tablet — allowed only when player's POH is in Aldarin (Varlamore).
-	 * VarBit 2187 controls POH location; value 8 = Aldarin.
+	 * House teleport tablet — blocked or allowed based on config toggle.
+	 * Players with POH in Aldarin (Varlamore) can disable this to allow house teleports.
 	 * Source: OSRS Wiki — Teleport to house, Player-owned house
 	 */
 	private static final Set<Integer> HOUSE_TABLET_IDS = Set.of(
 		ItemID.TELEPORT_TO_HOUSE  // 8013
 	);
-
-	/**
-	 * VarBit ID for Player-Owned House location.
-	 * Value 8 corresponds to Aldarin (the only Varlamore POH location).
-	 * If VarBit value differs, POH is outside Varlamore — block the teleport.
-	 */
-	private static final int HOUSE_LOCATION_VARBIT = 2187;
-	private static final int ALDARIN_HOUSE_VALUE = 8;
 
 	/**
 	 * All item IDs where every teleport destination is outside Varlamore.
@@ -181,22 +185,26 @@ public class ItemTeleportBlocker
 	);
 
 	/**
-	 * Menu option strings that indicate a teleport action.
-	 * Teleport option names used by different item categories:
-	 * - Jewelry: "Rub" (amulets, rings)
-	 * - Tablets: "Break"
-	 * - Quest items: "Rub", "Activate", "Empty", "Play", "Read", "Invoke"
-	 * - Diary gear: "Teleport"
+	 * Non-teleport menu options that appear on equipped/inventory items.
+	 * Used for items where ALL destinations are outside Varlamore (BLOCKED_ITEM_IDS, Max cape):
+	 * any option NOT in this set is treated as a teleport and blocked.
+	 * This handles both inventory actions ("Rub", "Break") and equipped items showing
+	 * destination names directly (e.g. "Edgeville", "Karamja").
 	 */
-	private static final Set<String> TELEPORT_OPTIONS = Set.of(
-		"Rub",      // Jewelry: amulets, rings
-		"Break",    // Tablets
-		"Teleport", // Generic teleport option / diary gear
-		"Activate", // Some quest items
-		"Empty",    // Ectophial uses "Empty" option
-		"Play",     // Enchanted Lyre
-		"Read",     // Kharedst's Memoirs
-		"Invoke"    // Skull Sceptre
+	private static final Set<String> NON_TELEPORT_OPTIONS = Set.of(
+		"Cancel",      // Menu cancel action
+		"Wear",        // Equip (neck, ring, amulet)
+		"Wield",       // Equip (weapon/shield slot)
+		"Remove",      // Unequip
+		"Drop",        // Drop item
+		"Examine",     // Examine item
+		"Use",         // Use on another item/object
+		"Destroy",     // Destroy item
+		"Store",       // STASH unit
+		"Check",       // Check charges
+		"Uncharge",    // Remove charges
+		"Disassemble", // Disassemble item
+		"Spellbook"    // Max cape spellbook swap (non-teleport)
 	);
 
 	static
@@ -602,17 +610,20 @@ public class ItemTeleportBlocker
 	 *
 	 * @param event the menu click event
 	 * @param chatMessageManager the chat message manager for feedback
-	 * @param client the RuneLite client (used for POH VarBit checks)
+	 * @param blockHouseTablet whether to block house teleport tablets
+	 * @param resolvedItemId the item ID, resolved from either inventory or equipment widget
 	 * @return true if the teleport was blocked, false otherwise
 	 */
-	public boolean handleMenuClick(MenuOptionClicked event, ChatMessageManager chatMessageManager, Client client)
+	public boolean handleMenuClick(MenuOptionClicked event, ChatMessageManager chatMessageManager, boolean blockHouseTablet, int resolvedItemId)
 	{
-		if (!event.isItemOp())
+		int itemId = resolvedItemId;
+
+		// Skip events with no valid item ID (NPC clicks, walks, etc.)
+		if (itemId == -1)
 		{
-			return false; // Not an item operation — skip (spells, walks, NPC clicks, minigame tab)
+			return false;
 		}
 
-		int itemId = event.getItemId();
 		String option = event.getMenuOption();
 		String itemName = event.getMenuTarget().replaceAll("<[^>]*>", "").trim();
 
@@ -641,7 +652,9 @@ public class ItemTeleportBlocker
 			{
 				return handleHunterCape(event, option, itemName, chatMessageManager);
 			}
-			if (isTeleportOption(option))
+			// Block all non-management options (catches equipped destination names
+			// like "Warriors' Guild", "Fishing Guild" from embedded skill cape teleports)
+			if (!NON_TELEPORT_OPTIONS.contains(option))
 			{
 				event.consume();
 				sendBlockedDestinationMessage(itemName, option, chatMessageManager);
@@ -651,14 +664,16 @@ public class ItemTeleportBlocker
 			return false;
 		}
 
-		// Conditional: House teleport tablet (check POH location VarBit)
+		// Conditional: House teleport tablet (config toggle)
 		if (HOUSE_TABLET_IDS.contains(itemId))
 		{
-			return handleHouseTablet(event, client, itemName, chatMessageManager);
+			return handleHouseTablet(event, blockHouseTablet, itemName, chatMessageManager);
 		}
 
 		// All-destination-blocked items (from 03-01)
-		if (BLOCKED_ITEM_IDS.contains(itemId) && isTeleportOption(option))
+		// Use NON_TELEPORT_OPTIONS exclusion to catch both inventory actions ("Rub", "Break")
+		// and equipped destination names ("Edgeville", "Karamja", etc.)
+		if (BLOCKED_ITEM_IDS.contains(itemId) && !NON_TELEPORT_OPTIONS.contains(option))
 		{
 			event.consume();
 			sendBlockedMessage(itemName, itemId, chatMessageManager);
@@ -678,11 +693,16 @@ public class ItemTeleportBlocker
 	private boolean handleRingOfDueling(MenuOptionClicked event, String option, String itemName,
 		ChatMessageManager chatMessageManager)
 	{
+		// Ignore non-teleport options (Wear, Remove, Drop, Examine, etc.)
+		if (!DUELING_TELEPORT_OPTIONS.contains(option))
+		{
+			return false;
+		}
 		if (ALLOWED_DUELING_DESTINATION.equals(option))
 		{
 			return false; // Fortis Colosseum is in Varlamore — allow
 		}
-		// Block Emir's Arena, Castle Wars, Ferox Enclave (and any future destination)
+		// Block Rub, Emir's Arena, Castle Wars, Ferox Enclave
 		event.consume();
 		sendBlockedDestinationMessage(itemName, option, chatMessageManager);
 		log.debug("Blocked Ring of Dueling teleport to '{}' (allowed: {})", option, ALLOWED_DUELING_DESTINATION);
@@ -718,24 +738,21 @@ public class ItemTeleportBlocker
 	}
 
 	/**
-	 * Handle House teleport tablet — allowed only when POH is in Aldarin (Varlamore).
-	 * Uses VarBit 2187 to check POH location. Value 8 = Aldarin.
-	 * Defaults to blocking if VarBit check is inconclusive (safe fallback).
+	 * Handle House teleport tablet — blocked or allowed based on config toggle.
+	 * Players whose POH is in Aldarin can disable this in config to allow the teleport.
 	 *
 	 * @return true if the teleport was blocked
 	 */
-	private boolean handleHouseTablet(MenuOptionClicked event, Client client, String itemName,
+	private boolean handleHouseTablet(MenuOptionClicked event, boolean blockHouseTablet, String itemName,
 		ChatMessageManager chatMessageManager)
 	{
-		int houseLocation = client.getVarbitValue(HOUSE_LOCATION_VARBIT);
-		if (houseLocation == ALDARIN_HOUSE_VALUE)
+		if (!blockHouseTablet)
 		{
-			return false; // POH is in Aldarin (Varlamore) — allow
+			return false; // Config allows house teleport (POH is in Varlamore)
 		}
 		event.consume();
 		sendBlockedDestinationMessage(itemName, "your house (outside Varlamore)", chatMessageManager);
-		log.debug("Blocked house teleport tablet — POH location {} is not Aldarin ({})",
-			houseLocation, ALDARIN_HOUSE_VALUE);
+		log.debug("Blocked house teleport tablet (toggle enabled)");
 		return true;
 	}
 
@@ -764,18 +781,6 @@ public class ItemTeleportBlocker
 		}
 
 		return false;
-	}
-
-	/**
-	 * Check if the given menu option string indicates a teleport action.
-	 * Matches explicit option names and any string containing "Teleport".
-	 *
-	 * @param option the menu option string
-	 * @return true if the option is a teleport action
-	 */
-	private boolean isTeleportOption(String option)
-	{
-		return TELEPORT_OPTIONS.contains(option) || option.contains("Teleport");
 	}
 
 	/**

@@ -117,6 +117,15 @@ None - no external service configuration required.
 - Plan 03 (Dizana's Quiver unlock gate) can call `npcTransportBlocker.setUnlocked(true)` when Dizana's Quiver is detected in inventory or equipment
 - Charter ship NPC IDs need in-game verification before Phase 4 is considered production-ready
 
+## Self-Check: PASSED
+
+- `src/main/java/com/varlamoreuim/npc/NpcTransportBlocker.java` — FOUND
+- `.planning/phases/04-npc-transport-blocking/04-01-SUMMARY.md` — FOUND
+- Commit `5089f72` (Task 1) — FOUND
+- Commit `40648ae` (Task 2) — FOUND
+- Commit `717bc77` (docs) — FOUND
+- `./gradlew build` — BUILD SUCCESSFUL
+
 ---
 *Phase: 04-npc-transport-blocking*
 *Completed: 2026-03-15*

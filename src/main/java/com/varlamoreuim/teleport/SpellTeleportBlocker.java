@@ -3,10 +3,11 @@ package com.varlamoreuim.teleport;
 import com.varlamoreuim.BoundaryChecker;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.MenuAction;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.chat.ChatColorType;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -23,6 +24,16 @@ import java.util.Set;
 @Slf4j
 public class SpellTeleportBlocker
 {
+	/**
+	 * Spellbook widget group IDs. Only CC_OP events from these widgets are spell casts.
+	 * Other CC_OP events (e.g. equipment panel clicks) are ignored.
+	 */
+	private static final Set<Integer> SPELLBOOK_WIDGET_GROUPS = Set.of(
+		218,  // Standard spellbook
+		219,  // Ancient Magicks
+		430   // Lunar spellbook (Arceuus shares 218)
+	);
+
 	private static final Set<String> BLOCKED_SPELLS = Set.of(
 		// Standard spellbook (6 spells - SPELL-01)
 		"Varrock Teleport",
@@ -98,25 +109,40 @@ public class SpellTeleportBlocker
 	 */
 	public boolean handleMenuClick(MenuOptionClicked event, ChatMessageManager chatMessageManager, BoundaryChecker boundaryChecker)
 	{
-		// Only handle Cast menu options
-		if (!"Cast".equals(event.getMenuOption()))
+		// Only handle spellbook widget actions (CC_OP) - skip unrelated menu clicks
+		if (event.getMenuAction() != MenuAction.CC_OP && event.getMenuAction() != MenuAction.CC_OP_LOW_PRIORITY)
 		{
 			return false;
 		}
 
-		// Strip color tags from spell name
+		// Filter to spellbook widgets only — equipment panel also uses CC_OP
+		Widget widget = event.getWidget();
+		if (widget == null || !SPELLBOOK_WIDGET_GROUPS.contains(WidgetUtil.componentToInterface(widget.getId())))
+		{
+			return false;
+		}
+
+		String menuOption = event.getMenuOption();
+
+		// Skip non-cast actions (e.g. "Examine")
+		if ("Cancel".equals(menuOption) || "Examine".equals(menuOption))
+		{
+			return false;
+		}
+
+		// Strip color tags from spell name in the target
 		String spellName = event.getMenuTarget().replaceAll("<[^>]*>", "").trim();
 
+		log.debug("Spellbook action: option='{}', spell='{}', action={}",
+			menuOption, spellName, event.getMenuAction());
+
 		// Check if spell is in blocked set (31 non-Home spells)
+		// This catches both "Cast" and alternate options like "Grand Exchange", "Seers'", "Yanille"
 		if (BLOCKED_SPELLS.contains(spellName))
 		{
-			// Consume the event to block the cast
 			event.consume();
-
-			// Send chat feedback
-			sendBlockedMessage(spellName, chatMessageManager);
-
-			log.debug("Blocked spell cast: {}", spellName);
+			sendBlockedMessage(spellName, menuOption, chatMessageManager);
+			log.debug("Blocked spell: '{}' (option: '{}')", spellName, menuOption);
 			return true;
 		}
 
@@ -125,13 +151,9 @@ public class SpellTeleportBlocker
 		{
 			if (isHomeTeleportBlocked(event, boundaryChecker))
 			{
-				// Consume the event to block the cast
 				event.consume();
-
-				// Send chat feedback
-				sendBlockedMessage(spellName, chatMessageManager);
-
-				log.debug("Blocked Home Teleport: {}", spellName);
+				sendBlockedMessage(spellName, menuOption, chatMessageManager);
+				log.debug("Blocked Home Teleport: '{}' (option: '{}')", spellName, menuOption);
 				return true;
 			}
 		}
@@ -187,13 +209,15 @@ public class SpellTeleportBlocker
 	 * Send a chat message informing the player that a spell was blocked.
 	 *
 	 * @param spellName the name of the blocked spell
+	 * @param menuOption the menu option used (e.g. "Cast", "Grand Exchange")
 	 * @param chatMessageManager the chat message manager
 	 */
-	private void sendBlockedMessage(String spellName, ChatMessageManager chatMessageManager)
+	private void sendBlockedMessage(String spellName, String menuOption, ChatMessageManager chatMessageManager)
 	{
+		String displayName = "Cast".equals(menuOption) ? spellName : spellName + " (" + menuOption + ")";
 		String message = new ChatMessageBuilder()
 			.append(Color.RED, "Varlamore UIM:")
-			.append(Color.WHITE, " You cannot cast " + spellName + " - it would take you outside Varlamore!")
+			.append(Color.WHITE, " You cannot cast " + displayName + " - it would take you outside Varlamore!")
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()

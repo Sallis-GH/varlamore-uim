@@ -1,15 +1,28 @@
 {
   "description": "Varlamore region boundary data for area-lock enforcement",
-  "version": "1.0",
-  "note": "Region IDs are placeholders. Accurate IDs must be collected in-game using RuneLite world-location plugin by walking the Varlamore boundary. See STATE.md blockers.",
+  "version": "1.1",
+  "note": "Region IDs calculated from known Varlamore world coordinates. Covers regionX 21-28, regionY 44-52. Some may be ocean - use debug overlay to refine in-game.",
+  "knownLocations": {
+    "Aldarin": "regionID 5678 (x=1422, y=2966)",
+    "Ralos Rise": "regionID 5681 (x=1459, y=3137)",
+    "The Darkfrost": "regionID 5939 (x=1490, y=3284)",
+    "Hunter Guild": "regionID 6191 (x=1558, y=3046)",
+    "Ortus Farm": "regionID 6193 (x=1557, y=3183)",
+    "Fairy Ring AJP": "regionID 6447 (x=1646, y=3012)",
+    "Bazaar": "regionID 6448 (x=1659, y=3111)",
+    "Civitas illa Fortis": "regionID 6704 (x=1681, y=3133)",
+    "Grand Museum": "regionID 6705 (x=1712, y=3163)",
+    "Stonecutter Outpost": "regionID 6958 (x=1742, y=2977)"
+  },
   "regions": [
-    1437, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1445, 1446, 1447, 1448,
-    1469, 1470, 1471, 1472, 1473, 1474, 1475, 1476, 1477, 1478, 1479, 1480,
-    1693, 1694, 1695, 1696, 1697, 1698, 1699, 1700, 1701, 1702, 1703, 1704,
-    1705, 1706, 1707, 1708, 1709, 1710, 1711, 1712, 1713, 1714, 1715, 1716,
-    1717, 1718, 1719, 1720, 1721, 1722, 1723, 1724, 1725, 1726, 1727, 1728,
-    1729, 1730, 1731, 1732, 1733, 1734, 1735, 1736, 1737, 1738, 1739, 1740,
-    1741, 1742, 1743, 1744, 1745, 1746, 1747, 1748, 1749, 1750, 1751
+    5420, 5421, 5422, 5423, 5424, 5425, 5426, 5427, 5428,
+    5676, 5677, 5678, 5679, 5680, 5681, 5682, 5683, 5684,
+    5932, 5933, 5934, 5935, 5936, 5937, 5938, 5939, 5940,
+    6188, 6189, 6190, 6191, 6192, 6193, 6194, 6195, 6196,
+    6444, 6445, 6446, 6447, 6448, 6449, 6450, 6451, 6452,
+    6700, 6701, 6702, 6703, 6704, 6705, 6706, 6707, 6708,
+    6956, 6957, 6958, 6959, 6960, 6961, 6962, 6963, 6964,
+    7212, 7213, 7214, 7215, 7216, 7217, 7218, 7219, 7220
   ],
   "quetzalWhitelist": []
 }

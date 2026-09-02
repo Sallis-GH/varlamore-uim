@@ -15,9 +15,7 @@ public class VarlamoreUimPanel extends PluginPanel
 
 	public VarlamoreUimPanel()
 	{
-		super(false);
-		setBackground(ColorScheme.DARK_GRAY_COLOR);
-		setLayout(new BorderLayout());
+		super(true);
 
 		// Header
 		JPanel headerPanel = new JPanel();
@@ -27,13 +25,7 @@ public class VarlamoreUimPanel extends PluginPanel
 		titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 16f));
 		titleLabel.setForeground(Color.WHITE);
 		headerPanel.add(titleLabel);
-		add(headerPanel, BorderLayout.NORTH);
-
-		// Content area (scrollable)
-		JPanel contentPanel = new JPanel();
-		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-		contentPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		contentPanel.setBorder(new EmptyBorder(0, 5, 5, 5));
+		add(headerPanel);
 
 		// Status section (always open)
 		JPanel statusContent = new JPanel();
@@ -43,8 +35,7 @@ public class VarlamoreUimPanel extends PluginPanel
 		boundaryStatusLabel.setForeground(Color.LIGHT_GRAY);
 		boundaryStatusLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
 		statusContent.add(boundaryStatusLabel);
-		contentPanel.add(createCollapsibleSection("Status", statusContent, true));
-		contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+		add(createCollapsibleSection("Status", statusContent, true));
 
 		// Restrictions section
 		JPanel restrictionsContent = new JPanel();
@@ -54,8 +45,7 @@ public class VarlamoreUimPanel extends PluginPanel
 		restrictionsLabel.setForeground(Color.LIGHT_GRAY);
 		restrictionsLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
 		restrictionsContent.add(restrictionsLabel);
-		contentPanel.add(createCollapsibleSection("Restrictions", restrictionsContent, true));
-		contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+		add(createCollapsibleSection("Restrictions", restrictionsContent, true));
 
 		// Quality of Adventure section (placeholder, collapsed)
 		JPanel qoaContent = new JPanel();
@@ -65,8 +55,7 @@ public class VarlamoreUimPanel extends PluginPanel
 		qoaLabel.setForeground(Color.GRAY);
 		qoaLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
 		qoaContent.add(qoaLabel);
-		contentPanel.add(createCollapsibleSection("Quality of Adventure", qoaContent, false));
-		contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+		add(createCollapsibleSection("Quality of Adventure", qoaContent, false));
 
 		// Progress Tracking section (placeholder, collapsed)
 		JPanel trackingContent = new JPanel();
@@ -76,8 +65,7 @@ public class VarlamoreUimPanel extends PluginPanel
 		trackingLabel.setForeground(Color.GRAY);
 		trackingLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
 		trackingContent.add(trackingLabel);
-		contentPanel.add(createCollapsibleSection("Progress Tracking", trackingContent, false));
-		contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+		add(createCollapsibleSection("Progress Tracking", trackingContent, false));
 
 		// Unlocks section (placeholder, collapsed)
 		JPanel unlocksContent = new JPanel();
@@ -87,17 +75,7 @@ public class VarlamoreUimPanel extends PluginPanel
 		unlocksLabel.setForeground(Color.GRAY);
 		unlocksLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
 		unlocksContent.add(unlocksLabel);
-		contentPanel.add(createCollapsibleSection("Unlocks", unlocksContent, false));
-
-		// Vertical glue to push sections to top
-		contentPanel.add(Box.createVerticalGlue());
-
-		// Wrap content in scroll pane
-		JScrollPane scrollPane = new JScrollPane(contentPanel);
-		scrollPane.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		scrollPane.getViewport().setBackground(ColorScheme.DARK_GRAY_COLOR);
-		scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-		add(scrollPane, BorderLayout.CENTER);
+		add(createCollapsibleSection("Unlocks", unlocksContent, false));
 	}
 
 	private JPanel createCollapsibleSection(String title, JPanel content, boolean startExpanded)
@@ -123,7 +101,6 @@ public class VarlamoreUimPanel extends PluginPanel
 		header.add(arrow, BorderLayout.WEST);
 		header.add(titleLabel, BorderLayout.CENTER);
 
-		// Content starts expanded or collapsed
 		content.setVisible(startExpanded);
 
 		// Toggle on click
@@ -138,25 +115,10 @@ public class VarlamoreUimPanel extends PluginPanel
 				section.revalidate();
 				section.repaint();
 			}
-
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				header.setBackground(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				header.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
-			}
 		});
 
 		section.add(header, BorderLayout.NORTH);
 		section.add(content, BorderLayout.CENTER);
-
-		// Prevent section from stretching vertically in BoxLayout
-		section.setMaximumSize(new Dimension(Integer.MAX_VALUE, section.getPreferredSize().height));
 
 		return section;
 	}

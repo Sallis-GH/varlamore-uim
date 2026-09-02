@@ -43,6 +43,14 @@ tasks.register('run', JavaExec) {
 	args "--developer-mode", "--debug"
 }
 
+tasks.register('runVanilla', JavaExec) {
+	classpath = sourceSets.test.runtimeClasspath
+	mainClass = 'net.runelite.client.RuneLite'
+
+	jvmArgs "-ea"
+	args "--developer-mode", "--debug"
+}
+
 tasks.register('shadowJar', Jar) {
 	dependsOn configurations.testRuntimeClasspath
 	manifest {
