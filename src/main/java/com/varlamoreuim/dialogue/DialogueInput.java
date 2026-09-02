@@ -112,6 +112,10 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 			PlayerLine p = (PlayerLine) page;
 			renderSpeech(container, context.playerName(), p.getText(), true, Expression.DEFAULT, -1);
 		}
+		else if (page instanceof Narration)
+		{
+			renderNarration(container, ((Narration) page).getText());
+		}
 		else
 		{
 			NpcLine n = (NpcLine) page;
@@ -237,11 +241,60 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 		}
 	}
 
+	/**
+	 * Plain message box: text centred in the full width with no head or name,
+	 * the continue line sitting where it does on speech pages.
+	 */
+	private void renderNarration(Widget container, String text)
+	{
+		int width = container.getWidth();
+		int blockY = Math.max(0, (container.getHeight() - DialogueLayout.BLOCK_HEIGHT) / 2);
+		int textX = DialogueLayout.TEXT_X_PLAYER;
+		int textWidth = width - 2 * DialogueLayout.TEXT_X_PLAYER;
+
+		List<String> lines = DialogueText.wrap(text, DialogueText.MAX_CHARS_PER_LINE);
+		Widget body = container.createChild(-1, WidgetType.TEXT);
+		body.setText(String.join("<br>", lines));
+		body.setTextColor(DialogueLayout.COLOR_TEXT);
+		body.setFontId(FontID.QUILL_8);
+		body.setOriginalX(textX);
+		body.setOriginalY(blockY);
+		body.setOriginalWidth(textWidth);
+		body.setOriginalHeight(DialogueLayout.CONTINUE_Y);
+		body.setXTextAlignment(WidgetTextAlignment.CENTER);
+		body.setYTextAlignment(WidgetTextAlignment.CENTER);
+		body.setAction(0, "Continue");
+		body.setOnOpListener((JavaScriptCallback) ev -> advance());
+		body.setHasListener(true);
+		body.revalidate();
+
+		Widget cont = container.createChild(-1, WidgetType.TEXT);
+		cont.setText("Click here to continue");
+		cont.setTextColor(DialogueLayout.COLOR_CONTINUE);
+		cont.setFontId(FontID.QUILL_8);
+		cont.setOriginalX(textX);
+		cont.setOriginalY(blockY + DialogueLayout.CONTINUE_Y);
+		cont.setOriginalWidth(textWidth);
+		cont.setOriginalHeight(DialogueLayout.CONTINUE_HEIGHT);
+		cont.setXTextAlignment(WidgetTextAlignment.CENTER);
+		cont.setYTextAlignment(WidgetTextAlignment.CENTER);
+		cont.setAction(0, "Continue");
+		cont.setOnOpListener((JavaScriptCallback) ev -> advance());
+		cont.setOnMouseOverListener((JavaScriptCallback) ev -> cont.setTextColor(DialogueLayout.COLOR_HOVER));
+		cont.setOnMouseLeaveListener((JavaScriptCallback) ev -> cont.setTextColor(DialogueLayout.COLOR_CONTINUE));
+		cont.setHasListener(true);
+		cont.revalidate();
+	}
+
 	private void advance()
 	{
 		if (currentPage instanceof PlayerLine)
 		{
 			show(((PlayerLine) currentPage).getNext());
+		}
+		else if (currentPage instanceof Narration)
+		{
+			show(((Narration) currentPage).getNext());
 		}
 		else if (currentPage instanceof NpcLine)
 		{

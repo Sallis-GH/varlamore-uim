@@ -4,6 +4,7 @@ import com.varlamoreuim.dialogue.DialogueContext;
 import com.varlamoreuim.dialogue.DialogueEffect;
 import com.varlamoreuim.dialogue.DialoguePage;
 import com.varlamoreuim.dialogue.DialogueScript;
+import com.varlamoreuim.dialogue.Narration;
 import com.varlamoreuim.dialogue.DialogueText;
 import com.varlamoreuim.dialogue.NpcLine;
 import com.varlamoreuim.dialogue.Option;
@@ -82,6 +83,11 @@ public class PersonaRosterTest
 						{
 							foundConditional = true;
 							DialoguePage target = s.page(o.resolve(HAS_QUIVER));
+							// A narration beat may precede the NPC's unlock line.
+							while (target instanceof Narration)
+							{
+								target = s.page(((Narration) target).getNext());
+							}
 							assertTrue(p.getId(), target instanceof NpcLine);
 							assertEquals(p.getId(), DialogueEffect.UNLOCK_CHARTER, ((NpcLine) target).getEffect());
 						}
@@ -101,7 +107,8 @@ public class PersonaRosterTest
 			for (DialoguePage page : p.getScript().getPages().values())
 			{
 				String text = page instanceof NpcLine ? ((NpcLine) page).getText()
-					: page instanceof PlayerLine ? ((PlayerLine) page).getText() : null;
+					: page instanceof PlayerLine ? ((PlayerLine) page).getText()
+					: page instanceof Narration ? ((Narration) page).getText() : null;
 				if (text != null)
 				{
 					int lines = DialogueText.wrap(text, DialogueText.MAX_CHARS_PER_LINE).size();

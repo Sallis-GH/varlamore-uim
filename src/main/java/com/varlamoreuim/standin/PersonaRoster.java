@@ -176,11 +176,12 @@ public final class PersonaRoster
 				Option.of("Who is allowed on, then?", "who"),
 				Option.of("Can't you make an exception?", "exception"),
 				Option.of("Do you say anything other than no?", "other"),
-				Option.conditional("What if I'm a champion?", DialogueContext::hasDizanasQuiver, "haveYes", "haveNo"))
+				Option.conditional("What if I'm a champion?", DialogueContext::hasDizanasQuiver, "notices", "haveNo"))
 			.npc("who", "Champions.", DialogueScript.END)
 			.npc("exception", "No.", DialogueScript.END)
-			.npc("other", "Move along.", DialogueScript.END)
-			.npc("haveYes", "...Is that Dizana's quiver? Hm. Go on, then. The crew's over there.", Expression.HAPPY, DialogueEffect.UNLOCK_CHARTER, DialogueScript.END)
+			.npc("other", "No.", DialogueScript.END)
+			.narration("notices", "The guard notices the quiver on your back.", "haveYes")
+			.npc("haveYes", "Fine.", Expression.DEFAULT, DialogueEffect.UNLOCK_CHARTER, DialogueScript.END)
 			.npc("haveNo", "You're not.", Expression.LAUGH, DialogueEffect.NONE, DialogueScript.END)
 			.build();
 		return new Persona("guard", "Fortis Guard", 13100,

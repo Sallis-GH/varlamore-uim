@@ -60,6 +60,12 @@ public final class DialogueScript
 			return this;
 		}
 
+		public Builder narration(String id, String text, String next)
+		{
+			pages.put(id, new Narration(text, next));
+			return this;
+		}
+
 		public Builder npc(String id, String text, String next)
 		{
 			return npc(id, text, Expression.DEFAULT, DialogueEffect.NONE, next);
@@ -96,8 +102,23 @@ public final class DialogueScript
 					out.put(id, page);
 					continue;
 				}
-				String text = page instanceof PlayerLine ? ((PlayerLine) page).getText() : ((NpcLine) page).getText();
-				String next = page instanceof PlayerLine ? ((PlayerLine) page).getNext() : ((NpcLine) page).getNext();
+				String text;
+				String next;
+				if (page instanceof PlayerLine)
+				{
+					text = ((PlayerLine) page).getText();
+					next = ((PlayerLine) page).getNext();
+				}
+				else if (page instanceof Narration)
+				{
+					text = ((Narration) page).getText();
+					next = ((Narration) page).getNext();
+				}
+				else
+				{
+					text = ((NpcLine) page).getText();
+					next = ((NpcLine) page).getNext();
+				}
 				List<String> chunks = chunk(text);
 				for (int i = 0; i < chunks.size(); i++)
 				{
@@ -107,6 +128,10 @@ public final class DialogueScript
 					if (page instanceof PlayerLine)
 					{
 						out.put(chunkId, new PlayerLine(chunks.get(i), chunkNext));
+					}
+					else if (page instanceof Narration)
+					{
+						out.put(chunkId, new Narration(chunks.get(i), chunkNext));
 					}
 					else
 					{
@@ -147,6 +172,10 @@ public final class DialogueScript
 				if (p instanceof PlayerLine)
 				{
 					require(pages, e.getKey(), ((PlayerLine) p).getNext());
+				}
+				else if (p instanceof Narration)
+				{
+					require(pages, e.getKey(), ((Narration) p).getNext());
 				}
 				else if (p instanceof NpcLine)
 				{
