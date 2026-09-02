@@ -11,7 +11,6 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Model;
-import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -74,23 +73,34 @@ public class StandInMenuInjector
 			return;
 		}
 		WorldView wv = client.getTopLevelWorldView();
+		if (wv == null)
+		{
+			return;
+		}
 		for (StandIn s : registry.active())
 		{
-			if (hit(wv, s.getObject(), mouse))
+			try
 			{
-				String target = "<col=ffff00>" + s.getPersona().getDisplayName() + "</col>";
-				int index = s.getNpc().getIndex();
-				client.getMenu().createMenuEntry(-1)
-					.setOption(EXAMINE)
-					.setTarget(target)
-					.setType(MenuAction.RUNELITE)
-					.setIdentifier(index);
-				client.getMenu().createMenuEntry(-1)
-					.setOption(TALK)
-					.setTarget(target)
-					.setType(MenuAction.RUNELITE)
-					.setIdentifier(index);
-				return;
+				if (hit(wv, s.getObject(), mouse))
+				{
+					String target = "<col=ffff00>" + s.getPersona().getDisplayName() + "</col>";
+					int index = s.getNpc().getIndex();
+					client.getMenu().createMenuEntry(-1)
+						.setOption(EXAMINE)
+						.setTarget(target)
+						.setType(MenuAction.RUNELITE)
+						.setIdentifier(index);
+					client.getMenu().createMenuEntry(-1)
+						.setOption(TALK)
+						.setTarget(target)
+						.setType(MenuAction.RUNELITE)
+						.setIdentifier(index);
+					return;
+				}
+			}
+			catch (Exception e)
+			{
+				log.debug("menu injection failed for stand-in", e);
 			}
 		}
 	}
@@ -119,16 +129,15 @@ public class StandInMenuInjector
 	/** Returns true if the click was ours. */
 	public boolean onMenuOptionClicked(MenuOptionClicked event)
 	{
+		pending = null;
 		MenuEntry entry = event.getMenuEntry();
 		if (entry.getType() != MenuAction.RUNELITE)
 		{
-			pending = null;
 			return false;
 		}
 		String option = entry.getOption();
 		if (!TALK.equals(option) && !EXAMINE.equals(option))
 		{
-			pending = null;
 			return false;
 		}
 		StandIn s = registry.byNpcIndex(entry.getIdentifier()).orElse(null);
@@ -143,10 +152,11 @@ public class StandInMenuInjector
 			return true;
 		}
 		Player player = client.getLocalPlayer();
-		if (walkToEnabled && player != null && player.getWorldLocation().distanceTo(s.getNpc().getWorldLocation()) > 1)
+		WorldView wv = client.getTopLevelWorldView();
+		if (walkToEnabled && player != null && wv != null && player.getWorldLocation().distanceTo(s.getNpc().getWorldLocation()) > 1)
 		{
 			WorldPoint target = WalkTarget.adjacentTile(s.getNpc().getWorldLocation(), player.getWorldLocation());
-			LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), target);
+			LocalPoint lp = LocalPoint.fromWorld(wv, target);
 			if (lp != null)
 			{
 				entry.setType(MenuAction.WALK);
