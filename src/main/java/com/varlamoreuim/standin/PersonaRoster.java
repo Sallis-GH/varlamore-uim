@@ -160,19 +160,31 @@ public final class PersonaRoster
 				"Ralos sees all things. Ralos does not see a quiver."));
 	}
 
+	/**
+	 * The guard is the one persona who gives nothing away. Every answer is as
+	 * short as he can make it, and the quiver is only acknowledged if it is
+	 * actually on the player's back.
+	 */
 	private static Persona guard()
 	{
+		DialogueScript script = DialogueScript.builder("open")
+			.player("open", OPENER, "reply")
+			.npc("reply", "Not for you.", "why")
+			.player("why", "Why not?", "whyNot")
+			.npc("whyNot", "Next question.", "menu")
+			.options("menu", MENU_TITLE,
+				Option.of("Who is allowed on, then?", "who"),
+				Option.of("Can't you make an exception?", "exception"),
+				Option.of("Do you say anything other than no?", "other"),
+				Option.conditional("What if I'm a champion?", DialogueContext::hasDizanasQuiver, "haveYes", "haveNo"))
+			.npc("who", "Champions.", DialogueScript.END)
+			.npc("exception", "No.", DialogueScript.END)
+			.npc("other", "Move along.", DialogueScript.END)
+			.npc("haveYes", "...Is that Dizana's quiver? Hm. Go on, then. The crew's over there.", Expression.HAPPY, DialogueEffect.UNLOCK_CHARTER, DialogueScript.END)
+			.npc("haveNo", "You're not.", Expression.LAUGH, DialogueEffect.NONE, DialogueScript.END)
+			.build();
 		return new Persona("guard", "Fortis Guard", 13100,
-			"Stands guard. Mostly stands.",
-			script(
-				"Not for you. The harbour's closed to civilians by royal decree.",
-				"Kingdom's orders. The sea lanes are for champions only. Prove you're strong enough, bring me Dizana's quiver from the Colosseum, and I'll walk you aboard myself.",
-				"Good. The Colosseum's in the city, past the bazaar. Come back in one piece. I'd rather salute you than sweep you up.",
-				"I'm a guard. I don't make exceptions, I stand in front of them.",
-				"Do you ever let anyone through?",
-				"Champions. And the fish, technically. They don't need a permit.",
-				"That's Dizana's quiver, that is. Apologies, champion. The crew's waiting for you.",
-				"I know what a quiver looks like. That's a back. Nice try, citizen."));
+			"Stands guard. Mostly stands.", script);
 	}
 
 	private static Persona harbourmaster()
