@@ -1,0 +1,89 @@
+{
+  "character": "Boatman",
+  "author": "editor's pick",
+  "variants": [
+    {
+      "title": "Coast work",
+      "phase": "pre",
+      "premise": "He is dragging a wine crate down the pier steps and doesn't stop for you, assembled from reviewer's Coast work, writer-a's Tide's out and Coves not kingdoms, and writer-b's Wine Crates.",
+      "lines": [
+        {"speaker": "P", "text": "Can you get me off this island?"},
+        {"speaker": "N", "text": "Nilsal. No. Not out."},
+        {"speaker": "P", "text": "That was quick."},
+        {"speaker": "N", "text": "As far as Mistrock. That's still the island."},
+        {"speaker": "N", "text": "Coast work only. I like my boat unburnt."}
+      ],
+      "options": [
+        {
+          "label": "Would a captain take me?",
+          "lines": [
+            {"speaker": "N", "text": "They don't know you. That's the whole of it."}
+          ]
+        },
+        {
+          "label": "What's in the crate?",
+          "lines": [
+            {"speaker": "N", "text": "Ask the label."},
+            {"speaker": "P", "text": "The label says wine."},
+            {"speaker": "N", "text": "There you go."}
+          ]
+        },
+        {
+          "label": "I'll pay you double.",
+          "lines": [
+            {"speaker": "N", "text": "Last one said double. He swam back."}
+          ]
+        },
+        {
+          "label": "Fine, I'll walk.",
+          "lines": [
+            {"speaker": "N", "text": "Suit yourself. It's an island, mind."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Off the ledger",
+      "phase": "post",
+      "premise": "He has one foot in the boat, ready to shove off, and stops, assembled from reviewer's Off the ledger and writer-a's Name in a book.",
+      "lines": [
+        {"speaker": "P", "text": "I need a ship out of Varlamore."},
+        {"speaker": "X", "text": "He looks at the quiver, then at his boat."},
+        {"speaker": "N", "text": "Colosseum, that. Thought those were a story."},
+        {"speaker": "P", "text": "So can you take me?"},
+        {"speaker": "N", "text": "No. But the registrar will write you down."},
+        {"speaker": "N", "text": "Cothon, up in the capital. Ask for him."}
+      ],
+      "options": [
+        {
+          "label": "You know the registrar?",
+          "lines": [
+            {"speaker": "N", "text": "I know who keeps the ledger."},
+            {"speaker": "N", "text": "It's my business to know. Not to visit."}
+          ]
+        },
+        {
+          "label": "Why not row me yourself?",
+          "lines": [
+            {"speaker": "N", "text": "You'll be in a book by evening."},
+            {"speaker": "N", "text": "Mine's never been in a book. Keeping it that way."}
+          ]
+        },
+        {
+          "label": "Come with me.",
+          "lines": [
+            {"speaker": "N", "text": "To that harbour? No."},
+            {"speaker": "N", "text": "They've a very good memory there."}
+          ]
+        },
+        {
+          "label": "Thanks for that.",
+          "lines": [
+            {"speaker": "N", "text": "Ask for the registrar. He'll be the bored one."},
+            {"speaker": "N", "text": "Timoiva. Don't mention the crates."}
+          ]
+        }
+      ]
+    }
+  ]
+}

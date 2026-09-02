@@ -1,0 +1,90 @@
+{
+  "character": "Fisher",
+  "author": "editor's pick",
+  "variants": [
+    {
+      "title": "Sharks and tides",
+      "phase": "pre",
+      "premise": "Built from reviewer's opener and menu, with writer-b's refusals.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance of a boat out of Varlamore?"},
+        {"speaker": "N", "text": "Do I look like a ship to you?"},
+        {"speaker": "P", "text": "Someone else's boat, then?"},
+        {"speaker": "N", "text": "Go and ask them. I know sharks and tides, that's the lot."},
+        {"speaker": "X", "text": "The fisher bites the twine off and starts again."}
+      ],
+      "options": [
+        {
+          "label": "Just point me somewhere.",
+          "lines": [
+            {"speaker": "N", "text": "Rocks are that way. Fish are that way. Ships, no idea."}
+          ]
+        },
+        {
+          "label": "Would you take me for coin?",
+          "lines": [
+            {"speaker": "N", "text": "No, I wouldn't."},
+            {"speaker": "N", "text": "You'd be sick before the rocks."}
+          ]
+        },
+        {
+          "label": "Caught anything today?",
+          "lines": [
+            {"speaker": "N", "text": "Shark. Two of them."},
+            {"speaker": "P", "text": "Is that good?"},
+            {"speaker": "N", "text": "It's two more than you've caught."}
+          ]
+        },
+        {
+          "label": "Never mind.",
+          "lines": [
+            {"speaker": "N", "text": "Aye. Mind the gulls."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Stayed for the fish",
+      "phase": "post",
+      "premise": "Built from reviewer's post variant, with writer-a's parting line.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance of a boat out of Varlamore?"},
+        {"speaker": "X", "text": "The fisher looks up at the quiver on your back."},
+        {"speaker": "N", "text": "Half this village came south to fight for one of those."},
+        {"speaker": "P", "text": "And what about you?"},
+        {"speaker": "N", "text": "I came for the fish."},
+        {"speaker": "N", "text": "Take that to the harbour in the capital. Not to me."}
+      ],
+      "options": [
+        {
+          "label": "Who do I show it to?",
+          "lines": [
+            {"speaker": "N", "text": "Whoever keeps the ledger up there."},
+            {"speaker": "N", "text": "I've never been. Too far from the water."}
+          ]
+        },
+        {
+          "label": "You could sail me yourself.",
+          "lines": [
+            {"speaker": "N", "text": "She's a fishing boat."},
+            {"speaker": "P", "text": "What of it?"},
+            {"speaker": "N", "text": "So you'd smell of shark for a week."}
+          ]
+        },
+        {
+          "label": "Ever thought of fighting there?",
+          "lines": [
+            {"speaker": "N", "text": "Thought about it."},
+            {"speaker": "N", "text": "Then I thought about the fish."}
+          ]
+        },
+        {
+          "label": "Thanks for the help.",
+          "lines": [
+            {"speaker": "N", "text": "Don't thank me. I did nothing."}
+          ]
+        }
+      ]
+    }
+  ]
+}

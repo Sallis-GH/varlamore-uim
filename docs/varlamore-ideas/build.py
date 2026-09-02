@@ -58,8 +58,17 @@ def collect_scripts(char_id):
                 'lines': v.get('lines', []),
                 'options': v.get('options', []),
             })
-    # stable order: pre first, then post; within phase keep file order
-    variants.sort(key=lambda v: 0 if v['phase'] == 'pre' else 1)
+    # stable order: pre first, then post; within a phase: editor's pick, approved, writers, reviewer
+    def rank(author):
+        a = author.lower()
+        if 'editor' in a:
+            return 0
+        if 'approved' in a:
+            return 1
+        if 'writer' in a:
+            return 2
+        return 3
+    variants.sort(key=lambda v: (0 if v['phase'] == 'pre' else 1, rank(v['author'])))
     return variants
 
 

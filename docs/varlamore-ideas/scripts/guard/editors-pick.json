@@ -1,0 +1,85 @@
+{
+  "character": "Guard",
+  "author": "editor's pick",
+  "variants": [
+    {
+      "title": "Not for you",
+      "phase": "pre",
+      "premise": "Watching a rope coil at the berth; approved.json spine, closing beat from reviewer.json.",
+      "lines": [
+        {"speaker": "P", "text": "Any ships sailing today?"},
+        {"speaker": "N", "text": "Not for you."},
+        {"speaker": "P", "text": "Why not?"},
+        {"speaker": "N", "text": "Next question."},
+        {"speaker": "X", "text": "The guard goes back to watching the rope."}
+      ],
+      "options": [
+        {
+          "label": "Who is allowed on, then?",
+          "lines": [
+            {"speaker": "N", "text": "Champions."}
+          ]
+        },
+        {
+          "label": "Can't you make an exception?",
+          "lines": [
+            {"speaker": "N", "text": "No."}
+          ]
+        },
+        {
+          "label": "Do you say anything but no?",
+          "lines": [
+            {"speaker": "N", "text": "No."}
+          ]
+        },
+        {
+          "label": "What if I'm a champion?",
+          "lines": [
+            {"speaker": "N", "text": "You're not."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Fine",
+      "phase": "post",
+      "premise": "He clocks the quiver mid-question; approved.json beats, options from reviewer.json.",
+      "lines": [
+        {"speaker": "P", "text": "Any ships sailing today?"},
+        {"speaker": "N", "text": "Not for you."},
+        {"speaker": "P", "text": "What if I'm a champion?"},
+        {"speaker": "X", "text": "The guard notices the quiver on your back."},
+        {"speaker": "N", "text": "Fine."},
+        {"speaker": "N", "text": "Registrar's inside the dock building."}
+      ],
+      "options": [
+        {
+          "label": "Who's the registrar?",
+          "lines": [
+            {"speaker": "N", "text": "The one with the ledger."}
+          ]
+        },
+        {
+          "label": "Where inside?",
+          "lines": [
+            {"speaker": "N", "text": "Behind me. Look for the desk."}
+          ]
+        },
+        {
+          "label": "You could sound happier.",
+          "lines": [
+            {"speaker": "N", "text": "I could."}
+          ]
+        },
+        {
+          "label": "Thanks.",
+          "lines": [
+            {"speaker": "N", "text": "Don't come back."},
+            {"speaker": "P", "text": "Charming."},
+            {"speaker": "N", "text": "I try."}
+          ]
+        }
+      ]
+    }
+  ]
+}

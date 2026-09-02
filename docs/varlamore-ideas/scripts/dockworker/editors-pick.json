@@ -1,0 +1,91 @@
+{
+  "character": "Dockworker",
+  "author": "editor's pick",
+  "variants": [
+    {
+      "title": "Losing Count",
+      "phase": "pre",
+      "premise": "Tallying spice sacks, losing count; reviewer.json scene, drink beat from writer-a.json.",
+      "lines": [
+        {"speaker": "P", "text": "Can you get me on a ship out of here?"},
+        {"speaker": "N", "text": "Nilsal. You've made me lose count."},
+        {"speaker": "X", "text": "He starts again at the first sack."},
+        {"speaker": "N", "text": "Crews won't take a stranger. Ask them yourself."},
+        {"speaker": "P", "text": "Why wouldn't they?"},
+        {"speaker": "N", "text": "Nobody's vouched for you. That's the whole of it."}
+      ],
+      "options": [
+        {
+          "label": "Who'd have to vouch for me?",
+          "lines": [
+            {"speaker": "N", "text": "Someone with a ledger and a worse temper."},
+            {"speaker": "N", "text": "Not me. I lift things."}
+          ]
+        },
+        {
+          "label": "The guards could help.",
+          "lines": [
+            {"speaker": "N", "text": "Those two? They're for looking at."},
+            {"speaker": "P", "text": "They're armed."},
+            {"speaker": "N", "text": "So's the blacksmith."}
+          ]
+        },
+        {
+          "label": "Where can I get a drink?",
+          "lines": [
+            {"speaker": "N", "text": "Flaming Arrow. Ask for the sunbeam ale."},
+            {"speaker": "P", "text": "Is it any good?"},
+            {"speaker": "N", "text": "You'll thank me."}
+          ]
+        },
+        {
+          "label": "I'll leave you to it.",
+          "lines": [
+            {"speaker": "N", "text": "Timoiva. Sixty-one, sixty-two..."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Puts It Down",
+      "phase": "post",
+      "premise": "He puts the rope down at the quiver; reviewer.json beats, directions from writer-a.json.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance of a ship out of Varlamore?"},
+        {"speaker": "X", "text": "He puts the rope down and looks at the quiver."},
+        {"speaker": "N", "text": "Tetamo. You don't see those on the wharf."},
+        {"speaker": "P", "text": "It's from the Colosseum."},
+        {"speaker": "N", "text": "I know what it is. Go and see the registrar."}
+      ],
+      "options": [
+        {
+          "label": "Where's the registrar?",
+          "lines": [
+            {"speaker": "N", "text": "Dock building, desk at the back."},
+            {"speaker": "N", "text": "She's the one with the ledger."}
+          ]
+        },
+        {
+          "label": "Will that be enough?",
+          "lines": [
+            {"speaker": "N", "text": "It's more than anyone here has. Try it."}
+          ]
+        },
+        {
+          "label": "You could vouch for me.",
+          "lines": [
+            {"speaker": "N", "text": "Me? I dropped a crate last week."},
+            {"speaker": "P", "text": "Fair enough."},
+            {"speaker": "N", "text": "Go on. She doesn't wait about."}
+          ]
+        },
+        {
+          "label": "Thanks.",
+          "lines": [
+            {"speaker": "N", "text": "Timoiva. Mind the ropes."}
+          ]
+        }
+      ]
+    }
+  ]
+}

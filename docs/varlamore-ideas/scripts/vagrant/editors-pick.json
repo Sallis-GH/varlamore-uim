@@ -1,0 +1,89 @@
+{
+  "character": "Vagrant",
+  "author": "editor's pick",
+  "variants": [
+    {
+      "title": "The wrong boat",
+      "phase": "pre",
+      "premise": "Built from reviewer's Aldarin opener and menu, plus writer-b's stowaway option.",
+      "lines": [
+        {"speaker": "P", "text": "Can you get me a ship out of here?"},
+        {"speaker": "N", "text": "I can get you Aldarin. Twenty coins."},
+        {"speaker": "P", "text": "That's not out of here."},
+        {"speaker": "N", "text": "It's out of here."},
+        {"speaker": "X", "text": "He goes back to drying his boot on the rock."}
+      ],
+      "options": [
+        {
+          "label": "I meant a proper ship.",
+          "lines": [
+            {"speaker": "N", "text": "Charter crews want a name on you."},
+            {"speaker": "N", "text": "You haven't got one."}
+          ]
+        },
+        {
+          "label": "Who's taking twenty coins?",
+          "lines": [
+            {"speaker": "N", "text": "Antonia. She's got the boat."},
+            {"speaker": "N", "text": "I've got the pier."}
+          ]
+        },
+        {
+          "label": "Can't you just stow away?",
+          "lines": [
+            {"speaker": "N", "text": "Tried that once. Never again."},
+            {"speaker": "P", "text": "What happened to you?"},
+            {"speaker": "N", "text": "Boots. Someone else's, in my ribs."}
+          ]
+        },
+        {
+          "label": "Why is your boot on a rock?",
+          "lines": [
+            {"speaker": "N", "text": "It got wet."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "The ledger",
+      "phase": "post",
+      "premise": "Built from reviewer's ledger variant, with writer-b's thanks option.",
+      "lines": [
+        {"speaker": "P", "text": "Can you get me a ship out of here?"},
+        {"speaker": "X", "text": "The vagrant looks at the quiver, then at your boots."},
+        {"speaker": "N", "text": "Still no. Crews can't read."},
+        {"speaker": "P", "text": "Who can, then?"},
+        {"speaker": "N", "text": "Bloke with the ledger. The Cothon, in the capital."}
+      ],
+      "options": [
+        {
+          "label": "How do you know him?",
+          "lines": [
+            {"speaker": "N", "text": "He wrote me down once."},
+            {"speaker": "N", "text": "Nothing came of it."}
+          ]
+        },
+        {
+          "label": "What should I expect?",
+          "lines": [
+            {"speaker": "N", "text": "He'll look at your boots."},
+            {"speaker": "N", "text": "They all do."}
+          ]
+        },
+        {
+          "label": "Come with me.",
+          "lines": [
+            {"speaker": "N", "text": "On a ship? No."},
+            {"speaker": "N", "text": "Ships smell worse than this."}
+          ]
+        },
+        {
+          "label": "Thanks for the advice.",
+          "lines": [
+            {"speaker": "N", "text": "Don't thank me. Thank whoever gave you that."}
+          ]
+        }
+      ]
+    }
+  ]
+}

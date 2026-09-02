@@ -1,0 +1,90 @@
+{
+  "character": "Vineyard worker",
+  "author": "editor's pick",
+  "variants": [
+    {
+      "title": "Back to one",
+      "phase": "pre",
+      "premise": "He is counting wine crates on the dock and keeps losing his place, assembled from writer-a's Counting crates, writer-b's Grapes and Gulls and reviewer's Not my crates.",
+      "lines": [
+        {"speaker": "P", "text": "Is there a ship out of here?"},
+        {"speaker": "N", "text": "Tetamo. You've made me lose count again."},
+        {"speaker": "N", "text": "Twelve, thirteen... no. Back to one."},
+        {"speaker": "P", "text": "Sorry. I only want passage somewhere."},
+        {"speaker": "N", "text": "I know these crates are going on. You're not."}
+      ],
+      "options": [
+        {
+          "label": "Why not me?",
+          "lines": [
+            {"speaker": "N", "text": "No captain wants the bother."},
+            {"speaker": "N", "text": "Ask a sailor. I pick grapes."}
+          ]
+        },
+        {
+          "label": "What's in the crates?",
+          "lines": [
+            {"speaker": "N", "text": "Wine. Moonrise red, the dear stuff."},
+            {"speaker": "P", "text": "Is it any good?"},
+            {"speaker": "N", "text": "Not for the likes of us. Don't lean on it."}
+          ]
+        },
+        {
+          "label": "Ever been on a ship?",
+          "lines": [
+            {"speaker": "N", "text": "Once, nearly. Turned green before we left the dock."},
+            {"speaker": "N", "text": "Water's for the grapes."}
+          ]
+        },
+        {
+          "label": "I'll leave you to it.",
+          "lines": [
+            {"speaker": "N", "text": "Timoiva. Mind the gulls."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Not my trouble",
+      "phase": "post",
+      "premise": "He is eating his lunch on the crates when he notices the quiver, assembled from writer-a's Shiny back, writer-b's The Quiver and reviewer's The quiver.",
+      "lines": [
+        {"speaker": "P", "text": "Is there a ship out of here?"},
+        {"speaker": "X", "text": "The worker stops chewing and stares at your back."},
+        {"speaker": "N", "text": "Tetamo. That's the one from the fighting pit."},
+        {"speaker": "P", "text": "The Colosseum, yes."},
+        {"speaker": "N", "text": "Then you're not my trouble. You're the harbour's."}
+      ],
+      "options": [
+        {
+          "label": "Where in the capital?",
+          "lines": [
+            {"speaker": "N", "text": "The Cothon. North side of the city."},
+            {"speaker": "N", "text": "Ask whoever keeps the ledger."}
+          ]
+        },
+        {
+          "label": "You know this quiver?",
+          "lines": [
+            {"speaker": "N", "text": "My cousin won't shut up about them."},
+            {"speaker": "N", "text": "He hasn't got one. Go on, the capital."}
+          ]
+        },
+        {
+          "label": "Want a look at it?",
+          "lines": [
+            {"speaker": "N", "text": "No. Show the ledger man in the capital, not me."},
+            {"speaker": "N", "text": "I've crates to count."}
+          ]
+        },
+        {
+          "label": "Thanks for the help.",
+          "lines": [
+            {"speaker": "N", "text": "Thank me when you're on a ship."},
+            {"speaker": "N", "text": "Timoiva. Try the capital harbour."}
+          ]
+        }
+      ]
+    }
+  ]
+}

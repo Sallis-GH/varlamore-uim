@@ -7,9 +7,9 @@
 <style>
   :root{
     --bg:#f6f1e7; --paper:#fffdf8; --ink:#231f1a; --muted:#6b6257; --line:#e2d9c8;
-    --gold:#b8892b; --gold-soft:#f1e4c2; --red:#8b1a1a; --blue:#1d3f8f; --green:#2e6b3a;
+    --gold:#b8892b; --gold-dark:#8a6318; --gold-soft:#f1e4c2; --red:#8b1a1a; --blue:#1d3f8f; --green:#2e6b3a;
     --npc:#fbf3df; --player:#e9eef9; --narr:#eeeeea; --shadow:0 1px 2px rgba(0,0,0,.06);
-    --sidebar:260px;
+    --sidebar:220px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif}
@@ -26,11 +26,13 @@
   nav.side .bar{height:8px;background:#4a3f32;border-radius:4px;overflow:hidden;margin-top:6px}
   nav.side .bar i{display:block;height:100%;background:var(--gold);width:0}
   main{padding:28px 40px 80px;max-width:1180px;margin:0 auto;width:100%}
-  section{margin-bottom:56px;scroll-margin-top:16px}
+  main p,main li{max-width:78ch}
+  section{margin-bottom:56px;scroll-margin-top:60px}
   h2{font-size:26px;margin:0 0 6px;border-bottom:2px solid var(--gold);padding-bottom:6px}
   h3{font-size:19px;margin:28px 0 8px}
   h4{font-size:15px;margin:18px 0 6px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
   p.lead{color:var(--muted);margin:0 0 16px}
+  .banner{background:#fdeaea;border:1px solid #d9a3a3;color:#7a1f1f;padding:10px 14px;border-radius:8px;margin:0 0 16px}
   .card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 20px;box-shadow:var(--shadow);margin:14px 0}
   .card.tight{padding:12px 16px}
   .meta{font-size:13px;color:var(--muted)}
@@ -38,61 +40,70 @@
   .pill.pre{background:#e6eef9;color:#1d3f8f}
   .pill.post{background:#e6f4e8;color:#2e6b3a}
   .pill.type{background:#eee;color:#444}
-  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0;margin:0 0 4px;border-bottom:1px solid var(--line)}
+  .tabs .tabs-name{font-size:13px;color:var(--muted);margin-right:6px;white-space:nowrap}
   .tabs button{border:1px solid var(--line);background:#fff;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:14px}
-  .tabs button.active{background:var(--gold);border-color:var(--gold);color:#fff}
-  .tabs button.active .meta{color:#fff3d6}
+  .tabs button.active{background:var(--gold-dark);border-color:var(--gold-dark);color:#fff}
+  .tabs button .meta{color:var(--muted)} .tabs button.active .meta{color:#f3e6c8}
+  .tabs button .cnt{font-size:12px;margin-left:8px;opacity:.85} .tabs button .cnt:not(:empty)::before{content:"\00b7  "}
   .hidden{display:none!important}
-  .convo{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-  .row{display:grid;grid-template-columns:110px minmax(0,1fr) 92px;gap:10px;align-items:start}
+  .convo{display:flex;flex-direction:column;gap:8px;margin-top:8px;max-width:900px}
+  .row{display:grid;grid-template-columns:110px minmax(0,1fr) 96px;gap:10px;align-items:start}
   .row .who{font-size:12px;color:var(--muted);padding-top:9px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .row .who.player{color:var(--blue)} .row .who.npc{color:var(--red)} .row .who.narr{color:#555}
   .bubble{padding:8px 12px;border-radius:10px;border:1px solid var(--line);overflow-wrap:anywhere}
   .bubble.npc{background:var(--npc)} .bubble.player{background:var(--player)} .bubble.narr{background:var(--narr);font-style:italic;text-align:center}
   .bubble.option{background:#fff;border-style:dashed}
-  .score{display:flex;flex-direction:column;gap:4px}
-  .score input[type=number]{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;font-size:14px;text-align:center}
+  .score{display:flex;flex-direction:column;gap:3px}
+  .score input[type=number]{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;font-size:14px;text-align:center;-moz-appearance:textfield}
+  .score input::-webkit-outer-spin-button,.score input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
   .score input.filled{border-color:var(--gold);background:#fffaf0}
   .score input.low{background:#fdeaea;border-color:#d9a3a3}
   .score input.high{background:#e9f6ec;border-color:#9fcaa8}
   .note{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;font-size:13px;resize:vertical;min-height:30px;font-family:inherit}
-  .notebtn{border:0;background:transparent;color:var(--muted);font-size:11px;cursor:pointer;padding:0;text-align:center}
-  .notebtn:hover{color:var(--ink)} .notebtn.has{color:var(--gold);font-weight:600}
+  .notebtn{border:0;background:transparent;color:var(--muted);font-size:12px;cursor:pointer;padding:0;text-align:center}
+  .notebtn:hover{color:var(--ink)} .notebtn.has{color:var(--gold-dark);font-weight:600}
   .row .note{grid-column:2/4}
   .options{margin:10px 0 0 120px;padding:10px 12px;border-left:3px solid var(--gold);background:#fffaf0;border-radius:0 8px 8px 0}
   .options .title{font-size:13px;color:var(--red);font-weight:600;margin-bottom:6px;text-align:center}
   .option{margin:8px 0 14px}
-  .option > .row{grid-template-columns:40px minmax(0,1fr) 92px}
-  .option .num{font-weight:700;color:var(--gold);padding-top:8px;text-align:right}
+  .option > .row{grid-template-columns:40px minmax(0,1fr) 96px}
+  .option .num{font-weight:700;color:var(--gold-dark);padding-top:8px;text-align:right}
   .option .ending{margin-left:40px}
-  table{border-collapse:collapse;width:100%;font-size:14px}
-  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
-  th{background:var(--gold-soft)}
-  .tablewrap{overflow-x:auto;margin:10px 0}
-  .idea{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:12px}
+  .idea{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:12px}
+  .idea .score{position:sticky;top:64px;align-self:start}
   .idea h5{margin:0 0 4px;font-size:16px}
   .idea .details{font-size:14px;color:#3a352e}
   .idea .src a{font-size:12px}
-  details summary{cursor:pointer;color:var(--blue);font-size:14px}
-  .export textarea{width:100%;min-height:220px;font:12px/1.4 ui-monospace,Consolas,monospace;padding:10px;border:1px solid var(--line);border-radius:8px}
-  .btn{background:var(--gold);color:#fff;border:0;padding:9px 14px;border-radius:8px;cursor:pointer;font-size:14px;margin-right:8px}
+  .export textarea{width:100%;min-height:260px;font:12px/1.4 ui-monospace,Consolas,monospace;padding:10px;border:1px solid var(--line);border-radius:8px}
+  .btn{background:var(--gold-dark);color:#fff;border:0;padding:9px 14px;border-radius:8px;cursor:pointer;font-size:14px;margin-right:8px}
   .btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}
-  .toast{position:fixed;bottom:18px;right:18px;background:#2b241c;color:#fff;padding:10px 14px;border-radius:8px;opacity:0;transition:opacity .2s;pointer-events:none}
+  .btn.danger{background:#fff;color:var(--red);border:1px solid #d9a3a3;margin-left:24px}
+  .toast{position:fixed;bottom:18px;right:18px;background:#2b241c;color:#fff;padding:10px 14px;border-radius:8px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20}
   .toast.show{opacity:1}
-  .brief{background:#fff;border-left:3px solid var(--gold);padding:10px 14px;margin:8px 0 14px;font-size:14px}
+  .brief{background:#fff;border-left:3px solid var(--gold);padding:10px 14px;margin:8px 0 14px;font-size:14px;max-width:900px}
   .kv{display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 12px;font-size:14px}
   .kv b{color:var(--muted);font-weight:600}
   .legend{font-size:13px;color:var(--muted)}
-  code{background:#f0ebe0;padding:1px 5px;border-radius:4px;font-size:13px}
-  @media (max-width:900px){
+  code{background:#f0ebe0;padding:1px 5px;border-radius:4px;font-size:13px;overflow-wrap:anywhere}
+  .keys{font-size:13px;color:var(--muted)}
+  kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;font-size:12px;background:#fff}
+  @media (max-width:1024px){
     .layout{grid-template-columns:1fr}
-    nav.side{position:relative;height:auto;max-height:none}
+    nav.side{position:sticky;top:0;height:auto;max-height:none;display:flex;gap:4px;overflow-x:auto;overflow-y:hidden;padding:8px 10px;align-items:center;z-index:10;white-space:nowrap}
+    nav.side h1,nav.side .sub{display:none}
+    nav.side a{padding:5px 8px;font-size:13px;margin:0}
+    nav.side a.sec{margin-top:0}
+    nav.side a.sub-link{display:none}
+    nav.side .progress{margin:0 0 0 auto;min-width:150px;flex:0 0 auto}
     main{padding:18px 16px 60px}
-    .row{grid-template-columns:70px minmax(0,1fr) 72px}
+    .tabs{top:44px}
+    .row{grid-template-columns:70px minmax(0,1fr) 76px}
     .options{margin-left:0}
-    .option > .row{grid-template-columns:28px minmax(0,1fr) 72px}
+    .option > .row{grid-template-columns:28px minmax(0,1fr) 76px}
     .option .ending{margin-left:0}
-    .idea{grid-template-columns:1fr}
+    .idea{grid-template-columns:minmax(0,1fr) 76px}
+    .idea .score{top:96px}
     .kv{grid-template-columns:1fr}
   }
 </style>
@@ -109,25 +120,38 @@
   const DATA = JSON.parse(document.getElementById('data').textContent);
   const KEY = 'vuim-ideas-scores-v1';
   let store = {};
-  try { store = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { store = {}; }
-  function save(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} updateProgress(); }
-  const scoreIds = [];
+  let storageOk = true;
+  try {
+    store = JSON.parse(localStorage.getItem(KEY) || '{}');
+    localStorage.setItem(KEY + '-probe', '1'); localStorage.removeItem(KEY + '-probe');
+  } catch (e) { storageOk = false; store = {}; }
+  function save(){
+    try { localStorage.setItem(KEY, JSON.stringify(store)); }
+    catch (e) { storageOk = false; showStorageBanner(); }
+    updateProgress();
+  }
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function hash(s){ let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(16).slice(0, 6); }
 
-  function scoreBox(id, label){
-    scoreIds.push(id);
+  // registry of scoreable things, in DOM order
+  const items = []; // {id, label, group, variantId, kind}
+  let currentGroup = '';
+  let currentVariant = '';
+  function scoreBox(id, label, kind){
+    items.push({id, label, group: currentGroup, variantId: currentVariant, kind: kind || 'line'});
     const v = store[id] && store[id].score != null ? store[id].score : '';
     const hasNote = !!(store[id] && store[id].note);
-    return `<div class="score" title="${esc(label||'')}"><input type="number" min="1" max="100" placeholder="1-100" data-score="${esc(id)}" value="${esc(v)}" aria-label="Score for ${esc(label||id)}"><button type="button" class="notebtn ${hasNote?'has':''}" data-notebtn="${esc(id)}" title="Add a note">&#9998; note</button></div>`;
+    return `<div class="score" title="${esc(label||'')}"><input type="number" min="1" max="100" placeholder="1-100" data-score="${esc(id)}" value="${esc(v)}" aria-label="Score for ${esc(label||id)}"><button type="button" tabindex="-1" class="notebtn ${hasNote?'has':''}" data-notebtn="${esc(id)}" title="Add a note">&#9998; note</button></div>`;
   }
   function noteBox(id){
     const v = store[id] && store[id].note ? store[id].note : '';
-    return `<textarea class="note ${v?'':'hidden'}" placeholder="Note (optional)" data-note="${esc(id)}">${esc(v)}</textarea>`;
+    return `<textarea class="note ${v?'':'hidden'}" placeholder="Note (optional)" data-note="${esc(id)}" tabindex="-1">${esc(v)}</textarea>`;
   }
   function lineRow(id, speaker, text, npcName){
     const cls = speaker === 'P' ? 'player' : speaker === 'X' ? 'narr' : 'npc';
     const who = speaker === 'P' ? 'Player' : speaker === 'X' ? '' : (npcName || 'NPC');
-    return `<div class="row"><div class="who ${cls}">${esc(who)}</div><div class="bubble ${cls}">${esc(text)}</div>${scoreBox(id, text)}${noteBox(id)}</div>`;
+    const sid = `${id}:${hash(text)}`;
+    return `<div class="row"><div class="who ${cls}">${esc(who)}</div><div class="bubble ${cls}">${esc(text)}</div>${scoreBox(sid, (who ? who + ': ' : '') + text)}${noteBox(sid)}</div>`;
   }
   function conversation(vid, v, npcName){
     let h = '<div class="convo">';
@@ -135,7 +159,8 @@
     if (v.options && v.options.length){
       h += `<div class="options"><div class="title">Select an option</div>`;
       v.options.forEach((o, i) => {
-        h += `<div class="option"><div class="row"><div class="num">${i+1}.</div><div class="bubble option">${esc(o.label)}</div>${scoreBox(`${vid}:o${i}`, o.label)}${noteBox(`${vid}:o${i}`)}</div><div class="ending convo">`;
+        const oid = `${vid}:o${i}:${hash(o.label)}`;
+        h += `<div class="option"><div class="row"><div class="num">${i+1}.</div><div class="bubble option">${esc(o.label)}</div>${scoreBox(oid, 'Option: ' + o.label)}${noteBox(oid)}</div><div class="ending convo">`;
         (o.lines || []).forEach((l, j) => { h += lineRow(`${vid}:o${i}l${j}`, l.speaker, l.text, npcName); });
         h += `</div></div>`;
       });
@@ -145,7 +170,7 @@
     return h;
   }
   function overallRow(id, label){
-    return `<div class="row" style="margin-top:12px"><div class="who" style="font-weight:600;color:var(--ink)">Overall</div><div class="bubble" style="background:#fff">${esc(label)}</div>${scoreBox(id, label)}${noteBox(id)}</div>`;
+    return `<div class="row" style="margin-top:12px"><div class="who" style="font-weight:600;color:var(--ink)">Overall</div><div class="bubble" style="background:#fff">${esc(label)}</div>${scoreBox(id, label, 'overall')}${noteBox(id)}</div>`;
   }
 
   // ---------- render ----------
@@ -155,20 +180,23 @@
   let html = '';
 
   // Overview
-  html += `<section id="overview"><h2>${esc(DATA.overview.title)}</h2><p class="lead">${esc(DATA.overview.lead)}</p>`;
+  html += `<section id="overview"><h2>${esc(DATA.overview.title)}</h2><p class="lead">${esc(DATA.overview.lead)}</p><div id="storage-banner" class="banner hidden">This browser is not saving your scores (storage is blocked). Keep the tab open and use <b>Copy scores</b> before you close it.</div>`;
   DATA.overview.blocks.forEach(b => { html += `<div class="card"><h3 style="margin-top:0">${esc(b.title)}</h3>${b.html}</div>`; });
+  html += `<div class="card tight keys"><b>Keyboard:</b> type a number, then <kbd>Enter</kbd> or <kbd>&darr;</kbd> for the next box, <kbd>&uarr;</kbd> for the previous. Mouse wheel never changes a score.</div>`;
   html += `</section>`;
   navHtml += `<a class="sec" href="#overview">Overview</a>`;
 
   // Unlock design
   const U = DATA.unlock;
   html += `<section id="unlock"><h2>${esc(U.title)}</h2><p class="lead">${esc(U.lead)}</p>${U.intro_html || ''}`;
-  U.candidates.forEach((c, i) => {
+  U.candidates.forEach((c) => {
     const cid = `unlock:${c.id}`;
+    currentGroup = `Unlocker: ${c.name}`; currentVariant = cid;
+    const short = c.name.replace(/ \(.*\)$/, '').replace(/,.*$/, '');
     html += `<div class="card" id="${esc(cid)}"><h3 style="margin-top:0">${esc(c.name)} <span class="pill type">${esc(c.type)}</span></h3>
       <div class="kv"><b>Where</b><span>${esc(c.location)}</span><b>Why it fits</b><span>${esc(c.why)}</span><b>Pros</b><span>${esc(c.pros)}</span><b>Cons</b><span>${esc(c.cons)}</span><b>Source</b><span>${c.source_html || ''}</span></div>`;
-    if (c.script){ html += `<h4>With the quiver</h4>` + conversation(cid + ':with', c.script, c.name.replace(/ \(.*\)$/, '')); }
-    if (c.script_without){ html += `<h4>Without the quiver</h4>` + conversation(cid + ':without', c.script_without, c.name.replace(/ \(.*\)$/, '')); }
+    if (c.script){ html += `<h4>With the quiver</h4>` + conversation(cid + ':with', c.script, short); }
+    if (c.script_without){ html += `<h4>Without the quiver</h4>` + conversation(cid + ':without', c.script_without, short); }
     html += overallRow(`${cid}:overall`, `Overall: ${c.name} as the unlocker`);
     html += `</div>`;
   });
@@ -183,16 +211,17 @@
   DATA.characters.forEach(ch => {
     const secId = `char:${ch.id}`;
     navHtml += `<a class="sub-link" href="#${esc(secId)}">${esc(ch.name)}</a>`;
-    html += `<div id="${esc(secId)}" style="scroll-margin-top:16px"><h3>${esc(ch.name)} <span class="pill">${esc(ch.dock)}</span></h3>
+    html += `<div id="${esc(secId)}" style="scroll-margin-top:60px"><h3>${esc(ch.name)} <span class="pill">${esc(ch.dock)}</span></h3>
       <div class="brief"><b>Who they are.</b> ${esc(ch.brief)}<br><span class="meta">Writers were given only this brief, the location, and the one lore rule.</span></div>`;
     const pre = ch.variants.filter(v => v.phase === 'pre'), post = ch.variants.filter(v => v.phase === 'post');
     const groups = [['Before the quiver', pre, 'pre'], ['After the quiver', post, 'post']];
     groups.forEach(([label, vs, phase]) => {
       if (!vs.length) return;
-      html += `<h4>${esc(label)}</h4><div class="tabs" data-tabs="${esc(secId)}:${phase}">`;
-      vs.forEach((v, i) => { html += `<button data-tab="${esc(v.id)}" class="${i===0?'active':''}">${esc(v.title)} <span class="meta">(${esc(v.author)})</span></button>`; });
+      html += `<div class="tabs" data-tabs="${esc(secId)}:${phase}"><span class="tabs-name">${esc(ch.name)} &middot; ${phase === 'pre' ? 'before' : 'after'} the quiver</span>`;
+      vs.forEach((v, i) => { const star = /editor/i.test(v.author) ? '&#9733; ' : ''; html += `<button data-tab="${esc(v.id)}" class="${i===0?'active':''}">${star}${esc(v.title)} <span class="meta">(${esc(v.author)})</span><span class="cnt" data-cnt="${esc(v.id)}"></span></button>`; });
       html += `</div>`;
       vs.forEach((v, i) => {
+        currentGroup = `${ch.name} / ${label} / ${v.title} (${v.author})`; currentVariant = v.id;
         html += `<div class="card tab-panel ${i===0?'':'hidden'}" data-panel="${esc(v.id)}" data-group="${esc(secId)}:${phase}">
           <div class="meta"><span class="pill ${phase}">${phase === 'pre' ? 'before quiver' : 'after quiver'}</span>${v.premise ? esc(v.premise) : ''}</div>`;
         html += conversation(v.id, v, ch.display || ch.name);
@@ -200,6 +229,7 @@
         html += `</div>`;
       });
     });
+    currentGroup = `${ch.name} / concept`; currentVariant = `char:${ch.id}`;
     html += `<div class="card tight">` + overallRow(`char:${ch.id}:concept`, `The character itself: does a ${ch.name.toLowerCase()} belong at ${ch.dock}?`) + `</div>`;
     html += `</div>`;
   });
@@ -210,39 +240,54 @@
     const sid = `plugin:${sec.id}`;
     navHtml += `<a class="sec" href="#${esc(sid)}">${esc(sec.title)}</a>`;
     html += `<section id="${esc(sid)}"><h2>${esc(sec.title)}</h2><p class="lead">${esc(sec.lead)}</p>${sec.intro_html || ''}`;
+    currentGroup = sec.title; currentVariant = sid;
     sec.items.forEach(it => {
       const iid = `${sid}:${it.id}`;
-      html += `<div class="card tight"><div class="idea"><div><h5>${esc(it.title)}</h5><div class="details">${it.html || esc(it.summary)}</div>${it.source_html ? `<div class="src">${it.source_html}</div>` : ''}</div>${scoreBox(iid, it.title)}</div>${noteBox(iid)}</div>`;
+      html += `<div class="card tight"><div class="idea"><div><h5>${esc(it.title)}</h5><div class="details">${it.html || esc(it.summary)}</div>${it.source_html ? `<div class="src">${it.source_html}</div>` : ''}</div>${scoreBox(iid, it.title, 'idea')}</div>${noteBox(iid)}</div>`;
     });
     html += `</section>`;
   });
 
   // Export
-  html += `<section id="export" class="export"><h2>Your scores</h2><p class="lead">Scores save automatically in this browser. When you're done, copy the text below and paste it back to me.</p>
-    <button class="btn" id="copy">Copy scores</button><button class="btn secondary" id="refresh">Refresh text</button><button class="btn secondary" id="clear">Clear all scores</button>
+  html += `<section id="export" class="export"><h2>Your scores</h2><p class="lead">Scores save automatically in this browser. When you're done, copy the text below and paste it back to me. It lists a leaderboard of every Overall score, then every scored line grouped by character and script.</p>
+    <button class="btn" id="copy">Copy scores</button><button class="btn secondary" id="refresh">Refresh text</button><button class="btn danger" id="clear">Clear all scores</button>
     <div style="margin-top:10px"><textarea id="exportbox" readonly></textarea></div></section>`;
   navHtml += `<a class="sec" href="#export">Your scores</a><div class="progress"><span id="prog-text"></span><div class="bar"><i id="prog-bar"></i></div></div>`;
 
   main.innerHTML = html;
   nav.innerHTML = navHtml;
+  if (!storageOk) showStorageBanner();
+  function showStorageBanner(){ const b = document.getElementById('storage-banner'); if (b) b.classList.remove('hidden'); }
 
   // ---------- behaviour ----------
+  const inputs = Array.from(main.querySelectorAll('input[data-score]'));
   function paintInput(inp){
     const v = parseInt(inp.value, 10);
     inp.classList.toggle('filled', !isNaN(v));
     inp.classList.toggle('low', !isNaN(v) && v <= 30);
     inp.classList.toggle('high', !isNaN(v) && v >= 70);
   }
-  main.querySelectorAll('input[data-score]').forEach(inp => {
+  function visible(el){ return !!(el.offsetParent); }
+  function moveFocus(inp, dir){
+    let i = inputs.indexOf(inp) + dir;
+    while (i >= 0 && i < inputs.length){ if (visible(inputs[i])) { inputs[i].focus(); inputs[i].select(); return; } i += dir; }
+  }
+  inputs.forEach(inp => {
     paintInput(inp);
     inp.addEventListener('input', () => {
       let v = parseInt(inp.value, 10);
-      if (!isNaN(v)) { v = Math.max(1, Math.min(100, v)); }
+      if (!isNaN(v)) { const c = Math.max(1, Math.min(100, v)); if (c !== v) { v = c; inp.value = String(c); } }
       const id = inp.dataset.score;
       store[id] = store[id] || {};
       if (isNaN(v)) delete store[id].score; else store[id].score = v;
       paintInput(inp); save();
     });
+    inp.addEventListener('wheel', () => { inp.blur(); }, {passive: true});
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === 'ArrowDown') { e.preventDefault(); moveFocus(inp, 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); moveFocus(inp, -1); }
+    });
+    inp.addEventListener('focus', () => inp.select());
   });
   main.querySelectorAll('button[data-notebtn]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -268,22 +313,35 @@
       main.querySelectorAll(`.tab-panel[data-group="${group}"]`).forEach(p => p.classList.toggle('hidden', p.dataset.panel !== btn.dataset.tab));
     });
   });
+  const byVariant = {};
+  items.forEach(it => { (byVariant[it.variantId] = byVariant[it.variantId] || []).push(it); });
   function updateProgress(){
-    const done = scoreIds.filter(id => store[id] && store[id].score != null).length;
-    document.getElementById('prog-text').textContent = `${done} / ${scoreIds.length} scored`;
-    document.getElementById('prog-bar').style.width = (scoreIds.length ? (100*done/scoreIds.length) : 0) + '%';
+    const done = items.filter(it => store[it.id] && store[it.id].score != null).length;
+    document.getElementById('prog-text').textContent = `${done} / ${items.length} boxes scored (all tabs)`;
+    document.getElementById('prog-bar').style.width = (items.length ? (100*done/items.length) : 0) + '%';
+    main.querySelectorAll('[data-cnt]').forEach(el => {
+      const list = byVariant[el.dataset.cnt] || [];
+      const d = list.filter(it => store[it.id] && store[it.id].score != null).length;
+      el.textContent = list.length ? `${d}/${list.length}` : '';
+    });
   }
-  function labelFor(id){
-    const el = main.querySelector(`input[data-score="${CSS.escape(id)}"]`);
-    return el ? (el.closest('.row, .idea') ? (el.closest('.row, .idea').querySelector('.bubble, h5') || {}).textContent || id : id) : id;
-  }
+  function avg(list){ const s = list.map(it => store[it.id] && store[it.id].score).filter(v => v != null); return s.length ? (s.reduce((a,b)=>a+b,0)/s.length) : null; }
   function exportText(){
-    const lines = [`# Varlamore UIM ideas — scores (${new Date().toISOString().slice(0,10)})`, ''];
-    const ids = Object.keys(store).filter(k => store[k] && (store[k].score != null || store[k].note));
-    ids.sort();
-    ids.forEach(id => {
-      const s = store[id];
-      lines.push(`${id} | ${s.score != null ? s.score : '-'} | ${labelFor(id).trim()}${s.note ? ' | NOTE: ' + s.note.replace(/\s+/g,' ') : ''}`);
+    const lines = [`# Varlamore UIM ideas, scores (${new Date().toISOString().slice(0,10)})`, ''];
+    const overalls = items.filter(it => it.kind === 'overall' && store[it.id] && store[it.id].score != null)
+      .sort((a, b) => store[b.id].score - store[a.id].score);
+    if (overalls.length){
+      lines.push('## Overall scores, best first');
+      overalls.forEach(it => lines.push(`${store[it.id].score} | ${it.label}${store[it.id].note ? ' | NOTE: ' + store[it.id].note.replace(/\s+/g,' ') : ''}`));
+      lines.push('');
+    }
+    lines.push('## Every scored line, in page order');
+    let g = null;
+    items.forEach(it => {
+      const s = store[it.id];
+      if (!s || (s.score == null && !s.note)) return;
+      if (it.group !== g){ g = it.group; const a = avg(byVariant[it.variantId] || []); lines.push('', `### ${g}${a != null ? ` (average ${a.toFixed(1)})` : ''}`); }
+      lines.push(`${s.score != null ? s.score : '-'} | ${it.label}${s.note ? ' | NOTE: ' + s.note.replace(/\s+/g,' ') : ''}`);
     });
     lines.push('', '```json', JSON.stringify(store), '```');
     return lines.join('\n');
@@ -297,16 +355,18 @@
   });
   document.getElementById('refresh').addEventListener('click', () => { refreshExport(); toast('Refreshed'); });
   document.getElementById('clear').addEventListener('click', () => {
-    if (!window.confirm('Clear every score and note?')) return;
+    if (!window.confirm('Clear every score and note? A backup is kept in this browser until you clear again.')) return;
+    try { localStorage.setItem(KEY + '-backup', JSON.stringify(store)); } catch (e) {}
     store = {}; save();
-    main.querySelectorAll('input[data-score]').forEach(i => { i.value = ''; paintInput(i); });
-    main.querySelectorAll('textarea[data-note]').forEach(t => { t.value = ''; });
+    inputs.forEach(i => { i.value = ''; paintInput(i); });
+    main.querySelectorAll('textarea[data-note]').forEach(t => { t.value = ''; t.classList.add('hidden'); });
+    main.querySelectorAll('button[data-notebtn]').forEach(b => b.classList.remove('has'));
     refreshExport();
   });
   let toastTimer;
   function toast(msg){ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 1600); }
   // active nav on scroll
-  const secs = Array.from(document.querySelectorAll('main section, main [id^="char:"]'));
+  const secs = Array.from(document.querySelectorAll('main section, main [id^="char:"], main [id^="unlock:"]'));
   const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
   function onScroll(){
     let cur = null;
