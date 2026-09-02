@@ -82,14 +82,35 @@ public class PersonaRosterTest
 						if (o.getCondition() != null)
 						{
 							foundConditional = true;
-							DialoguePage target = s.page(o.resolve(HAS_QUIVER));
-							// A narration beat may precede the NPC's unlock line.
-							while (target instanceof Narration)
+							// Walk the yes-branch (challenge, narration, ...) to the line that unlocks.
+							String id = o.resolve(HAS_QUIVER);
+							boolean unlocks = false;
+							for (int hops = 0; hops < 10 && !DialogueScript.END.equals(id); hops++)
 							{
-								target = s.page(((Narration) target).getNext());
+								DialoguePage target = s.page(id);
+								if (target instanceof NpcLine)
+								{
+									if (((NpcLine) target).getEffect() == DialogueEffect.UNLOCK_CHARTER)
+									{
+										unlocks = true;
+										break;
+									}
+									id = ((NpcLine) target).getNext();
+								}
+								else if (target instanceof Narration)
+								{
+									id = ((Narration) target).getNext();
+								}
+								else if (target instanceof PlayerLine)
+								{
+									id = ((PlayerLine) target).getNext();
+								}
+								else
+								{
+									break;
+								}
 							}
-							assertTrue(p.getId(), target instanceof NpcLine);
-							assertEquals(p.getId(), DialogueEffect.UNLOCK_CHARTER, ((NpcLine) target).getEffect());
+							assertTrue(p.getId() + " yes-branch never unlocks", unlocks);
 						}
 					}
 				}
