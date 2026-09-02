@@ -39,6 +39,11 @@ final class DialogueLayout
 	static final int CONTINUE_Y = 80;
 	static final int CONTINUE_HEIGHT = 17;
 
+	/** Options page: title height, gap to the first option, and per-option step (game: ~23px). */
+	static final int OPTION_TITLE_HEIGHT = 17;
+	static final int OPTION_TITLE_GAP = 5;
+	static final int OPTION_STEP = 23;
+
 	static final int COLOR_NAME = 0x800000;
 	static final int COLOR_TEXT = 0x000000;
 	static final int COLOR_CONTINUE = 0x0000FF;

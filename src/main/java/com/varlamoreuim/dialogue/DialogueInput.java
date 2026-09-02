@@ -194,30 +194,26 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 
 	private void renderOptions(Widget container, Options page)
 	{
+		// The game packs the title and options into one tight block and centres it.
+		List<Option> options = page.getOptions();
+		int blockHeight = DialogueLayout.OPTION_TITLE_HEIGHT + DialogueLayout.OPTION_TITLE_GAP
+			+ options.size() * DialogueLayout.OPTION_STEP;
+		int y = Math.max(0, (container.getHeight() - blockHeight) / 2);
+
 		Widget title = container.createChild(-1, WidgetType.TEXT);
 		title.setText(page.getTitle());
 		title.setTextColor(DialogueLayout.COLOR_NAME);
 		title.setFontId(FontID.QUILL_8);
 		title.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
 		title.setOriginalX(0);
-		title.setOriginalY(8);
-		title.setOriginalHeight(24);
+		title.setOriginalY(y);
+		title.setOriginalHeight(DialogueLayout.OPTION_TITLE_HEIGHT);
 		title.setXTextAlignment(WidgetTextAlignment.CENTER);
 		title.setYTextAlignment(WidgetTextAlignment.CENTER);
 		title.setWidthMode(WidgetSizeMode.MINUS);
 		title.revalidate();
 
-		List<Option> options = page.getOptions();
-		int y = title.getOriginalY() + title.getHeight() + 6;
-		int height = container.getHeight() - y - 8;
-		int step = height / options.size();
-		int maxStep = options.size() >= 3 ? 25 : 30;
-		if (step > maxStep)
-		{
-			int ds = step - maxStep;
-			step = maxStep;
-			y += (ds * options.size()) / 2;
-		}
+		y += DialogueLayout.OPTION_TITLE_HEIGHT + DialogueLayout.OPTION_TITLE_GAP;
 		for (Option option : options)
 		{
 			Widget w = container.createChild(-1, WidgetType.TEXT);
@@ -227,7 +223,7 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 			w.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
 			w.setOriginalX(0);
 			w.setOriginalY(y);
-			w.setOriginalHeight(24);
+			w.setOriginalHeight(DialogueLayout.OPTION_STEP);
 			w.setXTextAlignment(WidgetTextAlignment.CENTER);
 			w.setYTextAlignment(WidgetTextAlignment.CENTER);
 			w.setWidthMode(WidgetSizeMode.MINUS);
@@ -237,7 +233,7 @@ public class DialogueInput extends ChatboxInput implements KeyListener
 			w.setOnMouseLeaveListener((JavaScriptCallback) ev -> w.setTextColor(DialogueLayout.COLOR_TEXT));
 			w.setHasListener(true);
 			w.revalidate();
-			y += step;
+			y += DialogueLayout.OPTION_STEP;
 		}
 	}
 

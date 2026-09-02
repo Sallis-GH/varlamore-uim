@@ -355,6 +355,54 @@ public class VarlamoreUimPlugin extends Plugin
 			clientThread.invokeLater(() -> logCalibrationWidgets("ChatRight",
 				InterfaceID.ChatRight.HEAD, InterfaceID.ChatRight.NAME, InterfaceID.ChatRight.TEXT, InterfaceID.ChatRight.CONTINUE));
 		}
+		else if (event.getGroupId() == InterfaceID.CHATMENU)
+		{
+			clientThread.invokeLater(this::logChatMenuTree);
+		}
+	}
+
+	// TEMP: removed in Task 9 — dumps the native "Select an option" interface (219) and the
+	// message-layer container so the options page can copy their geometry and sprites.
+	private void logChatMenuTree()
+	{
+		Widget mes = client.getWidget(InterfaceID.Chatbox.MES_LAYER);
+		if (mes != null)
+		{
+			log.info("[vuim-calib] MES_LAYER: x={} y={} w={} h={}", mes.getOriginalX(), mes.getOriginalY(), mes.getWidth(), mes.getHeight());
+		}
+		for (int child = 0; child < 8; child++)
+		{
+			Widget w = client.getWidget(InterfaceID.CHATMENU, child);
+			if (w == null)
+			{
+				continue;
+			}
+			logChatMenuWidget("Chatmenu[" + child + "]", w);
+			Widget[][] groups = {w.getStaticChildren(), w.getDynamicChildren(), w.getNestedChildren()};
+			String[] names = {"static", "dynamic", "nested"};
+			for (int g = 0; g < groups.length; g++)
+			{
+				if (groups[g] == null)
+				{
+					continue;
+				}
+				for (int i = 0; i < groups[g].length; i++)
+				{
+					if (groups[g][i] != null && !groups[g][i].isHidden())
+					{
+						logChatMenuWidget("Chatmenu[" + child + "]." + names[g] + "[" + i + "]", groups[g][i]);
+					}
+				}
+			}
+		}
+	}
+
+	// TEMP: removed in Task 9
+	private void logChatMenuWidget(String label, Widget w)
+	{
+		log.info("[vuim-calib] {}: type={} x={} y={} w={} h={} sprite={} font={} color={} xAlign={} yAlign={} text='{}'",
+			label, w.getType(), w.getRelativeX(), w.getRelativeY(), w.getWidth(), w.getHeight(), w.getSpriteId(),
+			w.getFontId(), w.getTextColor(), w.getXTextAlignment(), w.getYTextAlignment(), w.getText());
 	}
 
 	// TEMP: removed in Task 9
