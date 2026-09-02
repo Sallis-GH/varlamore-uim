@@ -180,7 +180,13 @@ public class VarlamoreUimPlugin extends Plugin
 		};
 		standInMenuInjector = new StandInMenuInjector(client, chatMessageManager, dialogueManager,
 			standInRegistry, dialogueContext, () -> setUnlocked(true));
-		syncStandInState();
+		clientThread.invoke(() ->
+		{
+			if (standInRegistry != null)
+			{
+				syncStandInState();
+			}
+		});
 
 		log.debug("Varlamore UIM plugin started");
 	}
@@ -219,8 +225,13 @@ public class VarlamoreUimPlugin extends Plugin
 		itemTeleportBlocker = null;
 		if (npcTransportBlocker != null)
 		{
-			standInRegistry.clear();
-			dialogueManager.close();
+			final StandInRegistry registry = standInRegistry;
+			final DialogueManager dialogue = dialogueManager;
+			clientThread.invoke(() ->
+			{
+				registry.clear();
+				dialogue.close();
+			});
 			renderCallbackManager.unregister(npcTransportBlocker.getRenderCallback());
 			npcTransportBlocker = null;
 			standInRegistry = null;
@@ -237,6 +248,13 @@ public class VarlamoreUimPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (npcTransportBlocker != null)
+		{
+			syncStandInState();
+			dialogueManager.onGameTick();
+			standInMenuInjector.onGameTick(client.getTickCount());
+		}
+
 		if (!config.pluginEnabled())
 		{
 			return;
@@ -256,13 +274,6 @@ public class VarlamoreUimPlugin extends Plugin
 		{
 			log.debug("Player boundary: {}", inVarlamore ? "inside" : "outside");
 			wasInVarlamore = inVarlamore;
-		}
-
-		if (npcTransportBlocker != null)
-		{
-			syncStandInState();
-			dialogueManager.onGameTick();
-			standInMenuInjector.onGameTick(client.getTickCount());
 		}
 	}
 
