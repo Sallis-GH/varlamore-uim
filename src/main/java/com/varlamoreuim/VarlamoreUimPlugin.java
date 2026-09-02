@@ -3,6 +3,13 @@ package com.varlamoreuim;
 import javax.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
+import com.varlamoreuim.dialogue.DialogueContext;
+import com.varlamoreuim.dialogue.DialogueManager;
+import com.varlamoreuim.dialogue.DialogueScript;
+import com.varlamoreuim.dialogue.Expression;
+import com.varlamoreuim.dialogue.DialogueEffect;
+import com.varlamoreuim.dialogue.Option;
+import com.varlamoreuim.dialogue.Speaker;
 import com.varlamoreuim.npc.NpcTransportBlocker;
 import com.varlamoreuim.teleport.ItemTeleportBlocker;
 import com.varlamoreuim.teleport.SpellTeleportBlocker;
@@ -17,14 +24,17 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostMenuSort;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.RenderCallbackManager;
+import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -63,12 +73,19 @@ public class VarlamoreUimPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private ChatCommandManager chatCommandManager;
+
+	@Inject
+	private ChatboxPanelManager chatboxPanelManager;
+
 	private VarlamoreUimPanel panel;
 	private NavigationButton navButton;
 	private BoundaryChecker boundaryChecker;
 	private SpellTeleportBlocker spellTeleportBlocker;
 	private ItemTeleportBlocker itemTeleportBlocker;
 	private NpcTransportBlocker npcTransportBlocker;
+	private DialogueManager dialogueManager;
 	private boolean wasInVarlamore = true;
 
 	@Override
@@ -116,6 +133,34 @@ public class VarlamoreUimPlugin extends Plugin
 		// Register navigation button
 		clientToolbar.addNavigation(navButton);
 
+		// TEMP: removed in Task 9
+		dialogueManager = new DialogueManager(client, clientThread, chatboxPanelManager);
+		chatCommandManager.registerCommand("::vuimtalk", (chatMessage, message) ->
+		{
+			DialogueScript s = DialogueScript.builder("p")
+				.player("p", "Any ships sailing today?", "n")
+				.npc("n", "Ships? No, no. Not today. It's the tides, you see. Terrible tides. Absolutely dreadful tides, the worst tides anyone has seen in years.", "m")
+				.options("m", "Select an option",
+					Option.of("Why not?", "why"),
+					Option.of("Never mind.", DialogueScript.END))
+				.npc("why", "Tides.", Expression.ANGRY, DialogueEffect.NONE, DialogueScript.END)
+				.build();
+			dialogueManager.open(s, new Speaker("Mysterious Old Man", 2830), new DialogueContext()
+			{
+				@Override
+				public boolean hasDizanasQuiver()
+				{
+					return false;
+				}
+
+				@Override
+				public String playerName()
+				{
+					return client.getLocalPlayer() != null ? client.getLocalPlayer().getName() : "You";
+				}
+			}, effect -> log.debug("effect {}", effect));
+		});
+
 		log.debug("Varlamore UIM plugin started");
 	}
 
@@ -137,12 +182,21 @@ public class VarlamoreUimPlugin extends Plugin
 			npcTransportBlocker = null;
 		}
 
+		// TEMP: removed in Task 9
+		chatCommandManager.unregisterCommand("::vuimtalk");
+		dialogueManager = null;
+
 		log.debug("Varlamore UIM plugin stopped");
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (dialogueManager != null)
+		{
+			dialogueManager.onGameTick();
+		}
+
 		if (!config.pluginEnabled())
 		{
 			return;
@@ -207,6 +261,48 @@ public class VarlamoreUimPlugin extends Plugin
 		{
 			npcTransportBlocker.createStandInNpcs();
 		}
+	}
+
+	/**
+	 * TEMP: removed in Task 9. Logs the real dialogue widget geometry so {@link com.varlamoreuim.dialogue.DialogueLayout}
+	 * can be calibrated against the game's own NPC (ChatLeft, group 231) and player (ChatRight, group 217) interfaces.
+	 */
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() == 231)
+		{
+			clientThread.invokeLater(() -> logCalibrationWidgets("ChatLeft",
+				InterfaceID.ChatLeft.HEAD, InterfaceID.ChatLeft.NAME, InterfaceID.ChatLeft.TEXT, InterfaceID.ChatLeft.CONTINUE));
+		}
+		else if (event.getGroupId() == 217)
+		{
+			clientThread.invokeLater(() -> logCalibrationWidgets("ChatRight",
+				InterfaceID.ChatRight.HEAD, InterfaceID.ChatRight.NAME, InterfaceID.ChatRight.TEXT, InterfaceID.ChatRight.CONTINUE));
+		}
+	}
+
+	// TEMP: removed in Task 9
+	private void logCalibrationWidgets(String label, int headId, int nameId, int textId, int continueId)
+	{
+		logCalibrationWidget(label, "HEAD", client.getWidget(headId));
+		logCalibrationWidget(label, "NAME", client.getWidget(nameId));
+		logCalibrationWidget(label, "TEXT", client.getWidget(textId));
+		logCalibrationWidget(label, "CONTINUE", client.getWidget(continueId));
+	}
+
+	// TEMP: removed in Task 9
+	private void logCalibrationWidget(String label, String field, Widget widget)
+	{
+		if (widget == null)
+		{
+			log.info("[vuim-calib] {} {} = null", label, field);
+			return;
+		}
+		log.info("[vuim-calib] {} {}: x={} y={} w={} h={} zoom={} rotX={} rotY={} rotZ={} anim={} font={} color={}",
+			label, field, widget.getOriginalX(), widget.getOriginalY(), widget.getWidth(), widget.getHeight(),
+			widget.getModelZoom(), widget.getRotationX(), widget.getRotationY(), widget.getRotationZ(),
+			widget.getAnimationId(), widget.getFontId(), widget.getTextColor());
 	}
 
 	@Subscribe
