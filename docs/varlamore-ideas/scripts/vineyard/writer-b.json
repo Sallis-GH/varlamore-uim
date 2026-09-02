@@ -1,0 +1,127 @@
+{
+  "character": "Vineyard worker",
+  "author": "writer-b",
+  "variants": [
+    {
+      "title": "Watching Crates",
+      "phase": "pre",
+      "premise": "He's counting wine crates on the dock, checking them off his list.",
+      "lines": [
+        {"speaker": "P", "text": "Any ships sailing out from here?"},
+        {"speaker": "N", "text": "Ask the crew. I've a list to finish, iknami."},
+        {"speaker": "N", "text": "And not for you either, from what I hear."},
+        {"speaker": "P", "text": "What have you heard?"},
+        {"speaker": "N", "text": "No captain takes an unproven stranger. That's all."}
+      ],
+      "options": [
+        {
+          "label": "Is that wine in the crates?",
+          "lines": [
+            {"speaker": "N", "text": "Moonrise reds, best batch the foreman's had in years."},
+            {"speaker": "N", "text": "Try a cup sometime. You won't regret it."}
+          ]
+        },
+        {
+          "label": "What's the foreman like?",
+          "lines": [
+            {"speaker": "N", "text": "Bellows like a bull if the grapes bruise."},
+            {"speaker": "X", "text": "The worker checks the list again."}
+          ]
+        },
+        {
+          "label": "Never been on a ship?",
+          "lines": [
+            {"speaker": "N", "text": "Never. Don't plan to start today."},
+            {"speaker": "N", "text": "Boats are for other people."}
+          ]
+        },
+        {
+          "label": "I'll leave you to it.",
+          "lines": [
+            {"speaker": "N", "text": "Timoiva."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Grapes and Gulls",
+      "phase": "pre",
+      "premise": "He's leaning on a crate, watching gulls squabble over spilled grapes.",
+      "lines": [
+        {"speaker": "P", "text": "Could I get passage on a ship from here?"},
+        {"speaker": "N", "text": "Not from me. I've never owned a boat."},
+        {"speaker": "N", "text": "Grapes don't need boats. Neither do I."},
+        {"speaker": "P", "text": "You've really never sailed?"},
+        {"speaker": "N", "text": "Once, nearly. Turned green before we left the dock."}
+      ],
+      "options": [
+        {
+          "label": "That's a shame",
+          "lines": [
+            {"speaker": "N", "text": "Isn't it just. Timoiva."}
+          ]
+        },
+        {
+          "label": "How's the harvest?",
+          "lines": [
+            {"speaker": "N", "text": "Good shape this harvest, better than last year's."},
+            {"speaker": "N", "text": "Foreman's pleased, for once."}
+          ]
+        },
+        {
+          "label": "Why can't I get passage?",
+          "lines": [
+            {"speaker": "N", "text": "Something about proving yourself first. Don't ask me the details."},
+            {"speaker": "N", "text": "I just watch crates, iknami."}
+          ]
+        },
+        {
+          "label": "I'll get out of your way.",
+          "lines": [
+            {"speaker": "N", "text": "Mind the gulls on your way out."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "The Quiver",
+      "phase": "post",
+      "premise": "He's stacking empty crates, whistling an old harvest tune.",
+      "lines": [
+        {"speaker": "P", "text": "Any ships sailing out from here?"},
+        {"speaker": "X", "text": "The worker eyes the quiver slung on your back."},
+        {"speaker": "N", "text": "Tetamo, wherever did you get that?"},
+        {"speaker": "P", "text": "I won it. In the Colosseum."},
+        {"speaker": "N", "text": "Well then, that changes things, doesn't it."},
+        {"speaker": "N", "text": "Someone at the harbour in the capital will sort you out."}
+      ],
+      "options": [
+        {
+          "label": "Where's the capital harbour?",
+          "lines": [
+            {"speaker": "N", "text": "North side of the capital. Ask the crew here."}
+          ]
+        },
+        {
+          "label": "What do I do there?",
+          "lines": [
+            {"speaker": "N", "text": "Ask for whoever keeps the ledger. That's above my head."},
+            {"speaker": "N", "text": "Good luck to you, iknami."}
+          ]
+        },
+        {
+          "label": "Thanks for the help",
+          "lines": [
+            {"speaker": "N", "text": "Thank me when you're on a ship. Timoiva."}
+          ]
+        },
+        {
+          "label": "I'd best be off.",
+          "lines": [
+            {"speaker": "N", "text": "Mind the crates on your way past."}
+          ]
+        }
+      ]
+    }
+  ]
+}

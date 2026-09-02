@@ -1,0 +1,48 @@
+{
+  "title": "Who unlocks the ships",
+  "lead": "Once the player carries Dizana's quiver, the dock stand-ins send them to one person who grants passage. Four candidates: two existing NPCs we could overlay, two new NPCs we could spawn. Score each candidate overall and score their lines.",
+  "intro_html": "<div class=\"card\"><h3 style=\"margin-top:0\">A lore constraint worth knowing</h3><p>The wiki is clear that Varlamore was never closed to outbound travel. Before <i>Children of the Sun</i> the kingdom was isolationist about letting people <b>in</b>, and Prince Itzla personally granted the player entry after they proved trustworthy. Charter ships, quetzals and fairy rings all run freely. So the plugin's gate should be framed as <b>personal</b>, the way the Musa Point customs officer and the Al Kharid border guard work: no captain will risk an unproven outsider, and one official won't vouch for you yet. Not \"the harbour is sealed.\" Every candidate below is written that way.</p><p>The quiver itself is described by the wiki as \"a quiver awarded to those who have proved their worth in the Colosseum\", and as one of many replicas of the original used by Dizana, the Heroine of the Hunt. That is the exact proof-of-worth the premise needs, without inventing anything.</p></div>",
+  "candidates": [
+    {
+      "id": "registrar",
+      "name": "Harbour Registrar (new NPC)",
+      "type": "spawn a new NPC",
+      "location": "Inside the Fortis Cothon dock building, at a desk near where the Trader crewmembers and Shipwright Sennia already stand. The wiki confirms no harbourmaster or customs NPC exists there today, so this fills a real gap.",
+      "why": "Sits exactly at the choke point, the charter desk itself. Mirrors the real Customs officer at Musa Point who inspects people before departure. Nel's smuggling investigation at this very dock in Twilight's Promise already makes the Cothon a place with inspection stakes.",
+      "pros": "Mechanically the cleanest: the dock NPCs at all three ports can say \"go to the harbour in the capital\" and mean one desk. We control the character completely. A tired clerk is a very OSRS archetype.",
+      "cons": "Entirely invented, so it needs the most made-up lore. Needs a model with a chathead; a Varlamore citizen or shopkeeper model would do.",
+      "source_html": "<a href=\"https://oldschool.runescape.wiki/w/Fortis_Cothon\">Wiki: Fortis Cothon</a> · <a href=\"https://oldschool.runescape.wiki/w/Customs_officer\">Wiki: Customs officer</a> · <a href=\"https://oldschool.runescape.wiki/w/Twilight%27s_Promise\">Wiki: Twilight's Promise</a>"
+    },
+    {
+      "id": "minimus",
+      "name": "Minimus, Colosseum Master",
+      "type": "overlay existing NPC",
+      "location": "Fortis Colosseum entrance. Players already talk to him before every run and he already trades spare quivers.",
+      "why": "He is the one who certifies Colosseum victories: \"the kingdom gave me the role of Colosseum Master.\" Extending him to \"you've proven yourself, I'll send word to the harbour\" needs no new lore, only a new branch.",
+      "pros": "Established character, established voice, standing still at a known spot, reachable right after Children of the Sun. The player is already there the moment they win the quiver.",
+      "cons": "No stated authority over ships; he answers to Ueman on holy matters and to nobody on harbour matters, so the writing must frame it as vouching, not decree. The overlay must not break his real Start-wave and reward dialogue.",
+      "source_html": "<a href=\"https://oldschool.runescape.wiki/w/Minimus\">Wiki: Minimus</a> · <a href=\"https://oldschool.runescape.wiki/w/Fortis_Colosseum\">Wiki: Fortis Colosseum</a>"
+    },
+    {
+      "id": "steward",
+      "name": "Colosseum Steward (new NPC)",
+      "type": "spawn a new NPC",
+      "location": "Just outside the Colosseum's main gate, on the path back toward the city, where players walk after collecting their reward.",
+      "why": "The Colosseum already feeds a public reputation track (the Glory titles: Brawler, Challenger, Gladiator, Hero, Champion, Grand Champion). A steward who records champions for the Queen's ledger and writes a travel note is a small, consistent addition.",
+      "pros": "Keeps Minimus's own voice untouched. Purpose-built to stand still. The unlock happens where the proof was earned.",
+      "cons": "Invented character. Slightly redundant with Minimus standing a few tiles away.",
+      "source_html": "<a href=\"https://oldschool.runescape.wiki/w/Fortis_Colosseum\">Wiki: Fortis Colosseum (Glory titles)</a>"
+    },
+    {
+      "id": "herminius",
+      "name": "Curator Herminius, Grand Museum",
+      "type": "overlay existing NPC",
+      "location": "Grand Museum, north-eastern Civitas illa Fortis. Permanently stationed.",
+      "why": "The city's authority on history and artefacts. A curator authenticating the quiver as the genuine Colosseum token and vouching for the bearer is a plausible civic chain.",
+      "pros": "Thematically pleasant: a scholar recognising what the quiver means. Reachable without Ethically Acquired Antiquities.",
+      "cons": "The wiki documents no tie between Herminius and the Colosseum or the harbour; this connection is inferred. A museum is an odd place to get permission to sail.",
+      "source_html": "<a href=\"https://oldschool.runescape.wiki/w/Curator_Herminius\">Wiki: Curator Herminius</a>"
+    }
+  ],
+  "also_considered_html": "<div class=\"card tight\"><h4 style=\"margin-top:0\">Also considered, and why not</h4><ul><li><b>Shipwright Sennia</b> stands at the Cothon dock building already and could be overlaid, but she belongs to the Sailing skill and a shipwright has no reason to gate passengers.</li><li><b>Guard Captain</b>: right archetype, but stands in an underground barracks nobody passes.</li><li><b>Regulus Cento</b>: already authorises travel to Varlamore, but stands outside Varrock, outside the lock.</li><li><b>Prince Itzla Arkan</b>: the best narrative bookend (he granted entry, he grants exit), but he moves with the questline and is imprisoned mid-story.</li></ul></div>"
+}

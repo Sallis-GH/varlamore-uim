@@ -1,0 +1,86 @@
+{
+  "character": "Vagrant",
+  "author": "reviewer",
+  "variants": [
+    {
+      "title": "The wrong boat",
+      "phase": "pre",
+      "premise": "He is under the pier drying one boot on a warm rock.",
+      "lines": [
+        {"speaker": "P", "text": "Can you get me a ship out of here?"},
+        {"speaker": "N", "text": "I can get you Aldarin. Twenty coins."},
+        {"speaker": "P", "text": "That's not out of here."},
+        {"speaker": "N", "text": "It's out of here."}
+      ],
+      "options": [
+        {
+          "label": "I meant a proper ship.",
+          "lines": [
+            {"speaker": "N", "text": "Charter crews want a name on you."},
+            {"speaker": "N", "text": "You haven't got one."}
+          ]
+        },
+        {
+          "label": "Who's taking twenty coins?",
+          "lines": [
+            {"speaker": "N", "text": "Antonia. She's got the boat."},
+            {"speaker": "N", "text": "I've got the pier."}
+          ]
+        },
+        {
+          "label": "Why is your boot on a rock?",
+          "lines": [
+            {"speaker": "N", "text": "It got wet."}
+          ]
+        },
+        {
+          "label": "Never mind.",
+          "lines": [
+            {"speaker": "N", "text": "Mind the nets."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "The ledger",
+      "phase": "post",
+      "premise": "He is sat against a piling, half asleep, when the player stands over him.",
+      "lines": [
+        {"speaker": "P", "text": "Can you get me a ship out of here?"},
+        {"speaker": "X", "text": "The vagrant looks at the quiver, then at your boots."},
+        {"speaker": "N", "text": "Still no. Crews can't read."},
+        {"speaker": "P", "text": "Who can?"},
+        {"speaker": "N", "text": "Bloke with the ledger. The Cothon, in the capital."}
+      ],
+      "options": [
+        {
+          "label": "How do you know him?",
+          "lines": [
+            {"speaker": "N", "text": "He wrote me down once."},
+            {"speaker": "N", "text": "Nothing came of it."}
+          ]
+        },
+        {
+          "label": "Come with me.",
+          "lines": [
+            {"speaker": "N", "text": "On a ship? No."},
+            {"speaker": "N", "text": "Ships smell worse than this."}
+          ]
+        },
+        {
+          "label": "What should I expect?",
+          "lines": [
+            {"speaker": "N", "text": "He'll look at your boots."},
+            {"speaker": "N", "text": "Everyone does."}
+          ]
+        },
+        {
+          "label": "Thanks.",
+          "lines": [
+            {"speaker": "N", "text": "Don't. Just go."}
+          ]
+        }
+      ]
+    }
+  ]
+}

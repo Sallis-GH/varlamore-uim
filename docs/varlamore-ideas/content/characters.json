@@ -1,0 +1,60 @@
+{
+  "title": "Dock characters",
+  "lead": "Six people who could believably stand where the charter crews stand. For each: two independent writers, plus the fact-checker's own alternative written after reviewing them. Every script went through two review rounds against real wiki transcripts. Score every line: 1 useless, 100 masterpiece. The 'Overall' box at the bottom of each script is the one that matters most if you're short on time.",
+  "characters": [
+    {
+      "id": "fisher",
+      "name": "Fremennik fisher",
+      "dock": "Sunset Coast",
+      "display": "Fisher",
+      "brief": "Came south from Rellekka with the rest of the village years ago. Fishes sharks off the rocks, mends nets on the dock, sells to Picaria's shop. Knows tides, weather, boats, and Fremennik pride. Has never been to the capital and has no idea how the Kingdom works.",
+      "place": "Sunset Coast: a small Fremennik fishing village on the savannah coast. Nets slapping pilings, gulls over fish guts, shark on the ovens, Thurid's anvil ringing up the street. Northerners a long way from home in the heat.",
+      "models": "Fremennik NPC models (Rellekka villagers) or Sunset Coast villagers"
+    },
+    {
+      "id": "vagrant",
+      "name": "Pier drifter",
+      "dock": "Sunset Coast",
+      "display": "Vagrant",
+      "brief": "Sleeps under the pier. Not a Fremennik; stepped off a charter ship years back and never got on another. Lives on fish scraps and whatever the crews drop. Knows every crew by their boots, when ships come and go, which captain drinks. Knows nothing about laws except the ones that get you moved along.",
+      "place": "Sunset Coast: a small Fremennik fishing village on the savannah coast. Nets slapping pilings, gulls over fish guts, shark on the ovens. Under the pier it is cool and smells of weed and old rope.",
+      "models": "Tramp / Beggar / Drunken man style NPC models"
+    },
+    {
+      "id": "vineyard",
+      "name": "Vineyard hand",
+      "dock": "Aldarin",
+      "display": "Vineyard worker",
+      "brief": "Picks grapes for the Moonrise foreman. Sent down to the dock to watch a wine shipment that is waiting to be loaded. Knows grapes, harvest, the foreman's temper, and villa gossip. Has never been on a ship and would rather not.",
+      "place": "Aldarin: an island of vineyards and rich villas with a rough, rocky south coast where dwarves and bandits live. At the dock: crates of wine, the smell of fermenting must from the brewery, gulls and surf, Mistrock's stone dust on the wind.",
+      "models": "Vineyard worker / Vineyard foreman (Aldarin) NPC models"
+    },
+    {
+      "id": "boatman",
+      "name": "Coastal boatman",
+      "dock": "Aldarin",
+      "display": "Boatman",
+      "brief": "Rows a small boat along Aldarin's rocky south coast, where the dwarves and bandits are. Moves cargo people would rather not declare. Knows every cove, every tide, and which guards look the other way. Stays out of the capital on purpose.",
+      "place": "Aldarin: an island of vineyards and rich villas with a rough, rocky south coast where dwarves and bandits live. At the dock: crates of wine, the smell of fermenting must from the brewery, gulls and surf, Mistrock's stone dust on the wind.",
+      "models": "Bandit / Sailor (Varlamore) / Pirate style NPC models"
+    },
+    {
+      "id": "guard",
+      "name": "Harbour guard",
+      "dock": "Fortis Cothon",
+      "display": "Guard",
+      "brief": "A city guard of Civitas illa Fortis posted at the charter berth in the Cothon. Stands there all day. Takes orders, gives none. Knows the rules he was told and nothing about why. Not one of the Kualti, and knows it.",
+      "place": "Fortis Cothon: the capital's big Roman-style harbour. Spice and fur stalls, tar and brine, a blacksmith's hammer, bread from the bakers, the Flaming Arrow pub getting loud. Knights and guards about; Shipwright Sennia and the charter crews at the dock building.",
+      "models": "Guard (Varlamore) NPC model"
+    },
+    {
+      "id": "dockworker",
+      "name": "Dockworker",
+      "dock": "Fortis Cothon",
+      "display": "Dockworker",
+      "brief": "Loads and unloads charter cargo at the Cothon. Knows the tide table, which crews tip, what the spice merchants pay, and where the Flaming Arrow keeps the good barrel. Bad back. Thinks the guards are decorative.",
+      "place": "Fortis Cothon: the capital's big Roman-style harbour. Spice and fur stalls, tar and brine, a blacksmith's hammer, bread from the bakers, the Flaming Arrow pub getting loud. Knights and guards about; Shipwright Sennia and the charter crews at the dock building.",
+      "models": "Worker (Varlamore) / Sailor (Varlamore) NPC models"
+    }
+  ]
+}

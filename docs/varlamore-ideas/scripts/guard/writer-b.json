@@ -1,0 +1,56 @@
+{
+  "character": "Guard",
+  "author": "writer-b",
+  "variants": [
+    {
+      "title": "Standing Orders",
+      "phase": "pre",
+      "premise": "The guard stands at the berth, arms crossed, watching the gangplank.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance of a ship out of here?"},
+        {"speaker": "N", "text": "Not without leave. Orders from the top."},
+        {"speaker": "P", "text": "Whose orders exactly?"},
+        {"speaker": "N", "text": "My captain's. He won't vouch for you."}
+      ],
+      "options": [
+        {"label": "Who gives leave?", "lines": [{"speaker": "N", "text": "Not me. I just stand here."}]},
+        {"label": "I'll find my own way.", "lines": [{"speaker": "N", "text": "Fair enough."}]},
+        {"label": "Push past you, then?", "lines": [{"speaker": "N", "text": "Go on, try it."}, {"speaker": "X", "text": "He doesn't budge."}]}
+      ]
+    },
+    {
+      "title": "Nobody's Business",
+      "phase": "pre",
+      "premise": "The guard eyes a rowdy crowd outside the Flaming Arrow, half-listening.",
+      "lines": [
+        {"speaker": "P", "text": "I need a boat off Varlamore."},
+        {"speaker": "N", "text": "So does half this dock, iknami."},
+        {"speaker": "P", "text": "So what's stopping me?"},
+        {"speaker": "N", "text": "No captain'll take an unproven stranger."},
+        {"speaker": "X", "text": "The guard watches the pub."}
+      ],
+      "options": [
+        {"label": "What counts as proven?", "lines": [{"speaker": "N", "text": "Don't ask me. Nobody tells me either."}]},
+        {"label": "Bribe you?", "lines": [{"speaker": "N", "text": "Try that and see what happens."}]},
+        {"label": "Forget it, I'll swim.", "lines": [{"speaker": "N", "text": "That's your business, not mine."}]},
+        {"label": "Charming as always.", "lines": [{"speaker": "N", "text": "I don't get paid to be charming."}]}
+      ]
+    },
+    {
+      "title": "Proof at Last",
+      "phase": "post",
+      "premise": "The guard clocks the quiver on the player's back and straightens up.",
+      "lines": [
+        {"speaker": "P", "text": "I'm back. Which ship can I take?"},
+        {"speaker": "N", "text": "That's Dizana's quiver on your back."},
+        {"speaker": "X", "text": "The guard looks you over, then nods."},
+        {"speaker": "N", "text": "Talk to the registrar. Inside, past the ledger desk."}
+      ],
+      "options": [
+        {"label": "Where's the registrar?", "lines": [{"speaker": "N", "text": "Dock building behind me. Ledger desk."}]},
+        {"label": "Cheers.", "lines": [{"speaker": "N", "text": "Timoiva. Go on, then."}]},
+        {"label": "Took me long enough.", "lines": [{"speaker": "N", "text": "Fair enough. You got here."}]}
+      ]
+    }
+  ]
+}

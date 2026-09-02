@@ -1,0 +1,136 @@
+{
+  "character": "Guard",
+  "author": "writer-a",
+  "variants": [
+    {
+      "title": "Standing orders",
+      "phase": "pre",
+      "premise": "The guard is at his post by the berth, watching the gangplank.",
+      "lines": [
+        {"speaker": "P", "text": "Is there a boat here that'll take me out of Varlamore?"},
+        {"speaker": "N", "text": "There is. You can't board it."},
+        {"speaker": "P", "text": "Why not?"},
+        {"speaker": "N", "text": "My orders. Strangers don't board unvouched."},
+        {"speaker": "P", "text": "Vouched by who?"},
+        {"speaker": "N", "text": "That's above my rank."}
+      ],
+      "options": [
+        {
+          "label": "Who gives you your orders?",
+          "lines": [
+            {"speaker": "N", "text": "My captain. He gets his from higher."},
+            {"speaker": "N", "text": "That's the whole of it."}
+          ]
+        },
+        {
+          "label": "I could just board it.",
+          "lines": [
+            {"speaker": "N", "text": "You could try."},
+            {"speaker": "X", "text": "The guard doesn't move."},
+            {"speaker": "N", "text": "Don't."}
+          ]
+        },
+        {
+          "label": "Is there another way out?",
+          "lines": [
+            {"speaker": "N", "text": "Not from this berth."},
+            {"speaker": "N", "text": "Only if you've got gills."}
+          ]
+        },
+        {
+          "label": "Never mind.",
+          "lines": [
+            {"speaker": "N", "text": "Fair enough."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Cargo only",
+      "phase": "pre",
+      "premise": "The guard has stood since dawn while the charter ship loads spice.",
+      "lines": [
+        {"speaker": "P", "text": "How do I book passage on that ship?"},
+        {"speaker": "N", "text": "You don't. Cargo only today."},
+        {"speaker": "P", "text": "And tomorrow?"},
+        {"speaker": "N", "text": "Cargo only tomorrow."},
+        {"speaker": "X", "text": "Dockers carry a spice crate past you."},
+        {"speaker": "N", "text": "The crates have permission. You don't."}
+      ],
+      "options": [
+        {
+          "label": "Permission from who?",
+          "lines": [
+            {"speaker": "N", "text": "Someone with a desk. Not me."}
+          ]
+        },
+        {
+          "label": "Long shift?",
+          "lines": [
+            {"speaker": "N", "text": "Since dawn. Six hours yet."},
+            {"speaker": "P", "text": "Sounds grim."},
+            {"speaker": "N", "text": "It's the post I was given."}
+          ]
+        },
+        {
+          "label": "Nice armour.",
+          "lines": [
+            {"speaker": "N", "text": "It's issued."},
+            {"speaker": "N", "text": "The Kualti get the good stuff."}
+          ]
+        },
+        {
+          "label": "I'll try the pub, then.",
+          "lines": [
+            {"speaker": "N", "text": "Won't get you a ship."},
+            {"speaker": "P", "text": "No, but it's out of the sun."},
+            {"speaker": "N", "text": "Timoiva."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "The quiver",
+      "phase": "post",
+      "premise": "The guard sees Dizana's quiver on the player's back before they've finished the question.",
+      "lines": [
+        {"speaker": "P", "text": "I want to sail out. Am I allowed now?"},
+        {"speaker": "X", "text": "The guard looks at the quiver on your back."},
+        {"speaker": "N", "text": "You're the one from the Colosseum."},
+        {"speaker": "P", "text": "That's me."},
+        {"speaker": "N", "text": "Then stopping you isn't my order."},
+        {"speaker": "N", "text": "Registrar's desk. Inside, behind me."}
+      ],
+      "options": [
+        {
+          "label": "Where's the desk?",
+          "lines": [
+            {"speaker": "N", "text": "In the dock building. Can't miss it."},
+            {"speaker": "N", "text": "Ask for the harbour ledger."}
+          ]
+        },
+        {
+          "label": "Will they let me through?",
+          "lines": [
+            {"speaker": "N", "text": "The ledger decides. Not me."},
+            {"speaker": "N", "text": "Ask them nicely."}
+          ]
+        },
+        {
+          "label": "Did you see the Colosseum?",
+          "lines": [
+            {"speaker": "N", "text": "I've never had leave for it."},
+            {"speaker": "P", "text": "You should ask."},
+            {"speaker": "N", "text": "I'll stand here instead."}
+          ]
+        },
+        {
+          "label": "Thanks.",
+          "lines": [
+            {"speaker": "N", "text": "Go on, iknami."}
+          ]
+        }
+      ]
+    }
+  ]
+}

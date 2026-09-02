@@ -1,0 +1,134 @@
+{
+  "character": "Boatman",
+  "author": "writer-a",
+  "variants": [
+    {
+      "title": "Coves not kingdoms",
+      "phase": "pre",
+      "premise": "The boatman is bailing seawater out of his little boat at the far end of the pier.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance of a lift out of Varlamore?"},
+        {"speaker": "N", "text": "Out? I go along the coast, iknami. Not out."},
+        {"speaker": "P", "text": "What's the difference?"},
+        {"speaker": "N", "text": "The difference is who's waiting at the other end."},
+        {"speaker": "N", "text": "I know the coves. That's all."}
+      ],
+      "options": [
+        {
+          "label": "What's in the crates?",
+          "lines": [
+            {"speaker": "N", "text": "Wine."},
+            {"speaker": "P", "text": "Just wine?"},
+            {"speaker": "N", "text": "Wine's what's written on them."}
+          ]
+        },
+        {
+          "label": "I can pay you well.",
+          "lines": [
+            {"speaker": "N", "text": "Money's the easy part."},
+            {"speaker": "N", "text": "Getting stopped is the expensive part."}
+          ]
+        },
+        {
+          "label": "Who would stop us?",
+          "lines": [
+            {"speaker": "N", "text": "Someone in the capital, I hear. Never asked."},
+            {"speaker": "N", "text": "My boat's never been in a book. Keeping it that way."}
+          ]
+        },
+        {
+          "label": "Fair enough.",
+          "lines": [
+            {"speaker": "N", "text": "Mind the ropes on your way back up."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Tide's out",
+      "phase": "pre",
+      "premise": "The boatman sits on a wine crate at the pier's end, watching the water pull off the rocks.",
+      "lines": [
+        {"speaker": "P", "text": "Could you row me past the kingdom's waters?"},
+        {"speaker": "N", "text": "Nilsal. No."},
+        {"speaker": "P", "text": "That was quick."},
+        {"speaker": "N", "text": "Not on this tide. Not on any."},
+        {"speaker": "N", "text": "Coast work only. I like my boat unburnt."}
+      ],
+      "options": [
+        {
+          "label": "Who'd burn your boat?",
+          "lines": [
+            {"speaker": "N", "text": "Bandits, mostly. They watch the coves too."},
+            {"speaker": "N", "text": "Very thorough men."}
+          ]
+        },
+        {
+          "label": "Nobody would ever know.",
+          "lines": [
+            {"speaker": "N", "text": "Somebody always knows."},
+            {"speaker": "N", "text": "That's how I eat, most weeks."}
+          ]
+        },
+        {
+          "label": "Don't the guards mind?",
+          "lines": [
+            {"speaker": "N", "text": "Half of them wave me through the cove at dusk."},
+            {"speaker": "P", "text": "And the other half?"},
+            {"speaker": "N", "text": "The other half I go round."}
+          ]
+        },
+        {
+          "label": "I'll be off, then.",
+          "lines": [
+            {"speaker": "N", "text": "Mind the stone dust. Gets in everything down here."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Name in a book",
+      "phase": "post",
+      "premise": "The boatman is shoving crates under a tarpaulin, and stops dead when he sees the quiver.",
+      "lines": [
+        {"speaker": "P", "text": "I still need a ship out of Varlamore."},
+        {"speaker": "X", "text": "The boatman drops the tarpaulin and looks up."},
+        {"speaker": "N", "text": "Tetamo. That's a Colosseum quiver."},
+        {"speaker": "P", "text": "It is."},
+        {"speaker": "N", "text": "Then you don't want me. You want the capital."},
+        {"speaker": "N", "text": "Harbour registrar, up at the Cothon. He keeps the ledger."}
+      ],
+      "options": [
+        {
+          "label": "Why not row me yourself?",
+          "lines": [
+            {"speaker": "N", "text": "Because your name goes in a book now."},
+            {"speaker": "N", "text": "Mine never has. Let's keep us both happy."}
+          ]
+        },
+        {
+          "label": "Where's the Cothon?",
+          "lines": [
+            {"speaker": "N", "text": "Big harbour in Civitas illa Fortis. You can't miss it."},
+            {"speaker": "N", "text": "Ask for the registrar. He'll be the bored one."}
+          ]
+        },
+        {
+          "label": "You won't come with me?",
+          "lines": [
+            {"speaker": "N", "text": "I've not set foot in that city in nine years."},
+            {"speaker": "P", "text": "Why not?"},
+            {"speaker": "N", "text": "Too many people there remember faces."}
+          ]
+        },
+        {
+          "label": "Thanks for that.",
+          "lines": [
+            {"speaker": "N", "text": "Timoiva."},
+            {"speaker": "N", "text": "Don't tell him where you heard it."}
+          ]
+        }
+      ]
+    }
+  ]
+}

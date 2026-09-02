@@ -1,0 +1,125 @@
+{
+  "character": "Vagrant",
+  "author": "writer-b",
+  "variants": [
+    {
+      "title": "Boots, Not Boats",
+      "phase": "pre",
+      "premise": "He's crouched under the pier, sorting fish scraps into a sack.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance you know how to get a boat out of here?"},
+        {"speaker": "N", "text": "Boats aren't my trade. Boots are."},
+        {"speaker": "P", "text": "That's not what I meant."},
+        {"speaker": "N", "text": "Crew boots. I know who's ashore without looking."},
+        {"speaker": "P", "text": "That's not helping me leave."},
+        {"speaker": "N", "text": "Never said it would."}
+      ],
+      "options": [
+        {
+          "label": "Who's your favourite crew?",
+          "lines": [
+            {"speaker": "N", "text": "The shark boat. Never shorts me on scraps."}
+          ]
+        },
+        {
+          "label": "Can't you just stow away?",
+          "lines": [
+            {"speaker": "N", "text": "Tried that once. Never again."},
+            {"speaker": "P", "text": "What happened to you?"},
+            {"speaker": "N", "text": "Boots. Someone else's, in my ribs."}
+          ]
+        },
+        {
+          "label": "Forget it, I'll ask elsewhere.",
+          "lines": [
+            {"speaker": "N", "text": "Good. Fewer questions for me."}
+          ]
+        },
+        {
+          "label": "Do you get lonely under here?",
+          "lines": [
+            {"speaker": "N", "text": "Gulls don't ask questions."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Watching the Gangplank",
+      "phase": "pre",
+      "premise": "He's leaning on a piling at dusk, watching a ship dock.",
+      "lines": [
+        {"speaker": "P", "text": "Is there any way to get a boat out of Varlamore?"},
+        {"speaker": "N", "text": "You running from something?"},
+        {"speaker": "P", "text": "No. I just want off this coast."},
+        {"speaker": "N", "text": "That's what they all say."},
+        {"speaker": "X", "text": "He watches the gangplank a moment longer."}
+      ],
+      "options": [
+        {
+          "label": "Who says that?",
+          "lines": [
+            {"speaker": "N", "text": "Deckhands, mostly. Same words every time."}
+          ]
+        },
+        {
+          "label": "I'm not hiding anything.",
+          "lines": [
+            {"speaker": "N", "text": "Never met one who was."}
+          ]
+        },
+        {
+          "label": "None of your business.",
+          "lines": [
+            {"speaker": "N", "text": "Fair enough. Not looking for one myself."}
+          ]
+        },
+        {
+          "label": "Just tell me what you know.",
+          "lines": [
+            {"speaker": "N", "text": "I know boots. Crews. Who's short-tempered before noon."},
+            {"speaker": "P", "text": "That's all you know?"},
+            {"speaker": "N", "text": "That's plenty, some days."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "A Second Look",
+      "phase": "post",
+      "premise": "He's under the pier when he spots the quiver on your back.",
+      "lines": [
+        {"speaker": "P", "text": "Do you know how I could get a boat out of here?"},
+        {"speaker": "N", "text": "Not from me. That thing on your back might."},
+        {"speaker": "P", "text": "You know what this is?"},
+        {"speaker": "N", "text": "Colosseum prize. Take it to the harbour, up in the capital."},
+        {"speaker": "X", "text": "He nods inland, north."}
+      ],
+      "options": [
+        {
+          "label": "Have you been there?",
+          "lines": [
+            {"speaker": "N", "text": "Me? No. Watched men limp back from it, though."}
+          ]
+        },
+        {
+          "label": "Why can't you help me sail?",
+          "lines": [
+            {"speaker": "N", "text": "No standing with the crews. Never have."}
+          ]
+        },
+        {
+          "label": "Thanks for the advice.",
+          "lines": [
+            {"speaker": "N", "text": "Don't thank me. Thank whoever gave you that."}
+          ]
+        },
+        {
+          "label": "I'll head there now.",
+          "lines": [
+            {"speaker": "N", "text": "You'll want better boots than those."}
+          ]
+        }
+      ]
+    }
+  ]
+}

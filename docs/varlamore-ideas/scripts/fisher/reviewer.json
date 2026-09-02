@@ -1,0 +1,90 @@
+{
+  "character": "Fisher",
+  "author": "reviewer",
+  "variants": [
+    {
+      "title": "Out where",
+      "phase": "pre",
+      "premise": "The fisher is knotting a torn net across his knee and does not stop.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance of a boat out of Varlamore?"},
+        {"speaker": "N", "text": "Not mine."},
+        {"speaker": "P", "text": "Someone else's, then?"},
+        {"speaker": "N", "text": "Ask them."},
+        {"speaker": "X", "text": "The fisher bites the twine off and starts again."}
+      ],
+      "options": [
+        {
+          "label": "Would you take me for coin?",
+          "lines": [
+            {"speaker": "N", "text": "No."},
+            {"speaker": "N", "text": "You'd be sick before the rocks."}
+          ]
+        },
+        {
+          "label": "You're not very friendly.",
+          "lines": [
+            {"speaker": "N", "text": "You're an outerlander. That's the whole of it."}
+          ]
+        },
+        {
+          "label": "Caught anything today?",
+          "lines": [
+            {"speaker": "N", "text": "Shark. Two."},
+            {"speaker": "P", "text": "Is that good?"},
+            {"speaker": "N", "text": "It's two more than you've caught."}
+          ]
+        },
+        {
+          "label": "Never mind.",
+          "lines": [
+            {"speaker": "N", "text": "Aye."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Stayed for the fish",
+      "phase": "post",
+      "premise": "The fisher is salting shark on a plank and stops when he sees the quiver.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance of a boat out of Varlamore?"},
+        {"speaker": "X", "text": "The fisher looks up at the quiver on your back."},
+        {"speaker": "N", "text": "Half this village came south to fight for one of those."},
+        {"speaker": "P", "text": "And you?"},
+        {"speaker": "N", "text": "I came for the fish."},
+        {"speaker": "N", "text": "Take that to the harbour in the capital. Not to me."}
+      ],
+      "options": [
+        {
+          "label": "Who do I show it to?",
+          "lines": [
+            {"speaker": "N", "text": "Whoever keeps the ledger up there."},
+            {"speaker": "N", "text": "I've never been. Too far from the water."}
+          ]
+        },
+        {
+          "label": "You could sail me yourself.",
+          "lines": [
+            {"speaker": "N", "text": "She's a fishing boat."},
+            {"speaker": "P", "text": "So?"},
+            {"speaker": "N", "text": "So you'd smell of shark for a week."}
+          ]
+        },
+        {
+          "label": "Ever thought of fighting there?",
+          "lines": [
+            {"speaker": "N", "text": "Thought about it."},
+            {"speaker": "N", "text": "Then I thought about the fish."}
+          ]
+        },
+        {
+          "label": "Thanks.",
+          "lines": [
+            {"speaker": "N", "text": "Don't thank me. I did nothing."}
+          ]
+        }
+      ]
+    }
+  ]
+}

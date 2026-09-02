@@ -1,0 +1,30 @@
+{
+  "title": "Overview",
+  "lead": "Dialogue drafts for the dock stand-ins, a proposal for who unlocks the charter ships, and plugin feature ideas for a Varlamore-locked Ultimate Ironman. Everything here is for you to score.",
+  "blocks": [
+    {
+      "title": "How to score",
+      "html": "<p>Every line, option, and idea has a box. <b>1 is useless, 100 is a masterpiece.</b> Leave a note when a number isn't enough. Scores save in this browser as you type. When you're done, go to <a href=\"#export\">Your scores</a>, press <b>Copy scores</b>, and paste the text to me.</p><p class=\"legend\">Colour hints: red box is 30 or under, green is 70 or over. The sidebar shows how much you've scored.</p>"
+    },
+    {
+      "title": "One thing to fix regardless of scores",
+      "html": "<p>The feasibility challenger found an <b>open escape route</b> in the current plugin: three fairy rings sit inside Varlamore (AIS, AJP, CKQ), they are unlocked by the same quest that arms the lock, and nothing in the spell, item or NPC blockers touches them. A locked player can leave through a fairy ring today. The fix is a menu-click block on the ring's travel interface, filtered to codes that lead outside the region. It's listed under Other ideas as <i>Fairy ring lockdown</i>.</p>"
+    },
+    {
+      "title": "The premise everyone was given",
+      "html": "<p>In this Varlamore nobody may sail out until they've proven they can fend for themselves. Champions of the Fortis Colosseum carry <b>Dizana's quiver</b> as proof. The people at the docks can't unlock anything; one person in the kingdom can. Writers were told only that, plus who their character is and where they stand. No existing lines, no plugin details, no instruction to hint at anything.</p>"
+    },
+    {
+      "title": "Who stands at the docks, and why these six",
+      "html": "<p>The characters come from what the wiki says actually lives at each dock, not from what would be convenient.</p><ul><li><b>Sunset Coast</b> is a Fremennik village transplanted from Rellekka: fishers, a helmet smith, a fishing shop, shark on the ovens. So: a <b>Fremennik fisher</b> and a <b>pier drifter</b> who came off a charter ship once and never left.</li><li><b>Aldarin</b> is wine villas and the 400-year-old Moonrise winery over a rough south coast of dwarves and bandits. So: a <b>vineyard hand</b> minding a shipment, and a <b>coastal boatman</b> who moves cargo nobody declares.</li><li><b>Fortis Cothon</b> is the capital's Roman-style trade harbour with guards, knights, merchants and a shipwright. So: a <b>harbour guard</b> and a <b>dockworker</b>.</li></ul><p>Each has two independent writers. The guard also shows the version you approved earlier, for comparison. Full research is in <code>docs/varlamore-ideas/research/</code>.</p>"
+    },
+    {
+      "title": "What's in here",
+      "html": "<ol><li><b>Unlock design</b>: four candidates for the NPC who lets you sail once you show the quiver, two existing NPCs to overlay and two new ones to spawn, each with a sample exchange.</li><li><b>Characters</b>: before-quiver and after-quiver conversations for all six, from two writers each. After-quiver versions send the player to the unlocker.</li><li><b>Progress tracking</b>, <b>Key items</b>, <b>Milestone-gated quality of life</b> and <b>Other ideas</b>: plugin proposals grounded in wiki facts about what a locked UIM can and cannot get.</li></ol>"
+    },
+    {
+      "title": "How this was made",
+      "html": "<p>Five research agents mined the wiki (docks and geography, the Colosseum and who holds authority, items and shops, progression and milestones, real NPC voice samples). Twelve writers drafted independently from short briefs. Fact-checkers and challengers then reviewed every script against the wiki and the game's register, and writers revised. The plugin ideas went through a feasibility challenge against the RuneLite API. This page was checked in Chrome for overflow and clipping at desktop and narrow widths.</p>"
+    }
+  ]
+}

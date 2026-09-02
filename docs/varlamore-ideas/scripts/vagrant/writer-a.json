@@ -1,0 +1,131 @@
+{
+  "character": "Vagrant",
+  "author": "writer-a",
+  "variants": [
+    {
+      "title": "Under the pier",
+      "phase": "pre",
+      "premise": "He is picking through a bucket of fish scraps in the shade under the pier.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance of a ship out of here?"},
+        {"speaker": "N", "text": "Depends whose boots you've got on."},
+        {"speaker": "P", "text": "My boots?"},
+        {"speaker": "N", "text": "Crews know their own. You're not one of them."},
+        {"speaker": "N", "text": "Try it. They'll enjoy that."}
+      ],
+      "options": [
+        {
+          "label": "Which crew would take me?",
+          "lines": [
+            {"speaker": "N", "text": "None of them, not the way you're stood."},
+            {"speaker": "N", "text": "Something about the capital saying yes first."}
+          ]
+        },
+        {
+          "label": "You could've left years ago.",
+          "lines": [
+            {"speaker": "N", "text": "Could have. The ship went. I didn't."},
+            {"speaker": "P", "text": "Why not?"},
+            {"speaker": "N", "text": "Never got round to it."}
+          ]
+        },
+        {
+          "label": "Do you need anything?",
+          "lines": [
+            {"speaker": "N", "text": "Scraps come off the ovens at dusk. I'm all right."}
+          ]
+        },
+        {
+          "label": "Never mind.",
+          "lines": [
+            {"speaker": "N", "text": "Mind the nets on your way out."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Boots and bells",
+      "phase": "pre",
+      "premise": "He is sat with his back to a piling, watching a charter crew load crates.",
+      "lines": [
+        {"speaker": "P", "text": "I'm after passage on a boat."},
+        {"speaker": "N", "text": "That one's loaded. Sails at dusk if the captain stands."},
+        {"speaker": "P", "text": "Would he take me?"},
+        {"speaker": "N", "text": "He'd take anyone. The harbour won't."},
+        {"speaker": "N", "text": "A lad tried last week. Came straight back."}
+      ],
+      "options": [
+        {
+          "label": "What stops the harbour?",
+          "lines": [
+            {"speaker": "N", "text": "Proof of something. I only hear the shouting."},
+            {"speaker": "P", "text": "Fair enough."}
+          ]
+        },
+        {
+          "label": "How do you know the ships?",
+          "lines": [
+            {"speaker": "N", "text": "Boots. Every crew wears its own."},
+            {"speaker": "N", "text": "Yours have never been wet."}
+          ]
+        },
+        {
+          "label": "Which captain drinks?",
+          "lines": [
+            {"speaker": "N", "text": "All of them. Some start earlier."}
+          ]
+        },
+        {
+          "label": "I'll try anyway.",
+          "lines": [
+            {"speaker": "N", "text": "Go on, then."},
+            {"speaker": "N", "text": "I'll be here after."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "The quiver",
+      "phase": "post",
+      "premise": "He is coiling a length of rope the crews dropped under the pier.",
+      "lines": [
+        {"speaker": "P", "text": "I need a ship out of Varlamore."},
+        {"speaker": "X", "text": "The vagrant sits up and looks at the quiver."},
+        {"speaker": "N", "text": "So you're one of the arena lot."},
+        {"speaker": "P", "text": "The Colosseum, yes."},
+        {"speaker": "N", "text": "That's the one. The crews talk about it all night."},
+        {"speaker": "N", "text": "Take it to the harbour in the capital. They read that sort of thing."}
+      ],
+      "options": [
+        {
+          "label": "Who reads it?",
+          "lines": [
+            {"speaker": "N", "text": "The one with the big book, down at the Cothon."},
+            {"speaker": "N", "text": "Registrar, I heard a mate call him."}
+          ]
+        },
+        {
+          "label": "You know the Cothon?",
+          "lines": [
+            {"speaker": "N", "text": "Stepped off there years back."},
+            {"speaker": "N", "text": "Walked out and never went in again."}
+          ]
+        },
+        {
+          "label": "Come with me.",
+          "lines": [
+            {"speaker": "N", "text": "And do what? Stand about on a nicer deck?"},
+            {"speaker": "P", "text": "Fair enough."},
+            {"speaker": "N", "text": "Send word when you're out."}
+          ]
+        },
+        {
+          "label": "Thanks.",
+          "lines": [
+            {"speaker": "N", "text": "Don't come back this way. There's nothing here."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "character": "Fisher",
+  "author": "writer-a",
+  "variants": [
+    {
+      "title": "Mending nets",
+      "phase": "pre",
+      "premise": "The fisher sits on the dock with a torn net across his knees, working a needle through it.",
+      "lines": [
+        {"speaker": "P", "text": "Could you take me out on your boat?"},
+        {"speaker": "N", "text": "Don't talk to me outerlander. I'm mending this net."},
+        {"speaker": "P", "text": "It's a simple question."},
+        {"speaker": "N", "text": "And that's a simple answer. No."},
+        {"speaker": "X", "text": "He pulls the twine tight without looking up."}
+      ],
+      "options": [
+        {
+          "label": "Who could take me, then?",
+          "lines": [
+            {"speaker": "N", "text": "Nobody who'd risk it on you."},
+            {"speaker": "N", "text": "Go and ask them yourself."}
+          ]
+        },
+        {
+          "label": "What happened to the net?",
+          "lines": [
+            {"speaker": "N", "text": "Shark went straight through it."},
+            {"speaker": "P", "text": "A big one?"},
+            {"speaker": "N", "text": "Big enough. It had the catch as well."}
+          ]
+        },
+        {
+          "label": "You're a long way from Rellekka.",
+          "lines": [
+            {"speaker": "N", "text": "Aye. And it's far too hot here for a proper beard."},
+            {"speaker": "N", "text": "The fish don't mind. I do."}
+          ]
+        },
+        {
+          "label": "Never mind.",
+          "lines": [
+            {"speaker": "N", "text": "Good."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Gutting sharks",
+      "phase": "pre",
+      "premise": "The fisher is gutting a shark on a barrel by the water while gulls scream overhead.",
+      "lines": [
+        {"speaker": "P", "text": "I'm after passage out of Varlamore. Any boats?"},
+        {"speaker": "N", "text": "Out where? There's nothing out there but water and weather."},
+        {"speaker": "P", "text": "Anywhere. I want to leave the kingdom."},
+        {"speaker": "N", "text": "Then you want the capital, not me. I fish."},
+        {"speaker": "X", "text": "He flicks the guts into the sea. The gulls dive for them."}
+      ],
+      "options": [
+        {
+          "label": "Have you been to the capital?",
+          "lines": [
+            {"speaker": "N", "text": "Never. It's too far from the water for me."},
+            {"speaker": "N", "text": "Nothing up there but people."}
+          ]
+        },
+        {
+          "label": "What's the weather doing?",
+          "lines": [
+            {"speaker": "N", "text": "Wind's turning. There'll be swell by evening."},
+            {"speaker": "P", "text": "Bad for fishing?"},
+            {"speaker": "N", "text": "Bad for outerlanders in small boats."}
+          ]
+        },
+        {
+          "label": "Sell me that shark.",
+          "lines": [
+            {"speaker": "N", "text": "This one's promised. It's on the ovens tonight."},
+            {"speaker": "N", "text": "Buy it there like everyone else."}
+          ]
+        },
+        {
+          "label": "I'll leave you to it.",
+          "lines": [
+            {"speaker": "N", "text": "Aye. Mind the gulls."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "The quiver",
+      "phase": "post",
+      "premise": "The fisher is hauling a crate of shark up the dock when the player stops him.",
+      "lines": [
+        {"speaker": "P", "text": "I need a boat out of the kingdom."},
+        {"speaker": "X", "text": "The fisher sets the crate down and looks you over."},
+        {"speaker": "N", "text": "That thing on your back. You fought for it?"},
+        {"speaker": "P", "text": "In the Colosseum, yes."},
+        {"speaker": "N", "text": "Hah. Then you're not soft after all, outerlander."},
+        {"speaker": "N", "text": "Take it to the harbour in the capital. They keep a list there."}
+      ],
+      "options": [
+        {
+          "label": "Who keeps the list?",
+          "lines": [
+            {"speaker": "N", "text": "Some clerk with a ledger. Registrar, they call him."},
+            {"speaker": "N", "text": "Never met him. Sounds miserable."}
+          ]
+        },
+        {
+          "label": "Could you sail me out yourself?",
+          "lines": [
+            {"speaker": "N", "text": "My boat's for fish, not passengers."},
+            {"speaker": "P", "text": "Not even for coin?"},
+            {"speaker": "N", "text": "Not even for coin. She stinks of shark."}
+          ]
+        },
+        {
+          "label": "Where is this harbour?",
+          "lines": [
+            {"speaker": "N", "text": "North of here. Civitas illa Fortis."},
+            {"speaker": "N", "text": "I've never seen it. Never wanted to."},
+            {"speaker": "N", "text": "Too many people, they tell me."}
+          ]
+        },
+        {
+          "label": "Thanks for the help.",
+          "lines": [
+            {"speaker": "N", "text": "Fair winds. You've earned that much."}
+          ]
+        }
+      ]
+    }
+  ]
+}

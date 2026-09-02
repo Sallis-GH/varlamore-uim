@@ -1,0 +1,131 @@
+{
+  "character": "Vineyard worker",
+  "author": "writer-a",
+  "variants": [
+    {
+      "title": "Counting crates",
+      "phase": "pre",
+      "premise": "He is counting the wine crates on the dock and keeps losing his place.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance of getting a ship out of here?"},
+        {"speaker": "N", "text": "Tetamo. You've made me lose count again."},
+        {"speaker": "N", "text": "Twelve, thirteen... no. Back to one."},
+        {"speaker": "P", "text": "Sorry. I only want passage somewhere."},
+        {"speaker": "N", "text": "Then ask a sailor. I pick grapes."}
+      ],
+      "options": [
+        {
+          "label": "Who's in charge of the crates?",
+          "lines": [
+            {"speaker": "N", "text": "The foreman. He's up at the vineyard."},
+            {"speaker": "N", "text": "Don't tell him I lost count."}
+          ]
+        },
+        {
+          "label": "What's in the crates?",
+          "lines": [
+            {"speaker": "N", "text": "Wine. Last year's, off the north slope."},
+            {"speaker": "P", "text": "Is it any good?"},
+            {"speaker": "N", "text": "You won't regret it if you try some."}
+          ]
+        },
+        {
+          "label": "Have you ever sailed?",
+          "lines": [
+            {"speaker": "N", "text": "Never. I'd like to keep it that way."},
+            {"speaker": "N", "text": "Water's for the grapes."}
+          ]
+        },
+        {
+          "label": "Never mind.",
+          "lines": [
+            {"speaker": "N", "text": "Mind the gulls on your way past."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Foreman's temper",
+      "phase": "pre",
+      "premise": "He is sat on a crate waiting on the dwarves' cart from Mistrock, glad of someone to talk at.",
+      "lines": [
+        {"speaker": "P", "text": "I'm after a boat off this island. Know anyone?"},
+        {"speaker": "N", "text": "Nilsal. Sit down before somebody sees you standing about."},
+        {"speaker": "N", "text": "The foreman, I mean. He's about somewhere."},
+        {"speaker": "P", "text": "So no boat, then."},
+        {"speaker": "N", "text": "Not from me, iknami. I watch crates, that's all."}
+      ],
+      "options": [
+        {
+          "label": "Why's he so sour?",
+          "lines": [
+            {"speaker": "N", "text": "His brother married into the big villa."},
+            {"speaker": "N", "text": "Now he's got a temper and no vines."}
+          ]
+        },
+        {
+          "label": "Does anyone sail out?",
+          "lines": [
+            {"speaker": "N", "text": "They try. Then they come back grumbling."},
+            {"speaker": "N", "text": "Something about the capital saying no."}
+          ]
+        },
+        {
+          "label": "How's the harvest?",
+          "lines": [
+            {"speaker": "N", "text": "The grapes are in good shape this year."},
+            {"speaker": "N", "text": "Shame about everything else."}
+          ]
+        },
+        {
+          "label": "I'll leave you to it.",
+          "lines": [
+            {"speaker": "N", "text": "Timoiva. Say nothing about the crate."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Shiny back",
+      "phase": "post",
+      "premise": "He is eating his lunch on the wine crates when he notices what the player is wearing.",
+      "lines": [
+        {"speaker": "P", "text": "I need a ship. Can anyone here help me?"},
+        {"speaker": "X", "text": "The worker stops chewing and stares at your back."},
+        {"speaker": "N", "text": "Tetamo. That's the one from the fighting pit."},
+        {"speaker": "P", "text": "The Colosseum, yes."},
+        {"speaker": "N", "text": "Then you're not my trouble. You're the harbour's."}
+      ],
+      "options": [
+        {
+          "label": "Which harbour?",
+          "lines": [
+            {"speaker": "N", "text": "The big one at the capital. The Cothon."},
+            {"speaker": "N", "text": "There's a fellow there with a ledger."},
+            {"speaker": "N", "text": "He decides. Not me."}
+          ]
+        },
+        {
+          "label": "You know this quiver?",
+          "lines": [
+            {"speaker": "N", "text": "My cousin described it once. Bragged for weeks."},
+            {"speaker": "N", "text": "He never got one. Go on, the capital."}
+          ]
+        },
+        {
+          "label": "Want a closer look?",
+          "lines": [
+            {"speaker": "N", "text": "No. Show it to the ledger fellow, not me."},
+            {"speaker": "N", "text": "I've grapes to think about."}
+          ]
+        },
+        {
+          "label": "Thanks for the help.",
+          "lines": [
+            {"speaker": "N", "text": "Timoiva. Try the capital harbour."}
+          ]
+        }
+      ]
+    }
+  ]
+}

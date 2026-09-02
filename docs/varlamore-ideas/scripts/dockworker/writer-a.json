@@ -1,0 +1,130 @@
+{
+  "character": "Dockworker",
+  "author": "writer-a",
+  "variants": [
+    {
+      "title": "Bad Back Day",
+      "phase": "pre",
+      "premise": "The dockworker is trying to shift a crate of nails off his shoulder and failing.",
+      "lines": [
+        {"speaker": "P", "text": "Can you get me onto a ship out of here?"},
+        {"speaker": "N", "text": "Nilsal! Help me with this crate first."},
+        {"speaker": "X", "text": "You take one end. It is full of nails."},
+        {"speaker": "N", "text": "There. My back's gone again."},
+        {"speaker": "N", "text": "Ships? Nobody's sailing you anywhere."}
+      ],
+      "options": [
+        {
+          "label": "Who decides who sails?",
+          "lines": [
+            {"speaker": "N", "text": "Someone in the dock building with a ledger."},
+            {"speaker": "N", "text": "I've never been past that door."}
+          ]
+        },
+        {
+          "label": "Your back sounds bad.",
+          "lines": [
+            {"speaker": "N", "text": "Twelve years of hauling crates. Worth it for the pay."},
+            {"speaker": "P", "text": "Is the pay good?"},
+            {"speaker": "N", "text": "Not really, no."}
+          ]
+        },
+        {
+          "label": "What's in the crates?",
+          "lines": [
+            {"speaker": "N", "text": "Spice mostly. Furs when the northern lot come in."},
+            {"speaker": "N", "text": "Don't touch the spice. They count it."}
+          ]
+        },
+        {
+          "label": "I'll leave you to it.",
+          "lines": [
+            {"speaker": "N", "text": "Timoiva. Send the cart lad over if you see him."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Tide Going Out",
+      "phase": "pre",
+      "premise": "The dockworker is tallying spice sacks from a bollard, bread in hand, losing count.",
+      "lines": [
+        {"speaker": "P", "text": "I need a boat out of Varlamore."},
+        {"speaker": "N", "text": "Tide's going out. So's my lunch break."},
+        {"speaker": "N", "text": "Even if a crew wanted you, they can't take you."},
+        {"speaker": "P", "text": "Says who, exactly?"},
+        {"speaker": "N", "text": "The desk inside. The guards just stand about looking smart."}
+      ],
+      "options": [
+        {
+          "label": "Which crews might take me?",
+          "lines": [
+            {"speaker": "N", "text": "The Aldarin run tips well. The spice lot never tip."},
+            {"speaker": "N", "text": "Neither will sail you out, mind."}
+          ]
+        },
+        {
+          "label": "What's this desk inside?",
+          "lines": [
+            {"speaker": "N", "text": "A ledger. Every hull in the harbour's written in it."},
+            {"speaker": "N", "text": "Don't go bothering it without a reason."}
+          ]
+        },
+        {
+          "label": "Where can I get a drink?",
+          "lines": [
+            {"speaker": "N", "text": "Flaming Arrow. Ask for the sunbeam ale."},
+            {"speaker": "P", "text": "Is it any good?"},
+            {"speaker": "N", "text": "You'll thank me."}
+          ]
+        },
+        {
+          "label": "Enjoy your bread.",
+          "lines": [
+            {"speaker": "N", "text": "I will. Tide's back in an hour anyway."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "He Sees It",
+      "phase": "post",
+      "premise": "The dockworker is coiling rope and stops dead when he sees the quiver.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance of a ship out of the kingdom?"},
+        {"speaker": "X", "text": "He looks at the quiver on your back and drops the rope."},
+        {"speaker": "N", "text": "Tetamo. You don't see those down here."},
+        {"speaker": "P", "text": "I earned it at the Colosseum."},
+        {"speaker": "N", "text": "Then stop asking dockhands. Go and see the registrar."}
+      ],
+      "options": [
+        {
+          "label": "Where's the registrar?",
+          "lines": [
+            {"speaker": "N", "text": "Dock building, desk at the back. You'll see the ledger."}
+          ]
+        },
+        {
+          "label": "You know what this is?",
+          "lines": [
+            {"speaker": "N", "text": "Everyone here knows. The betting lot talk of nothing else."},
+            {"speaker": "N", "text": "Loudest thing in the capital."}
+          ]
+        },
+        {
+          "label": "Will the crews take me?",
+          "lines": [
+            {"speaker": "N", "text": "They take whoever the ledger says. Get your name in it."},
+            {"speaker": "N", "text": "Then find a crew. The Aldarin lot are decent."}
+          ]
+        },
+        {
+          "label": "Thanks. I'll go now.",
+          "lines": [
+            {"speaker": "N", "text": "Timoiva. Mind the wet steps on your way in."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "character": "Guard",
+  "author": "reviewer",
+  "variants": [
+    {
+      "title": "Wrong queue",
+      "phase": "pre",
+      "premise": "The guard stands at the berth watching a rope being coiled.",
+      "lines": [
+        {"speaker": "P", "text": "Can I get on a ship out of here?"},
+        {"speaker": "N", "text": "Not that one."},
+        {"speaker": "P", "text": "Which one, then?"},
+        {"speaker": "N", "text": "None of them."},
+        {"speaker": "X", "text": "The guard goes back to watching the rope."}
+      ],
+      "options": [
+        {
+          "label": "Says who?",
+          "lines": [
+            {"speaker": "N", "text": "Me."},
+            {"speaker": "P", "text": "That's it?"},
+            {"speaker": "N", "text": "That's it."}
+          ]
+        },
+        {
+          "label": "What would change your mind?",
+          "lines": [
+            {"speaker": "N", "text": "Nothing you've got."}
+          ]
+        },
+        {
+          "label": "Do you ever move?",
+          "lines": [
+            {"speaker": "N", "text": "When I'm relieved."},
+            {"speaker": "P", "text": "When's that?"},
+            {"speaker": "N", "text": "Later."}
+          ]
+        },
+        {
+          "label": "Fine.",
+          "lines": [
+            {"speaker": "N", "text": "Fair enough."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Still no",
+      "phase": "post",
+      "premise": "The guard sees the quiver before the player has finished asking.",
+      "lines": [
+        {"speaker": "P", "text": "Can I get on a ship now?"},
+        {"speaker": "X", "text": "The guard looks at the quiver, then at you."},
+        {"speaker": "N", "text": "Huh."},
+        {"speaker": "P", "text": "Is that a yes?"},
+        {"speaker": "N", "text": "It's not a no. Registrar's inside."}
+      ],
+      "options": [
+        {
+          "label": "Who's the registrar?",
+          "lines": [
+            {"speaker": "N", "text": "The one with the ledger."}
+          ]
+        },
+        {
+          "label": "Where inside?",
+          "lines": [
+            {"speaker": "N", "text": "Behind me. Look for the desk."}
+          ]
+        },
+        {
+          "label": "You could sound happier.",
+          "lines": [
+            {"speaker": "N", "text": "I could."}
+          ]
+        },
+        {
+          "label": "Thanks.",
+          "lines": [
+            {"speaker": "N", "text": "Don't come back."},
+            {"speaker": "P", "text": "Charming."},
+            {"speaker": "N", "text": "I try."}
+          ]
+        }
+      ]
+    }
+  ]
+}

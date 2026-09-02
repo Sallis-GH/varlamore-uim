@@ -1,0 +1,36 @@
+{
+  "character": "Guard",
+  "author": "current (approved by you)",
+  "variants": [
+    {
+      "title": "Not for you",
+      "phase": "pre",
+      "premise": "The version you approved earlier, here for comparison.",
+      "lines": [
+        {"speaker": "P", "text": "Any ships sailing today?"},
+        {"speaker": "N", "text": "Not for you."},
+        {"speaker": "P", "text": "Why not?"},
+        {"speaker": "N", "text": "Next question."}
+      ],
+      "options": [
+        {"label": "Who is allowed on, then?", "lines": [{"speaker": "N", "text": "Champions."}]},
+        {"label": "Can't you make an exception?", "lines": [{"speaker": "N", "text": "No."}]},
+        {"label": "Do you say anything other than no?", "lines": [{"speaker": "N", "text": "No."}]},
+        {"label": "What if I'm a champion?", "lines": [{"speaker": "N", "text": "You're not."}]}
+      ]
+    },
+    {
+      "title": "Fine",
+      "phase": "post",
+      "premise": "The version you approved earlier: he notices the quiver.",
+      "lines": [
+        {"speaker": "P", "text": "Any ships sailing today?"},
+        {"speaker": "N", "text": "Not for you."},
+        {"speaker": "P", "text": "What if I'm a champion?"},
+        {"speaker": "X", "text": "The guard notices the quiver on your back."},
+        {"speaker": "N", "text": "Fine."}
+      ],
+      "options": []
+    }
+  ]
+}

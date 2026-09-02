@@ -1,0 +1,129 @@
+{
+  "character": "Boatman",
+  "author": "writer-b",
+  "variants": [
+    {
+      "title": "Wine Crates",
+      "phase": "pre",
+      "premise": "He's stacking crates of wine at the end of the pier, ready to shove off.",
+      "lines": [
+        {"speaker": "P", "text": "Can you take me out on the water?"},
+        {"speaker": "N", "text": "Not you, not today. Got wine to move."},
+        {"speaker": "X", "text": "A gull screeches over the crates and he swears at it."},
+        {"speaker": "N", "text": "Even if I hadn't. I don't cross open water."}
+      ],
+      "options": [
+        {
+          "label": "Why not?",
+          "lines": [
+            {"speaker": "N", "text": "No captain takes a stranger. Their boats, their call."},
+            {"speaker": "P", "text": "Says who?"},
+            {"speaker": "N", "text": "Don't ask me, iknami. I just row the crates."}
+          ]
+        },
+        {
+          "label": "Who decides that?",
+          "lines": [
+            {"speaker": "N", "text": "Captains do. Ask one."},
+            {"speaker": "N", "text": "They'll say no slower than I did."}
+          ]
+        },
+        {
+          "label": "Nice wine you've got there.",
+          "lines": [
+            {"speaker": "N", "text": "Aldarin's finest. Don't touch the crates."},
+            {"speaker": "P", "text": "Wasn't going to."},
+            {"speaker": "N", "text": "Good. Last one who did went home wet."}
+          ]
+        },
+        {
+          "label": "Fine, I'll walk.",
+          "lines": [
+            {"speaker": "N", "text": "Suit yourself. It's an island, mind."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Rough Company",
+      "phase": "pre",
+      "premise": "He's watching the coast road for bandits before he'll cast off.",
+      "lines": [
+        {"speaker": "P", "text": "Got room on your boat for a paying passenger?"},
+        {"speaker": "N", "text": "Depends what you're paying with, and where you think you're going."},
+        {"speaker": "X", "text": "He glances up the cliff path, then back to you."},
+        {"speaker": "N", "text": "Out past Varlamore? Not in this boat."}
+      ],
+      "options": [
+        {
+          "label": "Why not?",
+          "lines": [
+            {"speaker": "N", "text": "Charter captains won't risk a stranger."},
+            {"speaker": "N", "text": "Take it up with them, not me."}
+          ]
+        },
+        {
+          "label": "I could pay well.",
+          "lines": [
+            {"speaker": "N", "text": "Keep your coin. I don't do open water."}
+          ]
+        },
+        {
+          "label": "Are you smuggling something?",
+          "lines": [
+            {"speaker": "N", "text": "Wine. It's always wine."},
+            {"speaker": "P", "text": "That sounds illegal."},
+            {"speaker": "N", "text": "Then don't say it out loud."}
+          ]
+        },
+        {
+          "label": "Forget it.",
+          "lines": [
+            {"speaker": "N", "text": "Wise choice, iknami."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Proof Enough",
+      "phase": "post",
+      "premise": "He's untying his boat, ready to shove off without waiting for anyone.",
+      "lines": [
+        {"speaker": "P", "text": "Any chance of a boat now?"},
+        {"speaker": "N", "text": "That quiver. Colosseum, isn't it?"},
+        {"speaker": "X", "text": "He looks you over properly for the first time."},
+        {"speaker": "N", "text": "Tetamo. You actually did it, then."}
+      ],
+      "options": [
+        {
+          "label": "Can you take me now?",
+          "lines": [
+            {"speaker": "N", "text": "Not me. You want the harbour in the capital for that."},
+            {"speaker": "N", "text": "I just do the coast, iknami."}
+          ]
+        },
+        {
+          "label": "Does that change anything?",
+          "lines": [
+            {"speaker": "N", "text": "Show it at the harbour, up in the capital."},
+            {"speaker": "P", "text": "Is that really it?"},
+            {"speaker": "N", "text": "That's what I hear. Never seen it myself."}
+          ]
+        },
+        {
+          "label": "Thanks for the help.",
+          "lines": [
+            {"speaker": "N", "text": "Didn't do much. Ask at the capital harbour."}
+          ]
+        },
+        {
+          "label": "You've heard of this before?",
+          "lines": [
+            {"speaker": "N", "text": "Only rumours. Never paid them much mind."},
+            {"speaker": "N", "text": "Now go bother the harbour in the capital."}
+          ]
+        }
+      ]
+    }
+  ]
+}

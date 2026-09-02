@@ -1,0 +1,90 @@
+{
+  "character": "Fisher",
+  "author": "writer-b",
+  "variants": [
+    {
+      "title": "Mending Nets",
+      "phase": "pre",
+      "premise": "The fisher crouches on the dock, working a bone needle through a torn net.",
+      "lines": [
+        {"speaker": "P", "text": "Any idea how I could get a boat out of here?"},
+        {"speaker": "N", "text": "Ships aren't my business. Talk to the harbour folk, not me."},
+        {"speaker": "P", "text": "So you don't know anything about it?"},
+        {"speaker": "N", "text": "I know sharks and tides. That's the lot."},
+        {"speaker": "X", "text": "The fisher tugs the knot tight without looking up."}
+      ],
+      "options": [
+        {"label": "Fair enough.", "lines": [
+          {"speaker": "N", "text": "Suits me. Less talking."}
+        ]},
+        {"label": "What do Fremennik know, then?", "lines": [
+          {"speaker": "N", "text": "Nets. Tides. Sharks. Good boats."},
+          {"speaker": "P", "text": "Nothing about ships leaving, though."},
+          {"speaker": "N", "text": "Not my trade, outerlander."}
+        ]},
+        {"label": "Thanks for nothing.", "lines": [
+          {"speaker": "N", "text": "Don't mention it."}
+        ]},
+        {"label": "What are you fishing for?", "lines": [
+          {"speaker": "N", "text": "Shark, off the rocks, when the tide allows it."}
+        ]}
+      ]
+    },
+    {
+      "title": "Bad Catch",
+      "phase": "pre",
+      "premise": "The fisher slams a half-full creel onto the dock, cursing the tide.",
+      "lines": [
+        {"speaker": "P", "text": "Is there a ship leaving the coast soon?"},
+        {"speaker": "N", "text": "Do I look like a ship to you?"},
+        {"speaker": "P", "text": "You don't sound like you'd help anyway."},
+        {"speaker": "N", "text": "I wouldn't."},
+        {"speaker": "X", "text": "The fisher spits over the rail and goes back to the ropes."}
+      ],
+      "options": [
+        {"label": "Rough day?", "lines": [
+          {"speaker": "N", "text": "Half a creel of fish and a split net. Rough enough."}
+        ]},
+        {"label": "Just point me somewhere.", "lines": [
+          {"speaker": "N", "text": "Rocks are that way. Fish are that way. Ships, no idea."}
+        ]},
+        {"label": "Never mind, then.", "lines": [
+          {"speaker": "N", "text": "Good. Go bother someone else."}
+        ]},
+        {"label": "You Fremennik are all the same.", "lines": [
+          {"speaker": "N", "text": "And proud of it."},
+          {"speaker": "P", "text": "Fair enough."},
+          {"speaker": "N", "text": "Move along, outerlander."}
+        ]}
+      ]
+    },
+    {
+      "title": "Quiver Recognised",
+      "phase": "post",
+      "premise": "The fisher is coiling a wet line by the pilings when the player approaches.",
+      "lines": [
+        {"speaker": "P", "text": "Is there any way I could get a ship out of here?"},
+        {"speaker": "X", "text": "The fisher's eyes catch on the quiver on your back."},
+        {"speaker": "N", "text": "Colosseum-make, unless my eyes have gone soft."},
+        {"speaker": "P", "text": "Does that help me any?"},
+        {"speaker": "N", "text": "Not from me. But it might, up at the harbour in the capital."}
+      ],
+      "options": [
+        {"label": "Where's that, then?", "lines": [
+          {"speaker": "N", "text": "Fortis Cothon, they call it. Ask for whoever runs the ledger."}
+        ]},
+        {"label": "You ever sailed there?", "lines": [
+          {"speaker": "N", "text": "Never had reason to. My boats stay close to the rocks."}
+        ]},
+        {"label": "Not bad for an outerlander.", "lines": [
+          {"speaker": "N", "text": "Didn't say that."},
+          {"speaker": "P", "text": "Close enough, then."},
+          {"speaker": "N", "text": "Don't push it."}
+        ]},
+        {"label": "I'll get moving.", "lines": [
+          {"speaker": "N", "text": "Mind the tide on your way out, outerlander."}
+        ]}
+      ]
+    }
+  ]
+}

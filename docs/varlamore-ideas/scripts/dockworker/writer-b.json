@@ -1,0 +1,86 @@
+{
+  "character": "Dockworker",
+  "author": "writer-b",
+  "variants": [
+    {
+      "title": "Aching Back",
+      "phase": "pre",
+      "premise": "He's hunched over a heavy crate, easing it down onto the dock.",
+      "lines": [
+        {"speaker": "P", "text": "Any ships heading out of the harbour?"},
+        {"speaker": "N", "text": "Ask the tide, not me, iknami."},
+        {"speaker": "X", "text": "He straightens up slowly, hand pressed to his back."},
+        {"speaker": "N", "text": "They'll sail all right. Just not with you aboard."},
+        {"speaker": "P", "text": "Says who?"},
+        {"speaker": "N", "text": "No idea. Above my pay, and my pay's already rubbish."}
+      ],
+      "options": [
+        {"label": "Why won't they take me?", "lines": [
+          {"speaker": "N", "text": "You'd have to prove yourself first. No idea how."}
+        ]},
+        {"label": "Rough day?", "lines": [
+          {"speaker": "N", "text": "Every day's rough when you lift crates for a living."},
+          {"speaker": "P", "text": "Suppose so."},
+          {"speaker": "N", "text": "Mind how you go."}
+        ]},
+        {"label": "Never mind.", "lines": [
+          {"speaker": "N", "text": "Wise choice."}
+        ]}
+      ]
+    },
+    {
+      "title": "Counting Coins",
+      "phase": "pre",
+      "premise": "He's counting coins a ship's crew just paid him for unloading cargo.",
+      "lines": [
+        {"speaker": "P", "text": "Can I catch a ride out of Varlamore?"},
+        {"speaker": "N", "text": "Ha. Wish I could tell you yes."},
+        {"speaker": "X", "text": "He pockets the coins and nods towards the moored ships."},
+        {"speaker": "N", "text": "The Aldarin crews tip well. The rest never do."},
+        {"speaker": "P", "text": "But can any of them sail me out?"},
+        {"speaker": "N", "text": "Not one. None of them will vouch for a stranger."}
+      ],
+      "options": [
+        {"label": "Who would vouch for me?", "lines": [
+          {"speaker": "N", "text": "Some registrar up in the dock building. Never met her."}
+        ]},
+        {"label": "Any good crews to work for?", "lines": [
+          {"speaker": "N", "text": "The Aldarin lot, if you don't mind heavy lifting."},
+          {"speaker": "P", "text": "Noted."},
+          {"speaker": "N", "text": "Timoiva."}
+        ]},
+        {"label": "Forget it.", "lines": [
+          {"speaker": "N", "text": "Suit yourself."}
+        ]}
+      ]
+    },
+    {
+      "title": "Quiver Spotted",
+      "phase": "post",
+      "premise": "He's stacking barrels by the charter dock, checking the tide table.",
+      "lines": [
+        {"speaker": "P", "text": "I need a ship out of Varlamore."},
+        {"speaker": "X", "text": "He spots Dizana's quiver and stops mid-lift."},
+        {"speaker": "N", "text": "Tetamo... that's a Colosseum quiver, that is."},
+        {"speaker": "P", "text": "Does that mean something?"},
+        {"speaker": "N", "text": "Means you've earned your ticket. Go find the registrar."},
+        {"speaker": "N", "text": "She keeps the ledger. Ask her, not me."}
+      ],
+      "options": [
+        {"label": "Where's the dock building?", "lines": [
+          {"speaker": "N", "text": "Right there, past the crates. Can't miss it."}
+        ]},
+        {"label": "Thanks for the tip.", "lines": [
+          {"speaker": "N", "text": "Don't thank me, thank your own arms."},
+          {"speaker": "P", "text": "Ha."},
+          {"speaker": "N", "text": "Go on, then."}
+        ]},
+        {"label": "One more question.", "lines": [
+          {"speaker": "N", "text": "Make it quick, I've crates waiting."},
+          {"speaker": "P", "text": "Never mind."},
+          {"speaker": "N", "text": "Timoiva, then."}
+        ]}
+      ]
+    }
+  ]
+}

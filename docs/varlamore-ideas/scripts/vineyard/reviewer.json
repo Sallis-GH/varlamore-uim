@@ -1,0 +1,86 @@
+{
+  "character": "Vineyard worker",
+  "author": "reviewer",
+  "variants": [
+    {
+      "title": "Not my crates",
+      "phase": "pre",
+      "premise": "He is stacking wine crates on the dock and does not stop stacking.",
+      "lines": [
+        {"speaker": "P", "text": "Is there a ship out of here?"},
+        {"speaker": "N", "text": "Ask the crew. I do grapes."},
+        {"speaker": "P", "text": "You must know something."},
+        {"speaker": "N", "text": "I know these crates are going on. You're not."}
+      ],
+      "options": [
+        {
+          "label": "Why not me?",
+          "lines": [
+            {"speaker": "N", "text": "No captain wants the bother."}
+          ]
+        },
+        {
+          "label": "What's in the crates?",
+          "lines": [
+            {"speaker": "N", "text": "Wine. Moonrise red, the dear stuff."},
+            {"speaker": "P", "text": "Is it any good?"},
+            {"speaker": "N", "text": "Not for the likes of us. Don't lean on it."}
+          ]
+        },
+        {
+          "label": "Ever been on a ship?",
+          "lines": [
+            {"speaker": "N", "text": "No. The grapes stay put and so do I."}
+          ]
+        },
+        {
+          "label": "I'll leave you to it.",
+          "lines": [
+            {"speaker": "N", "text": "Timoiva. Mind the gulls."}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "The quiver",
+      "phase": "post",
+      "premise": "He is eating his lunch on the crates when he notices what is on the player's back.",
+      "lines": [
+        {"speaker": "P", "text": "Is there a ship out of here?"},
+        {"speaker": "X", "text": "The worker looks up from his lunch."},
+        {"speaker": "N", "text": "Tetamo. Where'd you get that quiver?"},
+        {"speaker": "P", "text": "In the Colosseum."},
+        {"speaker": "N", "text": "Then don't waste it on me. Go to the capital."}
+      ],
+      "options": [
+        {
+          "label": "Where in the capital?",
+          "lines": [
+            {"speaker": "N", "text": "The Cothon. North side of the city."},
+            {"speaker": "N", "text": "Ask whoever keeps the ledger."}
+          ]
+        },
+        {
+          "label": "You know what it means?",
+          "lines": [
+            {"speaker": "N", "text": "My cousin won't shut up about them."},
+            {"speaker": "N", "text": "He hasn't got one."}
+          ]
+        },
+        {
+          "label": "Want a look at it?",
+          "lines": [
+            {"speaker": "N", "text": "No. Show the ledger man, not me."},
+            {"speaker": "N", "text": "I've crates to count."}
+          ]
+        },
+        {
+          "label": "Thanks.",
+          "lines": [
+            {"speaker": "N", "text": "Timoiva. Try not to drown."}
+          ]
+        }
+      ]
+    }
+  ]
+}

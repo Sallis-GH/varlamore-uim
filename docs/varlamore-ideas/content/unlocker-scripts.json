@@ -1,0 +1,128 @@
+{
+  "candidates": [
+    {
+      "id": "registrar",
+      "name": "Harbour Registrar",
+      "with": {
+        "lines": [
+          {"speaker": "P", "text": "Can you clear me for a ship out of Varlamore?"},
+          {"speaker": "N", "text": "Only if you're proven. They all say they are. Show me."},
+          {"speaker": "X", "text": "You show the registrar Dizana's quiver."},
+          {"speaker": "N", "text": "Huh. Real Colosseum work. Not a market copy."},
+          {"speaker": "N", "text": "You're in the ledger now. The crews won't argue with the ledger."}
+        ],
+        "options": [
+          {"label": "Thanks for your help.", "lines": [{"speaker": "N", "text": "It's the first entry I've enjoyed all week."}]},
+          {"label": "Does this ever expire?", "lines": [{"speaker": "N", "text": "Ink doesn't lift, iknami. You're written for good."}]},
+          {"label": "Long day?", "lines": [{"speaker": "N", "text": "Every day's long. The ships keep coming in."}]}
+        ]
+      },
+      "without": {
+        "lines": [
+          {"speaker": "P", "text": "Can you clear me for a ship out of Varlamore?"},
+          {"speaker": "N", "text": "No. I clear the proven, and you're not on my list."},
+          {"speaker": "P", "text": "What counts as proven?"},
+          {"speaker": "N", "text": "Come back wearing something the Colosseum gave you."}
+        ],
+        "options": [
+          {"label": "Who decides that?", "lines": [{"speaker": "N", "text": "No captain wants that risk. I just keep the ledger."}]},
+          {"label": "Can't you make an exception?", "lines": [{"speaker": "N", "text": "I made one once. I'd rather not discuss it."}]},
+          {"label": "I'll come back proven.", "lines": [{"speaker": "N", "text": "They all say that. Some of them are."}]}
+        ]
+      }
+    },
+    {
+      "id": "minimus",
+      "name": "Minimus",
+      "with": {
+        "lines": [
+          {"speaker": "P", "text": "Minimus, can you get me a ship out of Varlamore?"},
+          {"speaker": "N", "text": "Ships? I'm no sailor. What's that on your back, though?"},
+          {"speaker": "X", "text": "You show Minimus Dizana's quiver."},
+          {"speaker": "N", "text": "Twelve waves, and Sol Heredit face down. That's not luck."},
+          {"speaker": "N", "text": "My word carries at the docks. Tell them the Master sent you."}
+        ],
+        "options": [
+          {"label": "Will they believe you?", "lines": [{"speaker": "N", "text": "They will. I've never had to say a thing twice."}]},
+          {"label": "Why does your word count?", "lines": [{"speaker": "N", "text": "The kingdom gave me this role. Word came with it."}]},
+          {"label": "Thanks, Minimus.", "lines": [{"speaker": "N", "text": "Don't thank me. Thank the twelve waves."}]}
+        ]
+      },
+      "without": {
+        "lines": [
+          {"speaker": "P", "text": "Minimus, can you get me a ship out of Varlamore?"},
+          {"speaker": "N", "text": "Me? I run an arena, not a harbour."},
+          {"speaker": "P", "text": "So there's nothing you can do?"},
+          {"speaker": "N", "text": "Not for a Rookie. Prove yourself in my sand first."}
+        ],
+        "options": [
+          {"label": "How do I prove myself?", "lines": [{"speaker": "N", "text": "Twelve waves. Come out the other side. Simple enough."}]},
+          {"label": "That's a lot to ask.", "lines": [{"speaker": "N", "text": "Then the sea's not for you. Neither is my arena."}]},
+          {"label": "I'll think about it.", "lines": [{"speaker": "N", "text": "Everyone thinks about it. Fewer of them come back."}]}
+        ]
+      }
+    },
+    {
+      "id": "steward",
+      "name": "Colosseum Steward",
+      "with": {
+        "lines": [
+          {"speaker": "P", "text": "I want passage overseas. Who signs for that?"},
+          {"speaker": "N", "text": "The Queen's ledger does. Have you anything worth entering?"},
+          {"speaker": "X", "text": "You show the steward Dizana's quiver."},
+          {"speaker": "N", "text": "A quiver off the sand. I've not written one this season."},
+          {"speaker": "N", "text": "The crews read champions' names. Yours will get you aboard."}
+        ],
+        "options": [
+          {"label": "What goes in the ledger?", "lines": [{"speaker": "N", "text": "Your name, the wave, and the day. Nothing more."}]},
+          {"label": "Does the Queen read it?", "lines": [{"speaker": "N", "text": "She reads the ones that matter. Yours might be one."}]},
+          {"label": "Goodbye, then.", "lines": [{"speaker": "N", "text": "Timoiva. Come back with a better story than most."}]}
+        ]
+      },
+      "without": {
+        "lines": [
+          {"speaker": "P", "text": "I want passage overseas. Who signs for that?"},
+          {"speaker": "N", "text": "Nobody signs for an empty name. Mine is a champions' ledger."},
+          {"speaker": "P", "text": "So how do I get a name?"},
+          {"speaker": "N", "text": "Through that gate. Twelve waves. Then I'll dip my pen."}
+        ],
+        "options": [
+          {"label": "Who else could help me?", "lines": [{"speaker": "N", "text": "Nobody. The captains want a name they've heard of."}]},
+          {"label": "That seems steep.", "lines": [{"speaker": "N", "text": "It is. That's rather the point of the thing."}]},
+          {"label": "I'll come back.", "lines": [{"speaker": "N", "text": "They mostly don't. I'll leave the line empty."}]}
+        ]
+      }
+    },
+    {
+      "id": "herminius",
+      "name": "Curator Herminius",
+      "with": {
+        "lines": [
+          {"speaker": "P", "text": "Curator, I need a ship out of Varlamore. Can you vouch?"},
+          {"speaker": "N", "text": "Vouching is not my trade, iknami. Authenticating is. Show me."},
+          {"speaker": "X", "text": "You show Curator Herminius Dizana's quiver."},
+          {"speaker": "N", "text": "Indeed. Arena-made, and worn hard. This came off the sand."},
+          {"speaker": "N", "text": "I'll write to the harbour. My hand is known there."}
+        ],
+        "options": [
+          {"label": "Is it the original quiver?", "lines": [{"speaker": "N", "text": "No. A replica, though a very honest one."}]},
+          {"label": "Why would they listen?", "lines": [{"speaker": "N", "text": "Half the labels in this museum are in my hand."}]},
+          {"label": "Thank you, Curator.", "lines": [{"speaker": "N", "text": "Not a problem, iknami. Do come back and read something."}]}
+        ]
+      },
+      "without": {
+        "lines": [
+          {"speaker": "P", "text": "Curator, I need a ship out of Varlamore. Can you vouch?"},
+          {"speaker": "N", "text": "For what, exactly? I authenticate objects. People are not objects."},
+          {"speaker": "P", "text": "Anything that proves I can look after myself."},
+          {"speaker": "N", "text": "Then bring me something the Colosseum gave you. Nothing else counts."}
+        ],
+        "options": [
+          {"label": "What would you accept?", "lines": [{"speaker": "N", "text": "A quiver from the sand. I would know it at once."}]},
+          {"label": "Could you make an exception?", "lines": [{"speaker": "N", "text": "I could. Then my word would be worth rather less."}]},
+          {"label": "I'll find something.", "lines": [{"speaker": "N", "text": "Not a problem, iknami. The museum keeps long hours."}]}
+        ]
+      }
+    }
+  ]
+}
