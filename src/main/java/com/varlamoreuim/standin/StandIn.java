@@ -6,6 +6,7 @@ import net.runelite.api.Animation;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.RuneLiteObject;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 
 /**
@@ -41,7 +42,12 @@ public class StandIn
 		{
 			return;
 		}
-		object.setLocation(lp, client.getTopLevelWorldView().getPlane());
+		WorldView wv = client.getTopLevelWorldView();
+		if (wv == null)
+		{
+			return;
+		}
+		object.setLocation(lp, wv.getPlane());
 		object.setOrientation(npc.getOrientation());
 		int pose = npc.getPoseAnimation();
 		if (pose != lastPose && pose >= 0)

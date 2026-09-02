@@ -93,11 +93,23 @@ public class StandInRegistry
 		}
 		clientThread.invoke(() ->
 		{
+			if (!active)
+			{
+				return;
+			}
 			if (byIndex.containsKey(npc.getIndex()))
 			{
 				return;
 			}
-			RuneLiteObject object = client.createRuneLiteObject();
+			WorldView wv = client.getTopLevelWorldView();
+			if (wv == null)
+			{
+				return;
+			}
+			if (wv.npcs().byIndex(npc.getIndex()) != npc)
+			{
+				return;
+			}
 			Model model = buildModel(persona.get().getNpcId());
 			if (model == null)
 			{
@@ -108,6 +120,7 @@ public class StandInRegistry
 				log.warn("Could not build model for persona {}", persona.get().getId());
 				return;
 			}
+			RuneLiteObject object = client.createRuneLiteObject();
 			object.setModel(model);
 			object.setRadius(60);
 			StandIn standIn = new StandIn(client, npc, persona.get(), object);
