@@ -54,7 +54,7 @@ tasks.register('runVanilla', JavaExec) {
 tasks.register('shadowJar', Jar) {
 	dependsOn configurations.testRuntimeClasspath
 	manifest {
-		attributes('Main-Class': pluginMainClass, 'Multi-Release': true)
+		attributes('Main-Class': 'com.varlamoreuim.VarlamoreUimLauncher', 'Multi-Release': true)
 	}
 
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
